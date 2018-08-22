@@ -1,27 +1,22 @@
-# cartolol
+# CartoLoL
 
-> projeto de tcc
+> Frontend do CartoLoL
 
-## Build Setup
+## Como instalar o front do CartoLoL em sua máquina
 
 ``` bash
-# install dependencies
+# Instale as dependências
 npm install
 
-# serve with hot reload at localhost:8080
+# Servidor com hot reload em localhost:3000
 npm run dev
 
-# build for production with minification
+# Build para produção com arquivos minificados
 npm run build
 
-# build for production and view the bundle analyzer report
+# Build para produção com relatórios
 npm run build --report
 
-# run unit tests
+# Rodar testes unitários
 npm run unit
 
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
