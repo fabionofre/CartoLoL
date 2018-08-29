@@ -8,8 +8,8 @@ O tema desta proposta de trabalho de conclusão de curso é o desenvolvimento de
 
 ## Construído com
 
-* [Laravel](https://laravel.com/docs/5.6) - Framework usado para produção da API Rest
-* [VueJS 2](https://br.vuejs.org/v2/guide) - Framework progressivo para a construção de interfaces de usuário
+* <a href="https://laravel.com/docs/5.6" target="_blank">Laravel</a> - Framework usado para produção da API Rest
+* <a href="https://br.vuejs.org/v2/guide" target="_blank">VueJS 2</a> - Framework progressivo para a construção de interfaces de usuário
 
 ## Autores
 
