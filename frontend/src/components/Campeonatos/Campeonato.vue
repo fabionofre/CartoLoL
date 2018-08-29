@@ -30,26 +30,26 @@
             </v-flex>
 
             <v-flex
-            v-if="descricao"
+            v-if="desc"
             class="grey--text"
             ellipsis
             hidden-sm-and-down
             >
             &mdash;
-            {{ descricao }}
+            {{ desc }}
             </v-flex>
         </v-layout>
 
         <v-card>
             <v-divider></v-divider>
-            <v-card-text v-text="descricao"></v-card-text>
+            <v-card-text v-text="desc"></v-card-text>
         </v-card>
     </v-expansion-panel-content>
 </template>
 <script>
 export default {
     name: 'Campeonato',
-    props: ['brasao', 'titulo', 'descricao', 'de_ate'],
+    props: ['brasao', 'titulo', 'desc', 'de_ate'],
     data() {
         return {
 

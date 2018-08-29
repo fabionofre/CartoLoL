@@ -35,7 +35,7 @@
                 <v-flex xs12>
                     <v-textarea
                         label="Descrição"
-                        v-model="camp.descricao"
+                        v-model="camp.desc"
                         >
                     </v-textarea>
                 </v-flex>

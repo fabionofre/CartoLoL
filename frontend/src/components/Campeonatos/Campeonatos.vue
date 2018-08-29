@@ -13,7 +13,7 @@
                     :key="i"
                     :brasao="c.brasao"
                     :titulo="c.titulo"
-                    :descricao="c.descricao"
+                    :desc="c.desc"
                     :de_ate="c.de_ate"
                 >
                 </campeonato>
@@ -22,6 +22,7 @@
     </v-slide-y-transition>
 </template>
 <script>
+import axios from 'axios'
 import Campeonato from './Campeonato'
 import ModalCampeonato from './ModalCampeonato'
 export default {
@@ -30,28 +31,29 @@ export default {
         'campeonato': Campeonato,
         'modal-campeonato': ModalCampeonato
     },
+    mounted(){
+        axios.get('http://127.0.0.1:8000/api/campeonatos')
+            .then(
+                (response) => {
+                    console.log(response)
+                    this.campeonatos = response.data.data
+                },
+                (error) => console.log(error)
+            )
+    },
     data () {
         return {
-            campeonatos: [{
-                id: 1,
-                titulo: 'CBLOL',
-                descricao: 'Circuito Brasileiro de League of Legends',
-                brasao: 'https://cdn.vs.com.br/vs-img/1508430358350-tabela-do-cblol-2017_cstv.jpg',
-                de_ate: 'De 02/04/2018 até 26/06/2018'
-            }, {
-                id: 2,
-                titulo: 'Circuito Desafiante',
-                descricao: 'Os primeiros colocados ganham vaga no CBLOL',
-                brasao: 'https://br.leagueoflegends.com/sites/default/files/styles/wide_small/public/upload/lolesports-header-cd2018.jpg?itok=s0_0Vnxu',
-                de_ate: 'De 22/07/2018 até 08/09/2018'
-            }],
+            campeonatos: null,
             campeonato: {
                 id: null,
                 titulo: null,
                 data_inicio: null,
                 data_fim: null,
-                descricao: null,
-                brasao: null
+                desc: null,
+                brasao: null,
+                criador_id: null,
+                fl_publico: 1,
+                fl_profissional: 1
             }
         }
     },
@@ -63,6 +65,15 @@ export default {
             }else{
                 // Cria um novo campeonato
                 this.campeonatos.push(this.campeonato)
+                let camp = this.campeonato
+                camp.criador_id = 1
+                axios.post('http://127.0.0.1:8000/api/campeonatos', camp)
+                    .then(
+                        (response) => {
+                            console.log(response)
+                        },
+                        (error) => console.log(error)
+                    )
             }
         }
     }
