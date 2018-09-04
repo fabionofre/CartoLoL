@@ -10,6 +10,7 @@
             right
             fab
             slot="activator"
+            @click="resetCamp"
         >
             <v-icon>add</v-icon>
         </v-btn>
@@ -39,6 +40,14 @@
                         >
                     </v-textarea>
                 </v-flex>
+                <v-switch
+                    label="Público"
+                    v-model="camp.fl_publico"
+                ></v-switch>
+                <v-switch
+                    label="Profissional"
+                    v-model="camp.fl_profissional"
+                ></v-switch>
             </v-layout>
           </v-container>
           <!-- <small>*indicates required field</small> -->
@@ -62,7 +71,7 @@ export default {
     data() {
         return {
             dialog: false,
-            titulo_card: 'Criar',
+            titulo_card: 'Editar',
             camp: this.campeonato
         }
     },
@@ -70,11 +79,15 @@ export default {
         criarCampeonato(){
             this.dialog = false
             this.$emit('update:campeonato', this.camp)
+            this.camp = {}
         },
         abreModal(campeonato){
             this.dialog = true
-            this.titulo_card = 'Editar'
             this.camp = campeonato
+        },
+        resetCamp(){
+            this.camp = {}
+            this.titulo_card = 'Criar'
         }
     }
 }

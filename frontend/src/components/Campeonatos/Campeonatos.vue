@@ -27,6 +27,22 @@
                     </campeonato>
                 </v-expansion-panel>
             </div>
+            <v-snackbar
+                v-model="snackbar"
+                :bottom="true"
+                :multi-line="true"
+                :right="true"
+                :timeout="7000"
+                >
+                {{ textoResponse }}
+                <v-btn
+                    color="pink"
+                    flat
+                    @click="snackbar = false"
+                >
+                    Fechar
+                </v-btn>
+            </v-snackbar>
         </v-layout>
     </v-slide-y-transition>
 </template>
@@ -41,19 +57,8 @@ export default {
         'modal-campeonato': ModalCampeonato
     },
     mounted(){
-        this.loading = true
-        axios.get('http://192.168.2.100:8000/api/campeonatos')
-            .then(
-                (response) => {
-                    console.log(response)
-                    this.campeonatos = response.data.data
-                    this.loading = false
-                },
-                (error) => {
-                    console.log(error)
-                    this.loading = false
-                }
-            )
+        this.$bus.$on('excluir-campeonato', this.excluirCampeonato)
+        this.getCampeonatos()
     },
     data () {
         return {
@@ -66,18 +71,34 @@ export default {
                 desc: null,
                 brasao: null,
                 criador_id: null,
-                fl_publico: 1,
-                fl_profissional: 1
+                fl_publico: null,
+                fl_profissional: null
             },
-            loading: false
+            loading: false,
+            snackbar: false,
+            textoResponse: null
         }
     },
     methods: {
         salvarCampeonato(campeonato){
+            this.loading = true
             this.campeonato = campeonato
             if(this.campeonato.id){
                 // Edita o campeonato
                 console.log(this.campeonato)
+                axios.put('http://127.0.0.1:8000/api/campeonatos/'+this.campeonato.id, this.campeonato)
+                    .then(
+                        (response) => {
+                            console.log(response)
+                            this.loading = false
+                            this.textoResponse = response.data.message
+                            this.snackbar = true
+                        },
+                        (error) => {
+                            this.loading = false
+                            console.log(error)
+                        }
+                    )
             }else{
                 // Cria um novo campeonato
                 this.campeonatos.push(this.campeonato)
@@ -87,10 +108,49 @@ export default {
                     .then(
                         (response) => {
                             console.log(response)
+                            this.loading = false
+                            this.textoResponse = response.data.message
+                            this.snackbar = true
                         },
-                        (error) => console.log(error)
+                        (error) => {
+                            this.loading = false
+                            console.log(error)
+                        }
                     )
             }
+            this.campeonato = {}
+        },
+        excluirCampeonato(id){
+            this.loading = true
+            axios.delete('http://127.0.0.1:8000/api/campeonatos/'+id)
+                .then(
+                    (response) => {
+                        console.log(response)
+                        this.loading = false
+                        this.textoResponse = response.data.message
+                        this.snackbar = true
+                        this.getCampeonatos()
+                    },
+                    (error) => {
+                        this.loading = false
+                        console.log(erro)
+                    }
+                )
+        },
+        getCampeonatos(){
+            this.loading = true
+            axios.get('http://127.0.0.1:8000/api/campeonatos')
+                .then(
+                    (response) => {
+                        console.log(response)
+                        this.campeonatos = response.data.data
+                        this.loading = false
+                    },
+                    (error) => {
+                        console.log(error)
+                        this.loading = false
+                    }
+                )
         }
     }
 }

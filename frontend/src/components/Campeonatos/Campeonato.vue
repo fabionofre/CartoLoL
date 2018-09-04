@@ -39,13 +39,23 @@
                     {{ campeonato.desc }}
                 </v-flex>
             </v-layout>
-
             <v-card>
                 <v-icon @click="editarCampeonato()" class="icone-editar" color="primary">edit</v-icon>
-                <v-icon @click.native="excluirCampeonato()" class="icone-deletar" color="red darken-1">delete</v-icon>
+                <v-icon @click="dialogDelete = true" class="icone-deletar" color="red darken-1">delete</v-icon>
                 <v-divider></v-divider>
                 <v-card-text v-text="campeonato.desc"></v-card-text>
             </v-card>
+            <v-dialog v-model="dialogDelete" persistent max-width="290">
+                <v-card>
+                    <v-card-title class="headline">Tem certeza que deseja deletar este campeonato?</v-card-title>
+                    <v-card-text>Se você clicar em confirmar o campeonato será deletado para sempre!</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" flat @click="dialogDelete = false">Cancelar</v-btn>
+                    <v-btn color="green darken-1" flat @click="excluirCampeonato">Confirmar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-expansion-panel-content>
 </template>
 <script>
@@ -53,7 +63,6 @@ import ModalCampeonato from './ModalCampeonato'
 export default {
     name: 'Campeonato',
     mounted(){
-        console.log(this.campeonato)
     },
     components: {
         'modal-campeonato': ModalCampeonato,
@@ -61,7 +70,7 @@ export default {
     props: ['campeonato'],
     data() {
         return {
-
+            dialogDelete: false
         }
     },
     methods: {
@@ -69,7 +78,8 @@ export default {
             this.$bus.$emit('abre-modal-campeonato', this.campeonato)
         },
         excluirCampeonato(){
-
+            this.dialogDelete = false
+            this.$bus.$emit('excluir-campeonato', this.campeonato.id)
         }
     }
 }
