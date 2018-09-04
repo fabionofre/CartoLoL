@@ -22,7 +22,7 @@ php artisan migrate --path=/database/migrations/primeiras
 # Migre todas as entidades para seu banco de dados
 php artisan migrate
 
-# Rode os seeders que alimentaram o banco com dados essenciais para o funcionamento dos testes de usuário
+# Rode os seeders que alimentarão o banco com dados essenciais para o funcionamento dos testes de usuário
 php artisan db:seed
 
 # Ligue o servidor
