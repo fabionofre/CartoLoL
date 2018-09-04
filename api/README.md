@@ -1,10 +1,8 @@
-# CartoLoL
+# Como instalar o back do CartoLoL em sua máquina
 
 > Backend do CartoLoL
 
-## Como instalar o back do CartoLoL em sua máquina
-
-# Configure o arquivo .env
+## Configure o arquivo .env
 
 O arquivo .env deve ser criado na raiz do projeto, use o .env.example como exemplo.
 Atributos essenciais para o funcionamento da API: DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD.
