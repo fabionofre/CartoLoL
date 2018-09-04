@@ -36,7 +36,7 @@ class CampeonatoController extends Controller
     public function store(Request $request)
     {
         $campeonato = Campeonato::create($request->all());
-        return ["message"=>"Campeonato criado com sucesso", "campeonato"=>$campeonato];
+        return ["message"=>"Campeonato criado com sucesso!", "campeonato"=>$campeonato];
     }
 
     /**
@@ -68,9 +68,11 @@ class CampeonatoController extends Controller
      * @param  \App\Campeonato  $campeonato
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Campeonato $campeonato)
+    public function update($id, Request $request)
     {
-        //
+        // dd($request->all());
+        $campeonato = Campeonato::find($id)->update($request->all());
+        return ["message"=>"Campeonato modificado com sucesso!", "campeonato"=>$campeonato];
     }
 
     /**
@@ -79,8 +81,12 @@ class CampeonatoController extends Controller
      * @param  \App\Campeonato  $campeonato
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Campeonato $campeonato)
+    public function destroy($id)
     {
-        //
+        $campeonato = Campeonato::find($id);
+
+        $campeonato->delete();
+
+        return ["message" => "Campeonato deletado com sucesso!", "campeonato"=>$campeonato];
     }
 }
