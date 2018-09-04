@@ -3,9 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import EventBus from './plugins/event-bus'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
+Vue.use(EventBus)
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false

@@ -54,9 +54,8 @@
 </template>
 <script>
 export default {
-    updated(){
-        if(this.campeonato.id)
-            this.titulo_card = 'Editar'
+    mounted(){
+        this.$bus.$on('abre-modal-campeonato', this.abreModal)
     },
     props: ['campeonato'],
     name: 'ModalCampeonato',
@@ -70,7 +69,12 @@ export default {
     methods: {
         criarCampeonato(){
             this.dialog = false
-            this.$emit('update:campeonato')
+            this.$emit('update:campeonato', this.camp)
+        },
+        abreModal(campeonato){
+            this.dialog = true
+            this.titulo_card = 'Editar'
+            this.camp = campeonato
         }
     }
 }

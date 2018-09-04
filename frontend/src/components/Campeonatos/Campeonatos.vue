@@ -1,23 +1,32 @@
 <template>
     <v-slide-y-transition mode="out-in">
         <v-layout column justify-center>
+            <div class="text-xs-center">
+                <v-progress-circular
+                    v-show="loading"
+                    :size="200"
+                    color="primary"
+                    indeterminate
+                    style="top: 150px"
+                ></v-progress-circular>
+            </div>
             <modal-campeonato
                :campeonato="campeonato"
                v-on:update:campeonato="salvarCampeonato"
+               icon="edit"
             >
             </modal-campeonato>
-            <v-subheader>Meus Campeonatos</v-subheader>
-            <v-expansion-panel popout>
-                <campeonato
-                    v-for="(c, i) in campeonatos"
-                    :key="i"
-                    :brasao="c.brasao"
-                    :titulo="c.titulo"
-                    :desc="c.desc"
-                    :de_ate="c.de_ate"
-                >
-                </campeonato>
-            </v-expansion-panel>
+            <div v-show="!loading">
+                <v-subheader>Meus Campeonatos</v-subheader>
+                <v-expansion-panel popout>
+                    <campeonato
+                        v-for="(c, i) in campeonatos"
+                        :key="i"
+                        :campeonato="c"
+                    >
+                    </campeonato>
+                </v-expansion-panel>
+            </div>
         </v-layout>
     </v-slide-y-transition>
 </template>
@@ -32,13 +41,18 @@ export default {
         'modal-campeonato': ModalCampeonato
     },
     mounted(){
-        axios.get('http://127.0.0.1:8000/api/campeonatos')
+        this.loading = true
+        axios.get('http://192.168.2.100:8000/api/campeonatos')
             .then(
                 (response) => {
                     console.log(response)
                     this.campeonatos = response.data.data
+                    this.loading = false
                 },
-                (error) => console.log(error)
+                (error) => {
+                    console.log(error)
+                    this.loading = false
+                }
             )
     },
     data () {
@@ -54,14 +68,16 @@ export default {
                 criador_id: null,
                 fl_publico: 1,
                 fl_profissional: 1
-            }
+            },
+            loading: false
         }
     },
     methods: {
-        salvarCampeonato(){
-            console.log(this.campeonato)
+        salvarCampeonato(campeonato){
+            this.campeonato = campeonato
             if(this.campeonato.id){
                 // Edita o campeonato
+                console.log(this.campeonato)
             }else{
                 // Cria um novo campeonato
                 this.campeonatos.push(this.campeonato)
