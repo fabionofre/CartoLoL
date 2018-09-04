@@ -8,8 +8,8 @@ O tema desta proposta de trabalho de conclusão de curso é o desenvolvimento de
 
 ## Como configurar
 
-* O [Frontend](frontend/README.md)
-* A [API](api/README.md)
+* [O Frontend](frontend/README.md)
+* [A API](api/README.md)
 
 ## Construído com
 
