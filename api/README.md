@@ -9,6 +9,8 @@ Atributos essenciais para o funcionamento da API: DB_HOST, DB_PORT, DB_DATABASE,
 
 OBS: Você deve criar um banco de dados manualmente em seu computador e inserir o nome de seu banco no atributo DB_DATABASE.
 
+## Abra o terminal e digite os comandos a seguir
+
 ``` bash
 # Instale as dependências
 composer install
