@@ -1,8 +1,8 @@
-# CartoLoL
+# Como instalar o front do CartoLoL em sua máquina
 
 > Frontend do CartoLoL
 
-## Como instalar o front do CartoLoL em sua máquina
+## Abra o terminal e digite os comandos a seguir
 
 ``` bash
 # Instale as dependências
