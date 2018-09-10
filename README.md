@@ -6,6 +6,11 @@ Fantasy Game de League of Legends, que proporciona aos amantes do jogo a experi�
 
 O tema desta proposta de trabalho de conclusão de curso é o desenvolvimento de um sistema informatizado denominado CartoLoL, que possibilitará aos usuários do League of Legends, eSport mais jogado mundialmente, a experiência de poder escalar equipes e competir entre amigos
 
+## Como configurar
+
+* [O Frontend](frontend/README.md)
+* [A API](api/README.md)
+
 ## Construído com
 
 * <a href="https://laravel.com/docs/5.6" target="_blank">Laravel</a> - Framework usado para produção da API Rest
