@@ -17,7 +17,8 @@
             >
             </modal-campeonato>
             <div v-show="!loading">
-                <v-subheader>Meus Campeonatos</v-subheader>
+                <v-subheader v-if="campeonatos.length > 0">Meus Campeonatos</v-subheader>
+                <v-subheader v-else>Você ainda não possui nenhum campeonato cadastrado, invocador!</v-subheader>
                 <v-expansion-panel popout>
                     <campeonato
                         v-for="(c, i) in campeonatos"
@@ -62,7 +63,7 @@ export default {
     },
     data () {
         return {
-            campeonatos: null,
+            campeonatos: [],
             campeonato: {
                 id: null,
                 titulo: null,
@@ -111,6 +112,7 @@ export default {
                             this.loading = false
                             this.textoResponse = response.data.message
                             this.snackbar = true
+                            this.getCampeonatos()
                         },
                         (error) => {
                             this.loading = false
