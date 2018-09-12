@@ -77,6 +77,10 @@ export default {
         icon: 'details',
         title: 'Campeonatos',
         to: 'campeonatos'
+      },{
+        icon: 'home',
+        title: 'Equipes',
+        to: 'equipes'
       }],
       title: 'Vuetify.js'
     }

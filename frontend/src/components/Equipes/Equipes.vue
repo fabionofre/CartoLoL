@@ -10,22 +10,22 @@
                     style="top: 150px"
                 ></v-progress-circular>
             </div>
-            <modal-campeonato
-               :campeonato="campeonato"
-               v-on:update:campeonato="salvarCampeonato"
+            <modal-equipe
+               :equipe="equipe"
+               v-on:update:equipe="salvarEquipe"
                icon="edit"
             >
-            </modal-campeonato>
+            </modal-equipe>
             <div v-show="!loading">
-                <v-subheader v-if="campeonatos.length > 0">Meus Campeonatos</v-subheader>
-                <v-subheader v-else>Você ainda não possui nenhum campeonato cadastrado, invocador!</v-subheader>
+                <v-subheader v-if="equipes.length > 0">Equipes</v-subheader>
+                <v-subheader v-else>Você ainda não possui nenhuma equipe cadastrada!</v-subheader>
                 <v-expansion-panel popout>
-                    <campeonato
-                        v-for="(c, i) in campeonatos"
+                    <equipe
+                        v-for="(c, i) in equipes"
                         :key="i"
-                        :campeonato="c"
+                        :equipe="c"
                     >
-                    </campeonato>
+                    </equipe>
                 </v-expansion-panel>
             </div>
             <v-snackbar
@@ -48,30 +48,26 @@
     </v-slide-y-transition>
 </template>
 <script>
-import Campeonato from './Campeonato'
-import ModalCampeonato from './ModalCampeonato'
+import Equipe from './Equipe'
+import ModalEquipe from './ModalEquipe'
 export default {
-    name: 'Campeonatos',
+    name: 'Equipes',
     components: {
-        'campeonato': Campeonato,
-        'modal-campeonato': ModalCampeonato
+        'equipe': Equipe,
+        'modal-equipe': ModalEquipe
     },
     mounted(){
-        this.$bus.$on('excluir-campeonato', this.excluirCampeonato)
-        this.getCampeonatos()
+        this.$bus.$on('excluir-equipe', this.excluirEquipe)
+        this.getEquipes()
     },
     data () {
         return {
-            campeonatos: [],
-            campeonato: {
+            equipes: [],
+            equipe: {
                 id: null,
-                titulo: null,
-                data_inicio: null,
-                data_fim: null,
-                desc: null,
+                nome: null,
                 brasao: null,
                 criador_id: null,
-                fl_publico: null,
                 fl_profissional: null
             },
             loading: false,
@@ -80,13 +76,13 @@ export default {
         }
     },
     methods: {
-        salvarCampeonato(campeonato){
+        salvarEquipe(equipe){
             this.loading = true
-            this.campeonato = campeonato
-            if(this.campeonato.id){
-                // Edita o campeonato
-                console.log(this.campeonato)
-                axios.put('campeonatos/'+this.campeonato.id, this.campeonato)
+            this.equipe = equipe
+            if(this.equipe.id){
+                // Edita a equipe
+                console.log(this.equipe)
+                axios.put('equipes/'+this.equipe.id, this.equipe)
                     .then(
                         (response) => {
                             console.log(response)
@@ -100,18 +96,18 @@ export default {
                         }
                     )
             }else{
-                // Cria um novo campeonato
-                this.campeonatos.push(this.campeonato)
-                let camp = this.campeonato
-                camp.criador_id = 1
-                axios.post('campeonatos', camp)
+                // Cria uma nova equipe
+                this.equipes.push(this.equipep)
+                let equi = this.equipe
+                equi.criador_id = 1
+                axios.post('equipes', equi)
                     .then(
                         (response) => {
                             console.log(response)
                             this.loading = false
                             this.textoResponse = response.data.message
                             this.snackbar = true
-                            this.getCampeonatos()
+                            this.getEquipes()
                         },
                         (error) => {
                             this.loading = false
@@ -119,18 +115,18 @@ export default {
                         }
                     )
             }
-            this.campeonato = {}
+            this.equipe = {}
         },
-        excluirCampeonato(id){
+        excluirEquipe(id){
             this.loading = true
-            axios.delete('campeonatos/'+id)
+            axios.delete('equipes/'+id)
                 .then(
                     (response) => {
                         console.log(response)
                         this.loading = false
                         this.textoResponse = response.data.message
                         this.snackbar = true
-                        this.getCampeonatos()
+                        this.getEquipes()
                     },
                     (error) => {
                         this.loading = false
@@ -138,13 +134,13 @@ export default {
                     }
                 )
         },
-        getCampeonatos(){
+        getEquipes(){
             this.loading = true
-            axios.get('campeonatos')
+            axios.get('equipes')
                 .then(
                     (response) => {
                         console.log(response)
-                        this.campeonatos = response.data.data
+                        this.equipes = response.data.data
                         this.loading = false
                     },
                     (error) => {
