@@ -14,7 +14,7 @@ class CampeonatoController extends Controller
      */
     public function index()
     {
-        return Campeonato::paginate(8);
+        return Campeonato::with('equipes.atletas')->get();
     }
 
     /**
@@ -34,7 +34,7 @@ class CampeonatoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $campeonato = Campeonato::create($request->all());
         return ["message"=>"Campeonato criado com sucesso!", "campeonato"=>$campeonato];
     }
@@ -70,8 +70,21 @@ class CampeonatoController extends Controller
      */
     public function update($id, Request $request)
     {
-        // dd($request->all());
-        $campeonato = Campeonato::find($id)->update($request->all());
+        $campeonato = Campeonato::find($id);
+
+        $campeonato->brasao = $request['brasao'];
+        $campeonato->criador_id = $request['criador_id'];
+        $campeonato->data_inicio = $request['data_inicio'];
+        $campeonato->data_fim = $request['data_fim'];
+        $campeonato->desc = $request['desc'];
+        $campeonato->fl_profissional = $request['fl_profissional'];
+        $campeonato->fl_publico = $request['fl_publico'];
+        $campeonato->titulo = $request['titulo'];
+
+        $campeonato->equipes()->sync($request['equipes']);
+
+        $campeonato->save();
+
         return ["message"=>"Campeonato modificado com sucesso!", "campeonato"=>$campeonato];
     }
 

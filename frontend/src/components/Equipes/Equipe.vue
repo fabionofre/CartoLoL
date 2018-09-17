@@ -51,7 +51,7 @@
                                 :alt="a.nome"
                                 >
                             </v-avatar>
-                            <span>{{a.nome + "\""+ a.apelido +"\""+ a.sobrenome }}</span>
+                            <span>{{a.apelido}}</span>
                         </v-tooltip>
                         <v-btn
                             dark
@@ -103,7 +103,7 @@
                                     :src="data.item.foto"
                                     >
                                 </v-avatar>
-                                {{ data.item.nome }}
+                                {{ data.item.apelido }}
                                 <v-icon
                                 small
                                 @click="data.parent.selectItem(data.item)"
@@ -117,7 +117,7 @@
                                         <img :src="data.item.foto" />
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
-                                        <v-list-tile-title v-html="data.item.nome"></v-list-tile-title>
+                                        <v-list-tile-title>{{data.item.nome}} <b>"{{data.item.apelido}}"</b> {{data.item.sobrenome}}</v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
                             </template>
@@ -140,6 +140,7 @@ import ModalEquipe from './ModalEquipe'
 export default {
     name: 'Equipe',
     mounted(){
+        this.getAtletas()
     },
     components: {
         'modal-equipe': ModalEquipe,
@@ -155,7 +156,7 @@ export default {
         }
     },
     watch: {
-        atletasSelecionados(val){
+        dialogAtletas(val){
             this.atletasSelecionados = [...this.equipe.atletas]
         }
     },
@@ -168,8 +169,26 @@ export default {
             this.$bus.$emit('excluir-equipe', this.equipe.id)
         },
         salvarAtletas(){
-            console.log(this.atletasSelecionados)
-        }
+            this.dialogAtletas = false
+            this.equipe.atletas = this.atletasSelecionados.map(e => e.id)
+            console.log(this.equipe.atletas)
+            this.$bus.$emit('update:equipe', this.equipe)
+        },
+        getAtletas(){
+            this.loading = true
+            axios.get('atletas')
+                .then(
+                    (response) => {
+                        console.log(response)
+                        this.atletas = response.data
+                        this.loading = false
+                    },
+                    (error) => {
+                        console.log(error)
+                        this.loading = false
+                    }
+                )
+        },
     }
 }
 </script>

@@ -20,5 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resources([
 	'campeonatos' => 'CampeonatoController',
 	'usuarios' => 'UserController',
-	'equipes' => 'EquipeController'
+	'equipes' => 'EquipeController',
+	'atletas' => 'AtletaController'
 ]);

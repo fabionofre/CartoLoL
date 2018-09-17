@@ -63,7 +63,7 @@ export default {
             this.dialog = false
             if(this.equi.fl_profissional === undefined)
                 this.equi.fl_profissional = false
-            this.$emit('update:equipe', this.equi)
+            this.$bus.$emit('update:equipe', this.equi)
             this.equi = {}
         },
         abreModal(equipe){

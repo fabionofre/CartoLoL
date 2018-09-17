@@ -12,7 +12,6 @@
             </div>
             <modal-equipe
                :equipe="equipe"
-               v-on:update:equipe="salvarEquipe"
                icon="edit"
             >
             </modal-equipe>
@@ -58,6 +57,7 @@ export default {
     },
     mounted(){
         this.$bus.$on('excluir-equipe', this.excluirEquipe)
+        this.$bus.$on('update:equipe', this.salvarEquipe)
         this.getEquipes()
     },
     data () {
@@ -89,6 +89,7 @@ export default {
                             this.loading = false
                             this.textoResponse = response.data.message
                             this.snackbar = true
+                            this.getEquipes();
                         },
                         (error) => {
                             this.loading = false
@@ -140,7 +141,7 @@ export default {
                 .then(
                     (response) => {
                         console.log(response)
-                        this.equipes = response.data.data
+                        this.equipes = response.data
                         this.loading = false
                     },
                     (error) => {

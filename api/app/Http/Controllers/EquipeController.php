@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Equipe;
+use App\Atleta;
 use Illuminate\Http\Request;
 
 class EquipeController extends Controller
@@ -14,7 +15,7 @@ class EquipeController extends Controller
      */
     public function index()
     {
-        return Equipe::paginate(8);
+        return Equipe::with('atletas')->get();
     }
 
     /**
@@ -70,7 +71,35 @@ class EquipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $equipe = Equipe::find($id)->update($request->all());
+        $equipe = Equipe::find($id);
+
+        // dd($request['atletas']);
+
+        $equipe->brasao = $request['brasao'];
+        $equipe->criador_id = $request['criador_id'];
+        $equipe->fl_profissional = $request['fl_profissional'];
+        $equipe->nome = $request['nome'];
+
+        $atletas = Atleta::where('equipe_id', $id)->get()->toArray();
+
+        $zerar_relacionamentos = array_map(function($atleta) {
+            $a = Atleta::find($atleta['id']);
+            $a->equipe_id = null; 
+            $a->save();
+            return $a;
+        }, $atletas);
+
+
+        $atletas_relacionar = array_map(function ($atleta) {
+            $a = Atleta::find($atleta);
+            return $a; 
+        }, $request['atletas']);
+
+
+        $equipe->atletas()->saveMany($atletas_relacionar);
+
+        $equipe->save();
+
         return ["message"=>"Equipe modificada com sucesso!", "equipe"=>$equipe];
     }
 
@@ -81,7 +110,8 @@ class EquipeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
+
         $equipe = Equipe::find($id);
 
         $equipe->delete();

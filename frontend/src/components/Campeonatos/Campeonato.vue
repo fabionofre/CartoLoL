@@ -87,10 +87,10 @@
                                 </v-layout>
                                 <v-divider light></v-divider>
                                 <v-card-actions class="pa-3">
-                                    <v-avatar :key="index" v-for="(index) in [1,2,3,4,5,6]" style="margin-right: 5px">
+                                    <v-avatar :key="a.id" v-for="a in e.atletas" style="margin-right: 5px">
                                         <img
-                                        src="https://cdn.vuetifyjs.com/images/john.jpg"
-                                        alt="John"
+                                        :src="a.foto"
+                                        :alt="a.nome"
                                         >
                                     </v-avatar>
                                 </v-card-actions>
@@ -183,7 +183,6 @@ import ModalCampeonato from './ModalCampeonato'
 export default {
     name: 'Campeonato',
     mounted(){
-        
         this.getEquipes();
     },
     components: {
@@ -218,7 +217,7 @@ export default {
                 .then(
                     (response) => {
                         console.log(response)
-                        this.equipes = response.data.data
+                        this.equipes = response.data
                         this.loading = false
                     },
                     (error) => {

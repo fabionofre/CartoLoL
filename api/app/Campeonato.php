@@ -13,7 +13,12 @@ class Campeonato extends Model
 	protected $softDelete = true;
 
     protected $fillable = [
-        'titulo', 'desc', 'data_inicio', 'data_fim', 'fl_publico', 'fl_profissional', 'criador_id', 'brasao'
+        'titulo', 'desc', 'data_inicio', 'data_fim', 'fl_publico', 'fl_profissional', 'criador_id', 'brasao', 'equipes'
     ];
+
+    public function equipes()
+    {
+        return $this->belongsToMany('App\Equipe', 'disputam_campeonato', 'equipe_id', 'campeonato_id');
+    }
 
 }
