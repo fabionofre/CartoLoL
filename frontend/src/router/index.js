@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Campeonatos from '@/components/Campeonatos/Campeonatos'
 import Equipes from '@/components/Equipes/Equipes'
+import Atletas from '@/components/Atletas/Atletas'
 
 Vue.use(Router)
 
@@ -20,6 +21,10 @@ export default new Router({
     {
       path: '/equipes',
       component: Equipes
+    },
+    {
+      path: '/atletas',
+      component: Atletas
     }
   ]
 })

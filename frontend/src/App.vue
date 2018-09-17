@@ -81,7 +81,12 @@ export default {
         icon: 'home',
         title: 'Equipes',
         to: 'equipes'
-      }],
+      },{
+        icon: 'assignment',
+        title: 'Atletas',
+        to: 'atletas'
+      }
+      ],
       title: 'Vuetify.js'
     }
   },

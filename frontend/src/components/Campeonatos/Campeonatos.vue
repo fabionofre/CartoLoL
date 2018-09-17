@@ -12,7 +12,6 @@
             </div>
             <modal-campeonato
                :campeonato="campeonato"
-               v-on:update:campeonato="salvarCampeonato"
                icon="edit"
             >
             </modal-campeonato>
@@ -58,6 +57,7 @@ export default {
     },
     mounted(){
         this.$bus.$on('excluir-campeonato', this.excluirCampeonato)
+        this.$bus.$on('update:campeonato', this.salvarCampeonato)
         this.getCampeonatos()
     },
     data () {
@@ -72,7 +72,8 @@ export default {
                 brasao: null,
                 criador_id: null,
                 fl_publico: null,
-                fl_profissional: null
+                fl_profissional: null,
+                equipes: null
             },
             loading: false,
             snackbar: false,
@@ -93,6 +94,7 @@ export default {
                             this.loading = false
                             this.textoResponse = response.data.message
                             this.snackbar = true
+                            this.getCampeonatos()
                         },
                         (error) => {
                             this.loading = false
@@ -144,7 +146,7 @@ export default {
                 .then(
                     (response) => {
                         console.log(response)
-                        this.campeonatos = response.data.data
+                        this.campeonatos = response.data
                         this.loading = false
                     },
                     (error) => {

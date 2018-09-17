@@ -158,7 +158,7 @@ export default {
                 this.camp.fl_profissional = false
             this.camp.data_inicio = this.date
             this.camp.data_fim = this.date2
-            this.$emit('update:campeonato', this.camp)
+            this.$bus.$emit('update:campeonato', this.camp)
             this.camp = {}
         },
         abreModal(campeonato){
