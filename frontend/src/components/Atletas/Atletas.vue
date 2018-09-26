@@ -1,6 +1,15 @@
 <template>
     <v-slide-y-transition mode="out-in">
         <v-layout column justify-center>
+            <div class="text-xs-center">
+                <v-progress-circular
+                    v-show="loading"
+                    :size="200"
+                    color="primary"
+                    indeterminate
+                    style="top: 150px"
+                ></v-progress-circular>
+            </div>
             <div v-show="!loading">
                 <v-subheader v-if="atletas.length > 0">Meus Atletas</v-subheader>
                 <v-subheader v-else>Você ainda não possui nenhum atleta cadastrado, invocador!</v-subheader>
@@ -12,25 +21,34 @@
                         <v-layout row wrap>
                             <v-flex xs4 v-for="a in atletas" :key="a.id">
                                 <v-card color="blue-grey darken-2" class="white--text">
-                                    <v-layout row>
-                                        <v-flex xs5>
-                                        <img
-                                            style="margin-left: 2%"
-                                            :src="a.foto"
-                                            height="150px"
-                                            contain
-                                        >
-                                        </v-flex>
-                                        <v-flex xs7>
-                                        <v-card-title primary-title>
-                                            <div>
-                                            <div class="headline">{{a.nome}} "{{a.apelido}}" {{a.sobrenome}}</div>
-                                            <div>Mid-laner</div>
-                                            <div>{{a.data_nascimento}}</div>
-                                            </div>
-                                        </v-card-title>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-card-title class="ma-1" primary-title>
+                                                <div class="headline atleta-titulo">
+                                                    {{a.nome}}
+                                                    <b style="border: 1px solid #000000;">{{a.apelido}}</b>
+                                                    {{a.sobrenome}}
+                                                </div>
+                                            </v-card-title>
                                         </v-flex>
                                     </v-layout>
+                                    <v-card-text>
+                                        <v-layout row wrap>
+                                            <v-flex xs12>
+                                                <img
+                                                style="margin-left: 2%"
+                                                :src="'http://localhost:8000/storage/'+a.foto"
+                                                height="150px"
+                                                width="150px"
+                                                contain
+                                                >
+                                            </v-flex>
+                                            <v-flex xs12>
+                                                {{a.data_nascimento}}
+                                            </v-flex>
+                                        </v-layout>
+
+                                    </v-card-text>
                                     <v-divider light></v-divider>
                                     <v-card-actions class="pa-3">
                                         Desempenho
@@ -92,9 +110,9 @@ export default {
             this.loading = true
             this.atleta = atleta
             if(this.atleta.id){
-                // Edita o campeonato
+                // Edita o atleta
                 console.log(this.atleta)
-                axios.put('atletas/'+this.atletas.id, this.atleta)
+                axios.put('atletas/'+this.atleta.id, this.atleta)
                     .then(
                         (response) => {
                             console.log(response)
@@ -110,10 +128,15 @@ export default {
                     )
             }else{
                 // Cria um novo atleta
-                this.atletas.push(this.atleta)
                 let atle = this.atleta
-                atle.criador_id = 1
-                axios.post('atletas', atle)
+                const fd = new FormData()
+                fd.append('foto', atle.foto, atle.foto.name)
+                fd.append('nome', atle.nome)
+                fd.append('sobrenome', atle.sobrenome)
+                fd.append('apelido', atle.apelido)
+                fd.append('criador_id', 1)
+                fd.append('data_nascimento', atle.data_nascimento)
+                axios.post('atletas', fd)
                     .then(
                         (response) => {
                             console.log(response)
@@ -131,6 +154,7 @@ export default {
             this.atleta = {}
         },
         getAtletas(){
+            this.loading = true
             axios.get('atletas')
                 .then(
                     (response) => {
@@ -148,6 +172,5 @@ export default {
 }
 </script>
 <style scoped>
-
 </style>
 

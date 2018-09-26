@@ -38,7 +38,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="dialog = false">Fechar</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="criarEquipe()">Salvar</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="criarEquipe">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

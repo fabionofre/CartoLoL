@@ -79,8 +79,10 @@ export default {
         salvarEquipe(equipe){
             this.loading = true
             this.equipe = equipe
+            console.log(this.equipe)
             if(this.equipe.id){
                 // Edita a equipe
+                console.log("EDITAR EQUIPEEEEEEEE")
                 console.log(this.equipe)
                 axios.put('equipes/'+this.equipe.id, this.equipe)
                     .then(
@@ -98,9 +100,9 @@ export default {
                     )
             }else{
                 // Cria uma nova equipe
-                this.equipes.push(this.equipep)
                 let equi = this.equipe
                 equi.criador_id = 1
+                console.log("CRIARRRR EQUIPEEEEEEEE")
                 axios.post('equipes', equi)
                     .then(
                         (response) => {
@@ -132,6 +134,7 @@ export default {
                     (error) => {
                         this.loading = false
                         console.log(erro)
+                        this.getEquipes()
                     }
                 )
         },

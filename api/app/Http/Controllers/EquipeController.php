@@ -80,23 +80,15 @@ class EquipeController extends Controller
         $equipe->fl_profissional = $request['fl_profissional'];
         $equipe->nome = $request['nome'];
 
-        $atletas = Atleta::where('equipe_id', $id)->get()->toArray();
+        $atletas = array();
 
-        $zerar_relacionamentos = array_map(function($atleta) {
-            $a = Atleta::find($atleta['id']);
-            $a->equipe_id = null; 
-            $a->save();
-            return $a;
-        }, $atletas);
+        foreach($request['atletas'] as $a){
+            $aux = Atleta::find($a);
+            $atletas[] = $aux;
+            $aux->equipe_id = null;
+        }
 
-
-        $atletas_relacionar = array_map(function ($atleta) {
-            $a = Atleta::find($atleta);
-            return $a; 
-        }, $request['atletas']);
-
-
-        $equipe->atletas()->saveMany($atletas_relacionar);
+        $equipe->atletas()->saveMany($atletas);
 
         $equipe->save();
 

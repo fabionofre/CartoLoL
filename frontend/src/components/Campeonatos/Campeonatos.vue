@@ -103,7 +103,6 @@ export default {
                     )
             }else{
                 // Cria um novo campeonato
-                this.campeonatos.push(this.campeonato)
                 let camp = this.campeonato
                 camp.criador_id = 1
                 axios.post('campeonatos', camp)

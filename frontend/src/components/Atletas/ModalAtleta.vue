@@ -16,21 +16,40 @@
         </v-btn>
       <v-card>
         <v-card-title>
-          <span class="headline">{{ titulo_card }} Campeonato</span>
+          <span class="headline">{{ titulo_card }} Atleta</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-                <v-flex xs12 sm12 md6>
+                <v-flex xs12 sm12 md12>
+                    <div class="dropbox" v-if="!imgPreview">
+                        <input type="file" id="foto" @change="onFotoChange">
+                        <p>
+                            Arraste a foto do atleta para cá<br> ou clique para navegar
+                        </p>
+                    </div>
+                    <div v-else>
+                        <v-avatar>
+                            <img
+                            :src="imgPreview"
+                            >
+                        </v-avatar>
+                        <v-icon
+                        small
+                        @click.stop="removerImagem"
+                        >close</v-icon>
+                    </div>
+                </v-flex>
+                <v-flex xs12 sm12 md6 v-if="imgPreview">
                     <v-text-field label="Nome" required v-model="atle.nome"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm12 md6>
+                <v-flex xs12 sm12 md6 v-if="imgPreview">
                     <v-text-field label="Sobrenome" required v-model="atle.sobrenome"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm12 md6>
+                <v-flex xs12 sm12 md6 v-if="imgPreview">
                     <v-text-field label="Apelido" required v-model="atle.apelido"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm12 md6>
+                <v-flex xs12 sm12 md6 v-if="imgPreview">
                     <v-menu
                         ref="menu1"
                         :close-on-content-click="false"
@@ -54,9 +73,6 @@
                         <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                     </v-menu>
                 </v-flex>
-                <v-flex xs12 sm12 md12>
-                    <v-text-field label="Foto" hint="por enquanto a URL, dps coloco UPLOAD" persistent-hint v-model="atle.foto"></v-text-field>
-                </v-flex>
             </v-layout>
           </v-container>
           <!-- <small>*indicates required field</small> -->
@@ -64,7 +80,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click.native="dialog = false">Fechar</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="criarAtleta()">Salvar</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="criarAtleta">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -84,7 +100,8 @@ export default {
             atle: this.atleta,
             menu1: false,
             dateFormatted: null,
-            date: null
+            date: null,
+            imgPreview: null
         }
     },
     computed: {
@@ -101,6 +118,8 @@ export default {
             this.date = this.atle.data_nascimento
           }else{
             this.date = null
+            this.imgPreview = null
+            this.atle.foto = null
           }
         }
     },
@@ -125,7 +144,54 @@ export default {
 
             const [month, day, year] = date.split('/')
             return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+        },
+        onFotoChange(event){
+            console.log(event)
+            this.atle.foto = event.target.files[0]
+            this.previewFoto(this.atle.foto)
+        },
+        previewFoto(foto) {
+            let reader = new FileReader()
+            reader.readAsDataURL(foto)
+            reader.onloadend = () => {
+                this.imgPreview = reader.result
+            }
+        },
+        removerImagem(){
+            this.atle.foto = null
+            this.imgPreview = null
         }
     }
 }
 </script>
+ 
+<style lang="scss">
+    .dropbox {
+        outline: 2px dashed grey; /* the dash box */
+        outline-offset: -10px;
+        background: lightcyan;
+        color: dimgray;
+        padding: 10px 10px;
+        min-height: 200px; /* minimum height */
+        position: relative;
+        cursor: pointer;
+    }
+
+    #foto {
+        opacity: 0; /* invisible but it's there! */
+        width: 100%;
+        height: 200px;
+        position: absolute;
+        cursor: pointer;
+    }
+
+    .dropbox:hover {
+        background: lightblue; /* when mouse over to the drop zone, change color */
+    }
+
+    .dropbox p {
+        font-size: 1.2em;
+        text-align: center;
+        padding: 50px 0;
+    }
+</style>

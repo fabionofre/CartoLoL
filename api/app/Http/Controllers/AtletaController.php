@@ -35,7 +35,21 @@ class AtletaController extends Controller
      */
     public function store(Request $request)
     {
-        $atleta = Atleta::create($request->all());
+        $atleta = new Atleta;
+        $atleta->nome = $request['nome'];
+        $atleta->sobrenome = $request['sobrenome'];
+        $atleta->apelido = $request['apelido'];
+        $atleta->criador_id = $request['criador_id'];
+        $atleta->data_nascimento = $request['data_nascimento'];
+        $atleta->foto = $request->foto->getClientOriginalName();
+
+        if ($request->foto->isValid()) {
+            $request->foto->storeAs('public', $request->foto->getClientOriginalName());
+        }
+
+        $atleta->save();
+
+
         return ["message"=>"Atleta criado com sucesso!", "atleta"=>$atleta];
     }
 
