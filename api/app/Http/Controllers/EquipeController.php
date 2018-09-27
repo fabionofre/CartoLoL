@@ -36,7 +36,19 @@ class EquipeController extends Controller
      */
     public function store(Request $request)
     {
-        $equipe = Equipe::create($request->all());
+
+        $equipe = new Equipe;
+        $equipe->nome = $request->nome;
+        $equipe->brasao = $request->brasao->getClientOriginalName();
+        $equipe->fl_profissional = $request->fl_profissional;
+        $equipe->criador_id = $request->criador_id;
+
+        if ($request->brasao->isValid()) {
+            $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+        }
+
+        $equipe->save();
+
         return ["message"=>"Equipe criada com sucesso!", "equipe"=>$equipe];
     }
 
@@ -75,24 +87,44 @@ class EquipeController extends Controller
 
         // dd($request['atletas']);
 
-        $equipe->brasao = $request['brasao'];
         $equipe->criador_id = $request['criador_id'];
         $equipe->fl_profissional = $request['fl_profissional'];
         $equipe->nome = $request['nome'];
 
+        if (isset($request->brasao)) {
+            $equipe->brasao = $request->brasao->getClientOriginalName();
+            $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+        }
+
         $atletas = array();
 
-        foreach($request['atletas'] as $a){
-            $aux = Atleta::find($a);
-            $atletas[] = $aux;
-            $aux->equipe_id = null;
+        if(is_string($request['atletas']))
+        {
+            $request['atletas'] = explode(",",$request['atletas']);
+        }
+
+        $atletas_equipe = $equipe->atletas()->get()->toArray();
+
+        if(is_array($atletas_equipe)){
+            foreach($atletas_equipe as $atleta){
+                $x = Atleta::find($atleta['id']);
+                $x->equipe_id = null;
+                $x->save();
+            }
+        }
+
+        if(is_array($request['atletas'])){
+            foreach($request['atletas'] as $a){
+                $aux = Atleta::find($a);
+                $atletas[] = $aux;
+            }
         }
 
         $equipe->atletas()->saveMany($atletas);
 
         $equipe->save();
 
-        return ["message"=>"Equipe modificada com sucesso!", "equipe"=>$equipe];
+        return ["message"=>"Equipe modificada com sucesso!", "equipe"=>$atletas];
     }
 
     /**
