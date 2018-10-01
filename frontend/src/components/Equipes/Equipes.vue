@@ -80,11 +80,17 @@ export default {
             this.loading = true
             this.equipe = equipe
             console.log(this.equipe)
+            const fd = new FormData()
+            fd.append('nome', this.equipe.nome)
+            fd.append('brasao', this.equipe.brasao, this.equipe.brasao.nome)
+            fd.append('fl_profissional', this.equipe.fl_profissional ? 1 : 0)
+            fd.append('criador_id', 1)
+            fd.append('atletas', this.equipe.atletas)
             if(this.equipe.id){
                 // Edita a equipe
+                fd.append('_method', 'put')
                 console.log("EDITAR EQUIPEEEEEEEE")
-                console.log(this.equipe)
-                axios.put('equipes/'+this.equipe.id, this.equipe)
+                axios.post('equipes/'+this.equipe.id, fd)
                     .then(
                         (response) => {
                             console.log(response)
@@ -100,10 +106,9 @@ export default {
                     )
             }else{
                 // Cria uma nova equipe
-                let equi = this.equipe
-                equi.criador_id = 1
                 console.log("CRIARRRR EQUIPEEEEEEEE")
-                axios.post('equipes', equi)
+                fd.append('_method', 'post')
+                axios.post('equipes', fd)
                     .then(
                         (response) => {
                             console.log(response)

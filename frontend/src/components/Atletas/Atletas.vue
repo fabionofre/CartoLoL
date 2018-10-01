@@ -128,14 +128,13 @@ export default {
                     )
             }else{
                 // Cria um novo atleta
-                let atle = this.atleta
                 const fd = new FormData()
-                fd.append('foto', atle.foto, atle.foto.name)
-                fd.append('nome', atle.nome)
-                fd.append('sobrenome', atle.sobrenome)
-                fd.append('apelido', atle.apelido)
+                fd.append('foto', this.atleta.foto, this.atleta.foto.name)
+                fd.append('nome', this.atleta.nome)
+                fd.append('sobrenome', this.atleta.sobrenome)
+                fd.append('apelido', this.atleta.apelido)
                 fd.append('criador_id', 1)
-                fd.append('data_nascimento', atle.data_nascimento)
+                fd.append('data_nascimento', this.atleta.data_nascimento)
                 axios.post('atletas', fd)
                     .then(
                         (response) => {

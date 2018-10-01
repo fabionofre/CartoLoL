@@ -89,7 +89,7 @@
                                 <v-card-actions class="pa-3">
                                     <v-avatar :key="a.id" v-for="a in e.atletas" style="margin-right: 5px">
                                         <img
-                                        :src="a.foto"
+                                        :src="'http://localhost:8000/storage/'+a.foto"
                                         :alt="a.nome"
                                         >
                                     </v-avatar>

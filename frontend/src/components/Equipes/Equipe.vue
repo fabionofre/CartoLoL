@@ -15,7 +15,7 @@
                     >
                         <img
                         v-if="equipe.brasao"
-                        :src="equipe.brasao"
+                        :src="'http://localhost:8000/storage/'+equipe.brasao"
                         alt="Avatar"
                         >
                     </v-avatar>
@@ -47,7 +47,7 @@
                         >
                             <v-avatar slot="activator">
                                 <img
-                                :src="a.foto"
+                                :src="'http://localhost:8000/storage/'+a.foto"
                                 :alt="a.nome"
                                 >
                             </v-avatar>
@@ -100,7 +100,7 @@
                                 >
                                 <v-avatar>
                                     <img
-                                    :src="data.item.foto"
+                                    :src="'http://localhost:8000/storage/'+data.item.foto"
                                     >
                                 </v-avatar>
                                 {{ data.item.apelido }}
@@ -114,7 +114,7 @@
                                 <v-list-tile>
                                     <v-checkbox v-model="data.tile.props.value"></v-checkbox>
                                     <v-list-tile-avatar>
-                                        <img :src="data.item.foto" />
+                                        <img :src="'http://localhost:8000/storage/'+data.item.foto" />
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{data.item.nome}} <b>"{{data.item.apelido}}"</b> {{data.item.sobrenome}}</v-list-tile-title>
