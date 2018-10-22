@@ -59,6 +59,10 @@ export default {
         this.$bus.$on('excluir-campeonato', this.excluirCampeonato);
         this.$bus.$on('update:campeonato', this.salvarCampeonato);
     },
+    beforeDestroy() {
+        this.$bus.$off('excluir-campeonato');
+        this.$bus.$off('update:campeonato');
+    },
     mounted(){
         this.getCampeonatos()
     },

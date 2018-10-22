@@ -59,6 +59,10 @@ export default {
         this.$bus.$on('excluir-equipe', this.excluirEquipe);
         this.$bus.$on('update:equipe', this.salvarEquipe);
     },
+    beforeDestroy() {
+        this.$bus.$off('excluir-equipe');
+        this.$bus.$off('update:equipe');
+    },
     mounted(){
         this.getEquipes();
     },

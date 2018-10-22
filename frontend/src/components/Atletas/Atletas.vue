@@ -95,6 +95,9 @@ export default {
     created(){
         this.$bus.$on('update:atleta', this.salvarAtleta);
     },
+    beforeDestroy() {
+        this.$bus.$off('update:atleta');
+    },
     mounted(){
         this.getAtletas();
     },
