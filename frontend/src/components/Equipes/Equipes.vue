@@ -85,6 +85,7 @@ export default {
             fd.append('brasao', this.equipe.brasao, this.equipe.brasao.nome)
             fd.append('fl_profissional', this.equipe.fl_profissional ? 1 : 0)
             fd.append('criador_id', 1)
+            console.log(typeof(this.equipe.atletas))
             fd.append('atletas', this.equipe.atletas)
             if(this.equipe.id){
                 // Edita a equipe

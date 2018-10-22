@@ -11,7 +11,7 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src="https://scontent.frbr1-1.fna.fbcdn.net/v/t1.0-9/39506914_2081976292120270_4459756876090834944_n.jpg?_nc_cat=0&oh=0b42fd4d78209319cc075ec8b6b02f12&oe=5BF38739">
+              <img src="http://localhost:8000/storage/aline.jpg">
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -30,7 +30,7 @@
           @click="routerPush(item.to)"
         >
           <v-list-tile-action>
-            <v-icon v-html="item.icon"></v-icon>
+            <img :src="'http://localhost:8000/icons-cartolol/'+item.icon+'.png'">
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title v-text="item.title"></v-list-tile-title>
@@ -56,33 +56,34 @@ export default {
     return {
       drawer: true,
       fixed: false,
-      items: [{
-        icon: 'home',
-        title: 'Início',
-        to: '/'
-      }, 
+      items: [
+      // {
+      //   icon: 'home',
+      //   title: 'Início',
+      //   to: '/'
+      // }, 
+      // {
+      //  icon: 'assignment',
+      //  title: 'Escalar' 
+      // }, 
+      // {
+      //   icon: 'assessment',
+      //   title: 'Estatísticas'  
+      // }, 
+      // {
+      //   icon: 'language',
+      //   title: 'Ranking'
+      // }, 
       {
-       icon: 'assignment',
-       title: 'Escalar' 
-      }, 
-      {
-        icon: 'assessment',
-        title: 'Estatísticas'  
-      }, 
-      {
-        icon: 'language',
-        title: 'Ranking'
-      }, 
-      {
-        icon: 'details',
+        icon: 'trophy',
         title: 'Campeonatos',
         to: 'campeonatos'
       },{
-        icon: 'home',
+        icon: 'network',
         title: 'Equipes',
         to: 'equipes'
       },{
-        icon: 'assignment',
+        icon: 'mouse',
         title: 'Atletas',
         to: 'atletas'
       }

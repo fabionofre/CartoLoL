@@ -15,7 +15,7 @@
                     >
                         <img
                         v-if="campeonato.brasao"
-                        :src="campeonato.brasao"
+                        :src="'http://localhost:8000/storage/'+campeonato.brasao"
                         alt="Avatar"
                         >
                     </v-avatar>
@@ -61,7 +61,7 @@
                         >
                             <v-avatar slot="activator">
                                 <img
-                                :src="e.brasao"
+                                :src="'http://localhost:8000/storage/'+e.brasao"
                                 :alt="e.nome"
                                 >
                             </v-avatar>
@@ -69,7 +69,7 @@
                                 <v-layout row>
                                     <v-flex xs4>
                                     <img
-                                        :src="e.brasao"
+                                        :src="'http://localhost:8000/storage/'+e.brasao"
                                         height="125px"
                                         contain
                                     >
@@ -143,7 +143,7 @@
                                 >
                                 <v-avatar>
                                     <img
-                                    :src="data.item.brasao"
+                                    :src="'http://localhost:8000/storage/'+data.item.brasao"
                                     >
                                 </v-avatar>
                                 {{ data.item.nome }}
@@ -157,7 +157,7 @@
                                 <v-list-tile>
                                     <v-checkbox v-model="data.tile.props.value"></v-checkbox>
                                     <v-list-tile-avatar>
-                                        <img :src="data.item.brasao" />
+                                        <img :src="'http://localhost:8000/storage/'+data.item.brasao" />
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title v-html="data.item.nome"></v-list-tile-title>
