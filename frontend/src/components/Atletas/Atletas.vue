@@ -92,9 +92,11 @@ export default {
     components: {
         'modal-atleta': ModalAtleta
     },
+    created(){
+        this.$bus.$on('update:atleta', this.salvarAtleta);
+    },
     mounted(){
-        this.$bus.$on('update:atleta', this.salvarAtleta)
-        this.getAtletas()
+        this.getAtletas();
     },
     data(){
         return {

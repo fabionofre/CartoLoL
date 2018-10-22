@@ -55,9 +55,11 @@ export default {
         'campeonato': Campeonato,
         'modal-campeonato': ModalCampeonato
     },
+    created(){
+        this.$bus.$on('excluir-campeonato', this.excluirCampeonato);
+        this.$bus.$on('update:campeonato', this.salvarCampeonato);
+    },
     mounted(){
-        this.$bus.$on('excluir-campeonato', this.excluirCampeonato)
-        this.$bus.$on('update:campeonato', this.salvarCampeonato)
         this.getCampeonatos()
     },
     data () {

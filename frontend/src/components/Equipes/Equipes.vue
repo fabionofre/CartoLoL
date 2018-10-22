@@ -55,10 +55,12 @@ export default {
         'equipe': Equipe,
         'modal-equipe': ModalEquipe
     },
+    created(){
+        this.$bus.$on('excluir-equipe', this.excluirEquipe);
+        this.$bus.$on('update:equipe', this.salvarEquipe);
+    },
     mounted(){
-        this.$bus.$on('excluir-equipe', this.excluirEquipe)
-        this.$bus.$on('update:equipe', this.salvarEquipe)
-        this.getEquipes()
+        this.getEquipes();
     },
     data () {
         return {
@@ -134,7 +136,7 @@ export default {
                     },
                     (error) => {
                         this.loading = false;
-                        console.log(erro);
+                        console.log(error);
                         this.getEquipes();
                     }
                 )
