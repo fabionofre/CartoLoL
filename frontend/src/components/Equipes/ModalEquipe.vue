@@ -92,6 +92,8 @@ export default {
             this.dialog = false
             if(this.equi.fl_profissional === undefined)
                 this.equi.fl_profissional = false
+            if(Array.isArray(this.equi.atletas))
+                this.equi.atletas = this.equi.atletas.map(e => e.id)
             this.$bus.$emit('update:equipe', this.equi)
             this.equi = {}
             this.brasaoPreview = null

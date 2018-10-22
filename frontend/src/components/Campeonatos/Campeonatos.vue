@@ -84,10 +84,21 @@ export default {
         salvarCampeonato(campeonato){
             this.loading = true
             this.campeonato = campeonato
+            const fd = new FormData()
+            fd.append('titulo', this.campeonato.titulo)
+            fd.append('desc', this.campeonato.desc)
+            fd.append('brasao', this.campeonato.brasao, this.campeonato.brasao.nome)
+            fd.append('fl_profissional', this.campeonato.fl_profissional ? 1 : 0)
+            fd.append('fl_publico', this.campeonato.fl_publico ? 1 : 0)
+            fd.append('data_inicio', this.campeonato.data_inicio)
+            fd.append('data_fim', this.campeonato.data_fim)
+            fd.append('criador_id', 1)
             if(this.campeonato.id){
                 // Edita o campeonato
+                fd.append('equipes', this.campeonato.equipes)
+                fd.append('_method', 'put')
                 console.log(this.campeonato)
-                axios.put('campeonatos/'+this.campeonato.id, this.campeonato)
+                axios.post('campeonatos/'+this.campeonato.id, fd)
                     .then(
                         (response) => {
                             console.log(response)
@@ -105,7 +116,8 @@ export default {
                 // Cria um novo campeonato
                 let camp = this.campeonato
                 camp.criador_id = 1
-                axios.post('campeonatos', camp)
+                fd.append('_method', 'post')
+                axios.post('campeonatos', fd)
                     .then(
                         (response) => {
                             console.log(response)
