@@ -34,7 +34,26 @@ class CampeonatoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {         
+
+        $campeonato = new Campeonato;
+        $campeonato->titulo = $request->titulo;
+        $campeonato->desc = $request->desc;
+        $campeonato->data_inicio = $request->data_inicio;
+        $campeonato->data_fim = $request->data_fim;
+        $campeonato->brasao = $request->brasao->getClientOriginalName();
+        $campeonato->fl_profissional = $request->fl_profissional;
+        $campeonato->fl_publico = $request->fl_publico;
+        $campeonato->criador_id = $request->criador_id;
+        
+
+
+        if ($request->brasao->isValid()) {
+            $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+        }
+
+        $campeonato->save();
+
         $campeonato = Campeonato::create($request->all());
         return ["message"=>"Campeonato criado com sucesso!", "campeonato"=>$campeonato];
     }
@@ -68,20 +87,32 @@ class CampeonatoController extends Controller
      * @param  \App\Campeonato  $campeonato
      * @return \Illuminate\Http\Response
      */
-    public function update($id, Request $request)
+    public function update(Request $request, $id)
     {
         $campeonato = Campeonato::find($id);
 
-        $campeonato->brasao = $request['brasao'];
-        $campeonato->criador_id = $request['criador_id'];
-        $campeonato->data_inicio = $request['data_inicio'];
-        $campeonato->data_fim = $request['data_fim'];
-        $campeonato->desc = $request['desc'];
-        $campeonato->fl_profissional = $request['fl_profissional'];
-        $campeonato->fl_publico = $request['fl_publico'];
-        $campeonato->titulo = $request['titulo'];
+        $campeonato->criador_id = $request->criador_id;
+        $campeonato->data_inicio = $request->data_inicio;
+        $campeonato->data_fim = $request->data_fim;
+        $campeonato->desc = $request->desc;
+        $campeonato->fl_profissional = $request->fl_profissional;
+        $campeonato->fl_publico = $request->fl_publico;
+        $campeonato->titulo = $request->titulo;
 
-        $campeonato->equipes()->sync($request['equipes']);
+        if (isset($request->brasao)) {
+            $campeonato->brasao = $request->brasao->getClientOriginalName();
+            $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+        }
+
+        $equipes = array();
+
+        if(is_string($request->equipes))
+        {
+            $request->equipes = explode(",",$request->equipes);
+        }
+
+
+        $campeonato->equipes()->sync($request->equipes);
 
         $campeonato->save();
 
