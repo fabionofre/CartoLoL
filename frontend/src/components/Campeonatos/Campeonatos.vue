@@ -82,87 +82,79 @@ export default {
     },
     methods: {
         salvarCampeonato(campeonato){
-            this.loading = true
-            this.campeonato = campeonato
-            const fd = new FormData()
-            fd.append('titulo', this.campeonato.titulo)
-            fd.append('desc', this.campeonato.desc)
-            fd.append('brasao', this.campeonato.brasao, this.campeonato.brasao.nome)
-            fd.append('fl_profissional', this.campeonato.fl_profissional ? 1 : 0)
-            fd.append('fl_publico', this.campeonato.fl_publico ? 1 : 0)
-            fd.append('data_inicio', this.campeonato.data_inicio)
-            fd.append('data_fim', this.campeonato.data_fim)
-            fd.append('criador_id', 1)
+            this.loading = true;
+            this.campeonato = campeonato;
+            const fd = new FormData();
+            fd.append('titulo', this.campeonato.titulo);
+            fd.append('desc', this.campeonato.desc);
+            fd.append('brasao', this.campeonato.brasao, this.campeonato.brasao.nome);
+            fd.append('fl_profissional', this.campeonato.fl_profissional ? 1 : 0);
+            fd.append('fl_publico', this.campeonato.fl_publico ? 1 : 0);
+            fd.append('data_inicio', this.campeonato.data_inicio);
+            fd.append('data_fim', this.campeonato.data_fim);
+            fd.append('criador_id', 1);
             if(this.campeonato.id){
                 // Edita o campeonato
-                fd.append('equipes', this.campeonato.equipes)
-                fd.append('_method', 'put')
-                console.log(this.campeonato)
+                fd.append('equipes', this.campeonato.equipes);
+                fd.append('_method', 'put');
                 axios.post('campeonatos/'+this.campeonato.id, fd)
                     .then(
                         (response) => {
-                            console.log(response)
-                            this.loading = false
-                            this.textoResponse = response.data.message
-                            this.snackbar = true
-                            this.getCampeonatos()
+                            this.loading = false;
+                            this.textoResponse = response.data.message;
+                            this.snackbar = true;
+                            this.getCampeonatos();
                         },
                         (error) => {
-                            this.loading = false
-                            console.log(error)
+                            this.loading = false;
+                            console.log(error);
                         }
                     )
             }else{
                 // Cria um novo campeonato
-                let camp = this.campeonato
-                camp.criador_id = 1
-                fd.append('_method', 'post')
                 axios.post('campeonatos', fd)
                     .then(
                         (response) => {
-                            console.log(response)
-                            this.loading = false
-                            this.textoResponse = response.data.message
-                            this.snackbar = true
-                            this.getCampeonatos()
+                            this.loading = false;
+                            this.textoResponse = response.data.message;
+                            this.snackbar = true;
+                            this.getCampeonatos();
                         },
                         (error) => {
-                            this.loading = false
-                            console.log(error)
+                            this.loading = false;
+                            console.log(error);
                         }
                     )
             }
             this.campeonato = {}
         },
         excluirCampeonato(id){
-            this.loading = true
+            this.loading = true;
             axios.delete('campeonatos/'+id)
                 .then(
                     (response) => {
-                        console.log(response)
-                        this.loading = false
-                        this.textoResponse = response.data.message
-                        this.snackbar = true
-                        this.getCampeonatos()
+                        this.loading = false;
+                        this.textoResponse = response.data.message;
+                        this.snackbar = true;
+                        this.getCampeonatos();
                     },
                     (error) => {
-                        this.loading = false
-                        console.log(erro)
+                        this.loading = false;
+                        console.log(error);
                     }
                 )
         },
         getCampeonatos(){
-            this.loading = true
+            this.loading = true;
             axios.get('campeonatos')
                 .then(
                     (response) => {
-                        console.log(response)
-                        this.campeonatos = response.data
-                        this.loading = false
+                        this.campeonatos = response.data;
+                        this.loading = false;
                     },
                     (error) => {
-                        console.log(error)
-                        this.loading = false
+                        console.log(error);
+                        this.loading = false;
                     }
                 )
         }

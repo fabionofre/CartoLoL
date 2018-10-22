@@ -200,37 +200,35 @@ export default {
     },
     watch: {
         dialogTimes(val){
-            this.equipesSelecionadas = [...this.campeonato.equipes]
+            this.equipesSelecionadas = [...this.campeonato.equipes];
         }
     },
     methods: {
         editarCampeonato(){
-            this.$bus.$emit('abre-modal-campeonato', this.campeonato)
+            this.$bus.$emit('abre-modal-campeonato', this.campeonato);
         },
         excluirCampeonato(){
-            this.dialogDelete = false
-            this.$bus.$emit('excluir-campeonato', this.campeonato.id)
+            this.dialogDelete = false;
+            this.$bus.$emit('excluir-campeonato', this.campeonato.id);
         },
         getEquipes(){
-            this.loading = true
+            this.loading = true;
             axios.get('equipes')
                 .then(
                     (response) => {
-                        console.log(response)
-                        this.equipes = response.data
-                        this.loading = false
+                        this.equipes = response.data;
+                        this.loading = false;
                     },
                     (error) => {
-                        console.log(error)
-                        this.loading = false
+                        console.log(error);
+                        this.loading = false;
                     }
                 )
         },
         salvarTimes(){
-            this.dialogTimes = false
-            this.campeonato.equipes = this.equipesSelecionadas.map(e => e.id)
-            console.log(this.campeonato.equipes)
-            this.$bus.$emit('update:campeonato', this.campeonato)
+            this.dialogTimes = false;
+            this.campeonato.equipes = this.equipesSelecionadas.map(e => e.id);
+            this.$bus.$emit('update:campeonato', this.campeonato);
         }
     }
 }

@@ -14,12 +14,12 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        $domains = ['http://localhost:3000', 'http://192.168.2.101'];
+        $domains = ['http://localhost:3000'];
         if (isset($request->server()['HTTP_ORIGIN'])){
             $origin = $request->server()['HTTP_ORIGIN'];
             if(in_array($origin, $domains)){
                 header('Access-Control-Allow-Origin:'.$origin);
-                header('Access-Control-Allow-Headers:Origin,Content-Type,Authorization,Cache-Control');
+                header('Access-Control-Allow-Headers:Origin,Content-Type,Authorization');
                 header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS');
             }
         }

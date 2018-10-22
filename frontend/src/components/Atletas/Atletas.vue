@@ -107,46 +107,43 @@ export default {
     },
     methods: {
         salvarAtleta(atleta){
-            this.loading = true
-            this.atleta = atleta
+            this.loading = true;
+            this.atleta = atleta;
             if(this.atleta.id){
                 // Edita o atleta
-                console.log(this.atleta)
                 axios.put('atletas/'+this.atleta.id, this.atleta)
                     .then(
                         (response) => {
-                            console.log(response)
-                            this.loading = false
-                            this.textoResponse = response.data.message
-                            this.snackbar = true
-                            this.getAtletas()
+                            this.loading = false;
+                            this.textoResponse = response.data.message;
+                            this.snackbar = true;
+                            this.getAtletas();
                         },
                         (error) => {
-                            this.loading = false
-                            console.log(error)
+                            this.loading = false;
+                            console.log(error);
                         }
                     )
             }else{
                 // Cria um novo atleta
-                const fd = new FormData()
-                fd.append('foto', this.atleta.foto, this.atleta.foto.name)
-                fd.append('nome', this.atleta.nome)
-                fd.append('sobrenome', this.atleta.sobrenome)
-                fd.append('apelido', this.atleta.apelido)
-                fd.append('criador_id', 1)
-                fd.append('data_nascimento', this.atleta.data_nascimento)
+                const fd = new FormData();
+                fd.append('foto', this.atleta.foto, this.atleta.foto.name);
+                fd.append('nome', this.atleta.nome);
+                fd.append('sobrenome', this.atleta.sobrenome);
+                fd.append('apelido', this.atleta.apelido);
+                fd.append('criador_id', 1);
+                fd.append('data_nascimento', this.atleta.data_nascimento);
                 axios.post('atletas', fd)
                     .then(
                         (response) => {
-                            console.log(response)
-                            this.loading = false
-                            this.textoResponse = response.data.message
-                            this.snackbar = true
-                            this.getAtletas()
+                            this.loading = false;
+                            this.textoResponse = response.data.message;
+                            this.snackbar = true;
+                            this.getAtletas();
                         },
                         (error) => {
-                            this.loading = false
-                            console.log(error)
+                            this.loading = false;
+                            console.log(error);
                         }
                     )
             }
@@ -157,13 +154,12 @@ export default {
             axios.get('atletas')
                 .then(
                     (response) => {
-                        console.log(response)
-                        this.atletas = response.data
-                        this.loading = false
+                        this.atletas = response.data;
+                        this.loading = false;
                     },
-                    (err) => {
-                        console.log(error)
-                        this.loading = false
+                    (error) => {
+                        console.log(error);
+                        this.loading = false;
                     }
                 )
         }

@@ -106,60 +106,59 @@ export default {
     },
     computed: {
       computedDateFormatted () {
-        return this.formatDate(this.date)
+        return this.formatDate(this.date);
       },
     },
     watch: {
         date (val) {
-            this.dateFormatted = this.formatDate(this.date)
+            this.dateFormatted = this.formatDate(this.date);
         },
         dialog (val){
           if(val){
-            this.date = this.atle.data_nascimento
+            this.date = this.atle.data_nascimento;
           }else{
-            this.date = null
-            this.imgPreview = null
-            this.atle.foto = null
+            this.date = null;
+            this.imgPreview = null;
+            this.atle.foto = null;
           }
         }
     },
     methods: {
         criarAtleta(){
-            this.dialog = false
-            this.atle.data_nascimento = this.date
-            this.$bus.$emit('update:atleta', this.atle)
-            this.atle = {}
+            this.dialog = false;
+            this.atle.data_nascimento = this.date;
+            this.$bus.$emit('update:atleta', this.atle);
+            this.atle = {};
         },
         resetAtle(){
-            this.atle = {}
-            this.titulo_card = 'Criar'
+            this.atle = {};
+            this.titulo_card = 'Criar';
         },
         formatDate (date) {
-            if (!date) return null
-            const [year, month, day] = date.split('-')
-            return `${day}/${month}/${year}`
+            if (!date) return null;
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
         },
         parseDate (date) {
-            if (!date) return null
+            if (!date) return null;
 
-            const [month, day, year] = date.split('/')
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+            const [month, day, year] = date.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
         },
         onFotoChange(event){
-            console.log(event)
-            this.atle.foto = event.target.files[0]
+            this.atle.foto = event.target.files[0];
             this.previewFoto(this.atle.foto)
         },
         previewFoto(foto) {
-            let reader = new FileReader()
-            reader.readAsDataURL(foto)
+            let reader = new FileReader();
+            reader.readAsDataURL(foto);
             reader.onloadend = () => {
-                this.imgPreview = reader.result
+                this.imgPreview = reader.result;
             }
         },
         removerImagem(){
-            this.atle.foto = null
-            this.imgPreview = null
+            this.atle.foto = null;
+            this.imgPreview = null;
         }
     }
 }

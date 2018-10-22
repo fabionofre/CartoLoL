@@ -153,78 +153,76 @@ export default {
     },
     computed: {
       computedDateFormatted () {
-        return this.formatDate(this.date)
+        return this.formatDate(this.date);
       },
       computedDate2Formatted () {
-        return this.formatDate(this.date2)
+        return this.formatDate(this.date2);
       }
     },
 
     watch: {
       date (val) {
-          this.dateFormatted = this.formatDate(this.date)
+          this.dateFormatted = this.formatDate(this.date);
       },
       date2 (val) {
-          this.date2Formatted = this.formatDate(this.date2)
+          this.date2Formatted = this.formatDate(this.date2);
       },
       dialog (val){
           if(val){
-            this.date = this.camp.data_inicio
-            this.date2 = this.camp.data_fim
+            this.date = this.camp.data_inicio;
+            this.date2 = this.camp.data_fim;
           }else{
-            this.date = null
-            this.date2 = null
+            this.date = null;
+            this.date2 = null;
           }
       }
     },
     methods: {
         criarCampeonato(){
-            this.dialog = false
+            this.dialog = false;
             if(this.camp.fl_publico === undefined)
-                this.camp.fl_publico = false
+                this.camp.fl_publico = false;
             if(this.camp.fl_profissional === undefined)
-                this.camp.fl_profissional = false
-            this.camp.data_inicio = this.date
-            this.camp.data_fim = this.date2
-            this.$bus.$emit('update:campeonato', this.camp)
-            this.camp = {}
-            this.brasaoPreview = null
+                this.camp.fl_profissional = false;
+            this.camp.data_inicio = this.date;
+            this.camp.data_fim = this.date2;
+            this.$bus.$emit('update:campeonato', this.camp);
+            this.camp = {};
+            this.brasaoPreview = null;
         },
         abreModal(campeonato){
-            this.dialog = true
-            this.camp = campeonato
+            this.dialog = true;
+            this.camp = campeonato;
         },
         resetCamp(){
-            this.camp = {}
-            this.titulo_card = 'Criar'
+            this.camp = {};
+            this.titulo_card = 'Criar';
         },
         formatDate (date) {
-            if (!date) return null
-            const [year, month, day] = date.split('-')
-            return `${day}/${month}/${year}`
+            if (!date) return null;
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
         },
         parseDate (date) {
-            if (!date) return null
+            if (!date) return null;
 
-            const [month, day, year] = date.split('/')
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+            const [month, day, year] = date.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
         },
         onBrasaoChange(event){
-            console.log(event)
-            this.camp.brasao = event.target.files[0]
-            this.previewBrasao(this.camp.brasao)
+            this.camp.brasao = event.target.files[0];
+            this.previewBrasao(this.camp.brasao);
         },
         previewBrasao(brasao) {
-            let reader = new FileReader()
-            reader.readAsDataURL(brasao)
+            let reader = new FileReader();
+            reader.readAsDataURL(brasao);
             reader.onloadend = () => {
-                this.brasaoPreview = reader.result
-                console.log(this.brasaoPreview)
+                this.brasaoPreview = reader.result;
             }
         },
         removerBrasao(){
-            this.camp.brasao = null
-            this.brasaoPreview = null
+            this.camp.brasao = null;
+            this.brasaoPreview = null;
         }
     }
 }

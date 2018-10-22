@@ -45,11 +45,11 @@ class EquipeController extends Controller
 
         if ($request->brasao->isValid()) {
             $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+            $equipe->save();
+            return ["message"=>"Equipe criada com sucesso!", "equipe"=>$equipe];
         }
 
-        $equipe->save();
-
-        return ["message"=>"Equipe criada com sucesso!", "equipe"=>$equipe];
+        return ["message"=>"Brasão da equipe inválido!", "equipe"=>$equipe];
     }
 
     /**

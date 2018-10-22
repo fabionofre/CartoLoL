@@ -45,12 +45,11 @@ class AtletaController extends Controller
 
         if ($request->foto->isValid()) {
             $request->foto->storeAs('public', $request->foto->getClientOriginalName());
+            $atleta->save();
+            return ["message"=>"Atleta criado com sucesso!", "atleta"=>$atleta];
         }
 
-        $atleta->save();
-
-
-        return ["message"=>"Atleta criado com sucesso!", "atleta"=>$atleta];
+        return ["message"=>"Foto inválida!", "atleta"=>$atleta];
     }
 
     /**

@@ -157,35 +157,33 @@ export default {
     },
     watch: {
         dialogAtletas(val){
-            this.atletasSelecionados = [...this.equipe.atletas]
+            this.atletasSelecionados = [...this.equipe.atletas];
         }
     },
     methods: {
         editarEquipe(){
-            this.$bus.$emit('abre-modal-equipe', this.equipe)
+            this.$bus.$emit('abre-modal-equipe', this.equipe);
         },
         excluirEquipe(){
-            this.dialogDelete = false
-            this.$bus.$emit('excluir-equipe', this.equipe.id)
+            this.dialogDelete = false;
+            this.$bus.$emit('excluir-equipe', this.equipe.id);
         },
         salvarAtletas(){
-            this.dialogAtletas = false
-            this.equipe.atletas = this.atletasSelecionados.map(e => e.id)
-            console.log(this.equipe.atletas)
-            this.$bus.$emit('update:equipe', this.equipe)
+            this.dialogAtletas = false;
+            this.equipe.atletas = this.atletasSelecionados.map(e => e.id);
+            this.$bus.$emit('update:equipe', this.equipe);
         },
         getAtletas(){
-            this.loading = true
+            this.loading = true;
             axios.get('atletas')
                 .then(
                     (response) => {
-                        console.log(response)
-                        this.atletas = response.data
-                        this.loading = false
+                        this.atletas = response.data;
+                        this.loading = false;
                     },
                     (error) => {
-                        console.log(error)
-                        this.loading = false
+                        console.log(error);
+                        this.loading = false;
                     }
                 )
         },

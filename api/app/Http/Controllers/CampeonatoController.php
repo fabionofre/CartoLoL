@@ -50,12 +50,11 @@ class CampeonatoController extends Controller
 
         if ($request->brasao->isValid()) {
             $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
+            $campeonato->save();
+            return ["message"=>"Campeonato criado com sucesso!", "campeonato"=>$campeonato];
         }
 
-        $campeonato->save();
-
-        $campeonato = Campeonato::create($request->all());
-        return ["message"=>"Campeonato criado com sucesso!", "campeonato"=>$campeonato];
+        return ["message"=>"Brasão inválido!", "campeonato"=>$campeonato];
     }
 
     /**

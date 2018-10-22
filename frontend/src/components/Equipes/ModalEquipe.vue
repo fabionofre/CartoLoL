@@ -89,39 +89,37 @@ export default {
     },
     methods: {
         criarEquipe(){
-            this.dialog = false
+            this.dialog = false;
             if(this.equi.fl_profissional === undefined)
-                this.equi.fl_profissional = false
+                this.equi.fl_profissional = false;
             if(Array.isArray(this.equi.atletas))
-                this.equi.atletas = this.equi.atletas.map(e => e.id)
-            this.$bus.$emit('update:equipe', this.equi)
-            this.equi = {}
-            this.brasaoPreview = null
+                this.equi.atletas = this.equi.atletas.map(e => e.id);
+            this.$bus.$emit('update:equipe', this.equi);
+            this.equi = {};
+            this.brasaoPreview = null;
         },
         abreModal(equipe){
-            this.dialog = true
-            this.equi = equipe
+            this.dialog = true;
+            this.equi = equipe;
         },
         resetEqui(){
-            this.equi = {}
-            this.titulo_card = 'Criar'
+            this.equi = {};
+            this.titulo_card = 'Criar';
         },
         onBrasaoChange(event){
-            console.log(event)
-            this.equi.brasao = event.target.files[0]
-            this.previewBrasao(this.equi.brasao)
+            this.equi.brasao = event.target.files[0];
+            this.previewBrasao(this.equi.brasao);
         },
         previewBrasao(brasao) {
-            let reader = new FileReader()
-            reader.readAsDataURL(brasao)
+            let reader = new FileReader();
+            reader.readAsDataURL(brasao);
             reader.onloadend = () => {
-                this.brasaoPreview = reader.result
-                console.log(this.brasaoPreview)
+                this.brasaoPreview = reader.result;
             }
         },
         removerBrasao(){
-            this.equi.brasao = null
-            this.brasaoPreview = null
+            this.equi.brasao = null;
+            this.brasaoPreview = null;
         }
     }
 }
