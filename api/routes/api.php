@@ -13,13 +13,26 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::resources([
 	'campeonatos' => 'CampeonatoController',
 	'usuarios' => 'UserController',
 	'equipes' => 'EquipeController',
-	'atletas' => 'AtletaController'
+	'atletas' => 'AtletaController',
+    'funcoes' => 'FuncaoController',
+    'acoes' => 'AcaoController',
+    'regras-pontuacao' => 'RegraPontuacaoController'
 ]);
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});

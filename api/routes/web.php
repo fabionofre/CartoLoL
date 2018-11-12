@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +13,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
+
+
+Route::get('login/facebook', 'Auth\LoginController@redirectToProviderFacebook');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleFacebookProviderCallback');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

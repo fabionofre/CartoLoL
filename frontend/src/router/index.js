@@ -1,30 +1,19 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Campeonatos from '@/components/Campeonatos/Campeonatos'
-import Equipes from '@/components/Equipes/Equipes'
-import Atletas from '@/components/Atletas/Atletas'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import routes from "./routes";
+Vue.use(VueRouter);
 
-Vue.use(Router)
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/campeonatos',
-      component: Campeonatos
-    },
-    {
-      path: '/equipes',
-      component: Equipes
-    },
-    {
-      path: '/atletas',
-      component: Atletas
+// configure router
+const router = new VueRouter({
+  routes, // short for routes: routes
+  linkExactActiveClass: "active",
+  scrollBehavior: (to) => {
+    if (to.hash) {
+      return {selector: to.hash}
+    } else {
+      return { x: 0, y: 0 }
     }
-  ]
-})
+  }
+});
+
+export default router;
