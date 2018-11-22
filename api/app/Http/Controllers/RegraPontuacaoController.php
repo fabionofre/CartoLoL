@@ -71,9 +71,17 @@ class RegraPontuacaoController extends Controller
      * @param  \App\RegraPontuacao  $regraPontuacao
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RegraPontuacao $regraPontuacao)
+    public function update(Request $request, $id)
     {
-        //
+        $regraPontuacao = RegraPontuacao::find($id);
+
+        $regraPontuacao->acao_id = $request->acao_id;
+        $regraPontuacao->funcao_id = $request->funcao_id;
+        $regraPontuacao->campeonato_id = $request->campeonato_id;
+        $regraPontuacao->pontuacao = $request->pontuacao;
+        $regraPontuacao->save();
+
+        return ["message"=>"Regra de pontuação modificada com sucesso!", "regra_pontuacao"=>$regraPontuacao];
     }
 
     /**
@@ -82,8 +90,12 @@ class RegraPontuacaoController extends Controller
      * @param  \App\RegraPontuacao  $regraPontuacao
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RegraPontuacao $regraPontuacao)
+    public function destroy($id)
     {
-        //
+        $regraPontuacao = RegraPontuacao::find($id);
+
+        $regraPontuacao->delete();
+
+        return ["message"=>"Regra de pontuação deletada com sucesso!", "regra_pontuacao"=>$regraPontuacao];
     }
 }
