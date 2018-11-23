@@ -27,12 +27,20 @@
                                         <th class="text-center">
                                             Pontuação
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_topo" :key="pontos.id">
                                         <td>{{getAcaoName(pontos.funcao_id)}}</td>
-                                        <td class="text-success text-center">{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</td>
+                                        <td v-if="!pontos.editar" class="text-success text-center">
+                                            <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
+                                        </td>
+                                        <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-top-suporte"></i></td>
+                                        <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
+                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-top-suporte">Salvar</button></td>
+                                        <td v-if="pontos.salvando"><div class="loader editar top-suporte"></div></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -66,12 +74,20 @@
                                         <th class="text-center">
                                             Pontuação
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_cacador" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.id)}}</td>
-                                        <td class="text-success text-center">{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</td>
+                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td v-if="!pontos.editar" class="text-success text-center">
+                                            <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
+                                        </td>
+                                        <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-cacador"></i></td>
+                                        <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
+                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-cacador">Salvar</button></td>
+                                        <td v-if="pontos.salvando"><div class="loader editar cacador"></div></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -100,17 +116,25 @@
                                 <thead class=" text-primary">
                                     <tr>
                                         <th>
-                                            Ações
+                                            Ação
                                         </th>
                                         <th class="text-center">
                                             Pontuação
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_meio" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.id)}}</td>
-                                        <td class="text-success text-center">{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</td>
+                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td v-if="!pontos.editar" class="text-success text-center">
+                                            <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
+                                        </td>
+                                        <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-meio"></i></td>
+                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
+                                        <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-meio">Salvar</button></td>
+                                        <td v-if="pontos.salvando"><div class="loader editar meio"></div></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -144,12 +168,20 @@
                                         <th class="text-center">
                                             Pontuação
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_atirador" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.id)}}</td>
-                                        <td class="text-success text-center">{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</td>
+                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td v-if="!pontos.editar" class="text-success text-center">
+                                            <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
+                                        </td>
+                                        <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-atirador"></i></td>
+                                        <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
+                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-atirador">Salvar</button></td>
+                                        <td v-if="pontos.salvando"><div class="loader editar atirador"></div></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -183,12 +215,20 @@
                                         <th class="text-center">
                                             Pontuação
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_suporte" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.id)}}</td>
-                                        <td class="text-success text-center">{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</td>
+                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td v-if="!pontos.editar" class="text-success text-center">
+                                            <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
+                                        </td>
+                                        <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-top-suporte"></i></td>
+                                        <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
+                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-top-suporte">Salvar</button></td>
+                                        <td v-if="pontos.salvando"><div class="loader editar top-suporte"></div></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -345,6 +385,47 @@ export default {
         this.getRegrasPontuacao();
     },
     methods: {
+        editPonto(ponto){
+            ponto.editar = true;
+            this.$forceUpdate();
+        },
+        savePonto(ponto){
+            ponto.salvando = true;
+            this.$forceUpdate();
+            axios.put("regras-pontuacao/"+ponto.id, ponto)
+                .then(
+                    (response) => {
+                        ponto.editar = false;
+                        ponto.salvando = false;
+                        this.$forceUpdate();
+                        this.$notify({type: 'success', message: 'Pontuação editada com sucesso!'});
+                    },
+                    (error) => {
+                        ponto.editar = false;
+                        ponto.salvando = false;
+                        this.$forceUpdate();
+                        this.$notify({type: 'danger', message: 'Não foi possível editar a pontuação!'});
+                    }
+                );
+        },
+        excluirPonto(ponto){
+            ponto.salvando = true;
+            this.$forceUpdate();
+            axios.delete("regras-pontuacao/"+ponto.id)
+                .then(
+                    (response) => {
+                        ponto.salvando = false;
+                        this.$forceUpdate();
+                        this.$notify({type: 'success', message: 'Pontuação excluída com sucesso!'});
+                        this.getRegrasPontuacao();
+                    },
+                    (error) => {
+                        ponto.salvando = false;
+                        this.$forceUpdate();
+                        this.$notify({type: 'danger', message: 'Não foi possível excluir a pontuação!'});
+                    }
+                )
+        },
         getAcoes(){
             axios.get("acoes")
                 .then(response => this.acoes = response.data);
@@ -361,6 +442,12 @@ export default {
                 .then(response => {
                     this.salvando = false;
                     this.showLista = true;
+                    this.form = {
+                        acao_id: 0,
+                        funcao_id: 0,
+                        pontuacao: null,
+                        campeonato_id: null
+                    };
                     this.$notify({type: 'success', message: 'Regra de pontuação cadastrada com sucesso!'});
                     this.getRegrasPontuacao();
                 })
@@ -399,17 +486,113 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+.table-responsive {
+    overflow: hidden;
+}
+
 select.form-control {
     color: #8965e0;
 }
+
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border-top: 16px solid #e14eca; /* Roxo */
     border-radius: 50%;
     width: 120px;
     height: 120px;
     animation: spin 2s linear infinite;
+}
+
+.desativado {
+    background: gray !important;
+    cursor: wait;
+    border: 1px solid gray !important
+}
+
+.loader {
+
+    &.editar {
+        width: 30px;
+        height: 30px;
+        
+        border: 5px solid #f3f3f3; /* Light grey */
+
+        &.top-suporte{
+            border-top: 5px solid #24D5AA;
+        }
+
+        &.meio{
+            border-top: 5px solid #BA54F5;
+        }
+
+        &.cacador{
+            border-top: 5px solid #EB240C;
+        }
+
+        &.atirador{
+            border-top: 5px solid #FF8676;
+        }
+
+    }
+
+}
+
+.lixeira {
+    color: #fff;
+    // z-index: 2;
+    // position: absolute;
+    cursor: pointer;
+}
+
+.lixeira:hover {
+    color: #EB240C;
+}
+
+.icone-editar {
+    color: #fff;
+    cursor: pointer;
+}
+
+.icone-meio:hover {
+    color: #BA54F5;
+}
+
+.btn-meio {
+    background: #BA54F5;
+}
+
+.icone-cacador:hover {
+    color: #EB240C;
+}
+
+.btn-cacador {
+    background: #EB240C;
+}
+
+.icone-atirador:hover {
+    color: #FF8676;
+}
+
+.btn-atirador {
+    background: #FF8676;
+}
+
+.icone-top-suporte:hover {
+    color: #24D5AA;
+}
+
+.btn-top-suporte {
+    background: #24D5AA;
+}
+
+.input-edit-ponto {
+    width: 50%;
+    margin-left: 2.5rem;
+    background: #FFFFFF;
+    border: 1px solid #DCDCDC;
+    box-sizing: border-box;
+    border-radius: 3px;
 }
 
 @keyframes spin {

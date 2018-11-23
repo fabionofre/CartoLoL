@@ -304,6 +304,7 @@
               this.$auth.setToken(token);
               this.$auth.setUser(response.data);
               this.$bus.$emit('receber-usuario', response.data);
+              this.$bus.$emit('receber-usuario-dash', response.data);
             });
         }
       this.initBigChart(0);

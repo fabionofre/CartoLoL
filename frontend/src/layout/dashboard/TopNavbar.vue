@@ -127,8 +127,11 @@
       };
     },
     created(){
-        this.$bus.$on('receber-usuario', this.setUsuario);
-      },
+      if(this.$auth.isAuthenticated())
+        this.user = this.$auth.getUser();
+
+      this.$bus.$on('receber-usuario', this.setUsuario);
+    },
     beforeDestroy(){
       this.$bus.$off('receber-usuario');
     },

@@ -3,7 +3,7 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
-        <sidebar-link to="/juiz" name="Juiz" icon="tim-icons icon-pin"/>
+        <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Juiz" icon="tim-icons icon-pin"/>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -25,6 +25,19 @@ import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "./MobileMenu";
 export default {
+  created(){
+    if(this.$auth.isAuthenticated())
+      this.user = this.$auth.getUser();
+    this.$bus.$on('receber-usuario-dash', this.setUsuario);
+  },
+  beforeDestroy(){
+    this.$bus.$off('receber-usuario-dash');
+  },
+  data(){
+    return {
+      user: {}
+    }
+  },
   components: {
     TopNavbar,
     ContentFooter,
@@ -36,7 +49,11 @@ export default {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
-    }
+    },
+    setUsuario(user){
+      console.log(user);
+      this.user = user;
+    },
   }
 };
 </script>
