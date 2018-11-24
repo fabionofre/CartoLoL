@@ -103,7 +103,7 @@
                                         <i class="tim-icons icon-email-85"></i>
                                         </div>
                                     </div>
-                                    <input type="text" placeholder="E-mail" class="form-control">
+                                    <input type="text" v-model="form.email" placeholder="E-mail" class="form-control">
                                     </div>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
@@ -111,7 +111,7 @@
                                         <i class="tim-icons icon-lock-circle"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Senha">
+                                    <input type="password" class="form-control" v-model="form.password" placeholder="Senha">
                                     </div>
                                     <div class="form-check text-left">
                                     <label class="form-check-label">
@@ -124,7 +124,7 @@
                                 </form>
                                 </div>
                                 <div class="card-footer">
-                                <a href="../dashboard.html" class="btn btn-primary btn-round btn-lg">Iniciar</a>
+                                <a href="../dashboard.html" @click.prevent="register()" class="btn btn-primary btn-round btn-lg">Iniciar</a>
                                 </div>
                             </div>
                             </div>
@@ -137,7 +137,27 @@
 </template>
 <script>
 export default {
-    
+    name: 'Register',
+    data(){
+        return {
+            form: {
+                email: null,
+                password: null
+            }
+        }
+    },
+    methods: {
+        register(){
+            console.log(this.form);
+            axios.post("auth/register", this.form)
+                .then(
+                    response => {
+                        window.location = "http://localhost:8080/#/?login=true&token="+response.data;
+                    },
+                    error => console.error(erro)
+                );
+        }
+    }
 }
 </script>
 <style scoped>

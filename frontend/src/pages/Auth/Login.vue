@@ -53,7 +53,7 @@
                         <i class="tim-icons icon-email-85"></i>
                       </div>
                     </div>
-                    <input type="text" class="form-control" placeholder="E-mail">
+                    <input type="text" class="form-control" placeholder="E-mail" v-model="form.email">
                   </div>
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -61,7 +61,7 @@
                         <i class="tim-icons icon-lock-circle"></i>
                       </div>
                     </div>
-                    <input type="text" placeholder="Senha" class="form-control">
+                    <input type="password" placeholder="Senha" class="form-control" v-model="form.password">
                   </div>
                   <div class="pull-right">
                       <h6>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                  <a href="Javascript:void(0);" class="btn btn-primary btn-lg btn-block mb-3">Iniciar</a>
+                  <a href="Javascript:void(0);" @click="login()" class="btn btn-primary btn-lg btn-block mb-3">Iniciar</a>
                    <a href="Javascript:void(0);" @click="loginFacebook()"  class="btn btn-secondary btn-lg btn-block mb-3">Logar com Facebook</a>
                   <div class="pull-left">
                     <h6>
@@ -101,7 +101,10 @@ export default {
     },
     data(){
       return {
-        
+        form: {
+          email: null,
+          password: null
+        }
       }
     },
     methods:{
@@ -111,6 +114,19 @@ export default {
             response => {
               console.log(response)
               window.location = response.data.redirectUrl
+            }
+          );
+      },
+      login(){
+        axios.post("auth/login", this.form)
+          .then(
+            response => {
+              window.location = "http://localhost:8080/#/?login=true&token="+response.data.access_token;
+            },
+            (err) => {
+              this.form = {};
+              let error = err.response.data.error == 'Unauthorized' ? 'Usuário não autorizado!' : '';
+              this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'danger', message: error});
             }
           );
       }

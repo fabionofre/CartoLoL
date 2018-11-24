@@ -32,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_topo" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td>{{getAcaoName(pontos.acao_id)}}</td>
                                         <td v-if="!pontos.editar" class="text-success text-center">
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>
@@ -79,7 +79,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_cacador" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td>{{getAcaoName(pontos.acao_id)}}</td>
                                         <td v-if="!pontos.editar" class="text-success text-center">
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>
@@ -126,7 +126,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_meio" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td>{{getAcaoName(pontos.acao_id)}}</td>
                                         <td v-if="!pontos.editar" class="text-success text-center">
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>
@@ -173,7 +173,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_atirador" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td>{{getAcaoName(pontos.acao_id)}}</td>
                                         <td v-if="!pontos.editar" class="text-success text-center">
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>
@@ -220,7 +220,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="pontos in pontos_suporte" :key="pontos.id">
-                                        <td>{{getAcaoName(pontos.funcao_id)}}</td>
+                                        <td>{{getAcaoName(pontos.acao_id)}}</td>
                                         <td v-if="!pontos.editar" class="text-success text-center">
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>

@@ -4,6 +4,7 @@
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Juiz" icon="tim-icons icon-pin"/>
+        <sidebar-link to="/escalacao" name="Escalação" icon="tim-icons icon-user-run"/>
       </template>
     </side-bar>
     <div class="main-panel">

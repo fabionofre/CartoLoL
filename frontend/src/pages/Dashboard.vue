@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="col-12">
+      <!-- <div class="col-12">
         <card type="chart">
           <template slot="header">
             <div class="row">
@@ -51,8 +51,11 @@
             </line-chart>
           </div>
         </card>
-      </div>
+      </div> -->
 
+      <div class="col col-md-12 mb-3">
+        <img src="../assets/img/hyperx-propaganda.jpg" height="250px;" width="100%;">
+      </div>
 
       <div class="col-lg-3 col-md-6">
         <div class="card card-stats">
@@ -307,7 +310,7 @@
               this.$bus.$emit('receber-usuario-dash', response.data);
             });
         }
-      this.initBigChart(0);
+      // this.initBigChart(0);
     },
   };
 </script>

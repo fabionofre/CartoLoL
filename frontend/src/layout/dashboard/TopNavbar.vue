@@ -75,7 +75,8 @@
                            menu-classes="dropdown-navbar">
               <a slot="title" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true">
                 <div class="photo">
-                  <img :src="user.foto">
+                  <img v-if="user.foto" :src="user.foto">
+                  <img v-if="!user.foto" src="../../assets/img/default-avatar.png">
                 </div>
                 <b class="caret d-none d-lg-block d-xl-block"></b>
                 <p class="d-lg-none">
@@ -83,14 +84,11 @@
                 </p>
               </a>
               <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item">Perfil</a>
+                <a href="javascript:void(0)" @click="goToPerfil()" class="nav-item dropdown-item">Perfil</a>
               </li>
-              <!-- <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item">Settings</a>
-              </li> -->
               <div class="dropdown-divider"></div>
               <li class="nav-link">
-                <a href="#" class="nav-item dropdown-item">Sair</a>
+                <a href="javascript:void(0)" @click="logout()" class="nav-item dropdown-item">Sair</a>
               </li>
             </base-dropdown>
           </ul>
@@ -157,6 +155,22 @@
       },
       toggleMenu() {
         this.showMenu = !this.showMenu;
+      },
+      logout() {
+        axios.post("auth/logout?token="+this.$auth.getToken())
+          .then(
+            response => {
+              console.log(response);
+              this.$auth.destroyToken();
+              this.$router.push('login');
+            },
+            error => {
+              console.error(response);
+            }
+          )
+      },
+      goToPerfil(){
+        this.$router.push('perfil');
       }
     }
   };

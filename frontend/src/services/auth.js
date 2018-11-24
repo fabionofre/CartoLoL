@@ -20,6 +20,7 @@ export default function (Vue) {
         },
         destroyToken() {
             localStorage.removeItem('user_token')
+            localStorage.removeItem('user');
             // localStorage.removeItem('refresh_token')
         },
         isAuthenticated() {

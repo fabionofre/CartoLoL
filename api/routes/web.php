@@ -21,6 +21,6 @@ Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback
 Route::get('login/facebook', 'Auth\LoginController@redirectToProviderFacebook');
 Route::get('login/facebook/callback', 'Auth\LoginController@handleFacebookProviderCallback');
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

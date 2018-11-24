@@ -12,9 +12,9 @@ class AtletaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Atleta::with('equipe')->get();
+        return Atleta::with('equipe')->where('nome', 'like','%'.$request->s.'%')->get();
     }
 
     /**
@@ -39,7 +39,7 @@ class AtletaController extends Controller
         $atleta->nome = $request['nome'];
         $atleta->sobrenome = $request['sobrenome'];
         $atleta->apelido = $request['apelido'];
-        $atleta->criador_id = $request['criador_id'];
+        $atleta->criador_id = 3;
         $atleta->data_nascimento = $request['data_nascimento'];
         $atleta->foto = $request->foto->getClientOriginalName();
 
@@ -58,9 +58,11 @@ class AtletaController extends Controller
      * @param  \App\Atleta  $atleta
      * @return \Illuminate\Http\Response
      */
-    public function show(Atleta $atleta)
+    public function show($id)
     {
-        //
+        $atleta = Atleta::find($id);
+        
+        return $atleta;
     }
 
     /**

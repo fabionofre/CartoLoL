@@ -6,8 +6,12 @@ import BlackDashboard from "./plugins/blackDashboard";
 import Auth from './services/auth.js';
 import EventBus from './plugins/event-bus';
 import axios from 'axios';
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
+
+Vue.use(BootstrapVue);
 Vue.use(BlackDashboard);
 Vue.use(Auth);
 Vue.use(EventBus);

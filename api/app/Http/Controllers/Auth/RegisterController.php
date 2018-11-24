@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -67,7 +67,11 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'tipo_usuario_id' => $data['tipo_usuario_id']
+            'tipo_usuario_id' => 1
         ]);
+
+        $token = auth()->login($user);
+
+        return redirect("http://localhost:8080/#/?login=true&token=".$token);
     }
 }

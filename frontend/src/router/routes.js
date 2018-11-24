@@ -5,6 +5,8 @@ import NotFound from "@/pages/NotFoundPage.vue";
 // Admin pages
 import Dashboard from "@/pages/Dashboard.vue";
 import Juiz from "@/pages/Juiz.vue";
+import Escalacao from "@/pages/Escalacao.vue";
+import EditProfileForm from '@/pages/Profile/EditProfileForm';
 
 
 // Auth Pages
@@ -28,6 +30,16 @@ const routes = [
         path: "juiz",
         name: "juiz",
         component: Juiz
+      },
+      {
+        path: "escalacao",
+        name: "escalacao",
+        component: Escalacao
+      },
+      {
+        path: "perfil",
+        name: "perfil",
+        component: EditProfileForm
       }
     ]
   },
