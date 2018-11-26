@@ -70,17 +70,28 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                  <a href="Javascript:void(0);" @click="login()" class="btn btn-primary btn-lg btn-block mb-3">Iniciar</a>
-                   <a href="Javascript:void(0);" @click="loginFacebook()"  class="btn btn-secondary btn-lg btn-block mb-3">Logar com Facebook</a>
+                  <a @click="login()" class="btn btn-primary btn-lg btn-block mb-3">Iniciar</a>
+                  <div class="text-center">
+                      <a class="text-primary">OU</a><br/>
+                  <button @click.prevent="loginFacebook()" class="btn btn-icon btn-round btn-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                  </button>
+                  <button class="btn btn-icon btn-round btn-github">
+                    <i class="fab fa-github"></i>
+                  </button>
+                  <button class="btn btn-icon btn-round btn-google">
+                    <i class="fab fa-google"></i>
+                  </button>
+                </div>
                   <div class="pull-left">
                     <h6>
                       <router-link to="register" class="link footer-link">Criar Conta</router-link>
                     </h6>
                   </div>
                   <div class="pull-right">
-                    <h6>
-                      <a href="../ajuda/ajuda.html" class="link footer-link">Precisa de Ajuda?</a>
-                    </h6>
+                      <h6>
+                          <a href="javascript:void(0)" class="link footer-link">Precisa de Ajuda?</a>
+                      </h6>
                   </div>
                 </div>
               </div>
@@ -133,6 +144,10 @@ export default {
     }
 }
 </script>
-<style scoped>
-
+<style scoped lang="scss">
+.card-footer {
+  a {
+    color: black;
+  }
+}
 </style>

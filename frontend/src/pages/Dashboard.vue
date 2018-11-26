@@ -306,7 +306,11 @@
             .then(response => {
               this.$auth.setToken(token);
               this.$auth.setUser(response.data);
-              this.$bus.$emit('receber-usuario', response.data);
+              const user = {
+                dados: response.data,
+                token: token
+              };
+              this.$bus.$emit('receber-usuario', user);
               this.$bus.$emit('receber-usuario-dash', response.data);
             });
         }

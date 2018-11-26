@@ -7,6 +7,8 @@ import Dashboard from "@/pages/Dashboard.vue";
 import Juiz from "@/pages/Juiz.vue";
 import Escalacao from "@/pages/Escalacao.vue";
 import EditProfileForm from '@/pages/Profile/EditProfileForm';
+import Campeonatos from '@/pages/Campeonatos.vue';
+import Atletas from '@/pages/Atletas.vue';
 
 
 // Auth Pages
@@ -40,6 +42,16 @@ const routes = [
         path: "perfil",
         name: "perfil",
         component: EditProfileForm
+      },
+      {
+        path: "campeonatos",
+        name: "campeonatos",
+        component: Campeonatos
+      },
+      {
+        path: "atletas",
+        name: "atletas",
+        component: Atletas
       }
     ]
   },

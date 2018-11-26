@@ -122,11 +122,15 @@
         searchModalVisible: false,
         searchQuery: '',
         user: {},
+        token: null
       };
     },
     created(){
-      if(this.$auth.isAuthenticated())
+      if(this.$auth.isAuthenticated()){
         this.user = this.$auth.getUser();
+        this.token = this.$auth.getToken();
+      }
+        
 
       this.$bus.$on('receber-usuario', this.setUsuario);
     },
@@ -136,7 +140,8 @@
     methods: {
       setUsuario(user){
         console.log(user);
-        this.user = user;
+        this.user = user.dados;
+        this.token = user.token;
       },
       capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -157,7 +162,7 @@
         this.showMenu = !this.showMenu;
       },
       logout() {
-        axios.post("auth/logout?token="+this.$auth.getToken())
+        axios.post("auth/logout?token="+this.token)
           .then(
             response => {
               console.log(response);
