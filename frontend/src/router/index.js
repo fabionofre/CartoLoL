@@ -16,4 +16,41 @@ const router = new VueRouter({
   }
 });
 
+router.beforeEach((to, from, next)=>{
+  const name = to.name;
+  
+  const rotaDeVisitante = (
+    name.indexOf('login') > -1 || name.indexOf('register') > -1
+    || name.indexOf('recuperarSenha') > -1 || name.indexOf('novaSenha') > -1
+  );
+
+  if(rotaDeVisitante){
+    if(Vue.auth.isAuthenticated()){
+      next({path: '/dashboard'})
+      return 0;
+    }
+    next();
+  }else{
+    if(!Vue.auth.isAuthenticated()){
+      if(name.indexOf('dashboard') > -1){
+        const loginRedirect = to.query.login;
+        if(loginRedirect == 'true'){
+          const token = to.query.token;
+          axios.post("auth/me", {}, {headers: {'Authorization': 'Bearer '+token}})
+            .then(response => {
+              Vue.auth.setToken(token);
+              Vue.auth.setUser(response.data);
+              next();
+            });
+          return 0;    
+        }
+      }
+      next({path: '/login'})
+      return 0;
+    }
+  }
+
+  next()
+});
+
 export default router;

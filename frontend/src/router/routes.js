@@ -57,18 +57,22 @@ const routes = [
   },
   {
     path: "/login",
+    name: "login",
     component: Login,
   },
   {
     path: "/register",
+    name: "register",
     component: Register
   },
   {
     path: "/recuperarSenha",
+    name: "recuperarSenha",
     component: RecuperarSenha
   },
   {
     path: "/novaSenha",
+    name: "novaSenha",
     component: NovaSenha
   },
   { path: "*", component: NotFound },

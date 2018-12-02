@@ -14,45 +14,6 @@
         </div>
       </div>
 
-      <!-- <div class="col-12">
-        <card type="chart">
-          <template slot="header">
-            <div class="row">
-              <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">aaaaaaaaaaaaaaa</h5>
-                <h2 class="card-title">bbbbbbbbbbbb</h2>
-              </div>
-              <div class="col-sm-6">
-                <div class="btn-group btn-group-toggle"
-                     :class="isRTL ? 'float-left' : 'float-right'"
-                     data-toggle="buttons">
-                  <label v-for="(option, index) in bigLineChartCategories"
-                         :key="option"
-                         class="btn btn-sm btn-primary btn-simple"
-                         :class="{active: bigLineChart.activeIndex === index}"
-                         :id="index">
-                    <input type="radio"
-                           @click="initBigChart(index)"
-                           name="options" autocomplete="off"
-                           :checked="bigLineChart.activeIndex === index">
-                    {{option}}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        ref="bigChart"
-                        :chart-data="bigLineChart.chartData"
-                        :gradient-colors="bigLineChart.gradientColors"
-                        :gradient-stops="bigLineChart.gradientStops"
-                        :extra-options="bigLineChart.extraOptions">
-            </line-chart>
-          </div>
-        </card>
-      </div> -->
-
       <div class="col col-md-12 mb-3">
         <img src="../assets/img/hyperx-propaganda.jpg" height="250px;" width="100%;">
       </div>
@@ -297,24 +258,6 @@
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;
       }
-    },
-    mounted() {
-        const loginRedirect = this.$route.query.login;
-        if(loginRedirect == 'true'){
-          const token = this.$route.query.token;
-          axios.post("auth/me", {}, {headers: {'Authorization': 'Bearer '+token}})
-            .then(response => {
-              this.$auth.setToken(token);
-              this.$auth.setUser(response.data);
-              const user = {
-                dados: response.data,
-                token: token
-              };
-              this.$bus.$emit('receber-usuario', user);
-              this.$bus.$emit('receber-usuario-dash', response.data);
-            });
-        }
-      // this.initBigChart(0);
     },
   };
 </script>
