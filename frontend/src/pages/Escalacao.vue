@@ -7,27 +7,27 @@
                     <div class="card-body">
                         <div class="mapa">
                             <img src="../assets/img/mapa.png">
-                            <button :disabled="loading_escalacao || escalacao.topo" class="btn btn-round btn-lg btn-icon topo" @click="escalarJogador('topo')" v-b-modal.escolher-jogador>
+                            <button title="Topo" :disabled="loading_escalacao || escalacao.topo" class="btn btn-round btn-lg btn-icon topo" @click="escalarJogador('topo')" v-b-modal.escolher-jogador>
                                 <img v-if="!escalacao.topo" src="../assets/img/topo.png">
                                 <i class="tim-icons icon-check-2" v-if="escalacao.topo"></i>
                                 <a><i class="tim-icons icon-simple-add"></i></a>
                             </button>
-                            <button :disabled="loading_escalacao || escalacao.meio"  class="btn btn-round btn-lg btn-icon meio" @click="escalarJogador('meio')" v-b-modal.escolher-jogador>
+                            <button title="Meio" :disabled="loading_escalacao || escalacao.meio"  class="btn btn-round btn-lg btn-icon meio" @click="escalarJogador('meio')" v-b-modal.escolher-jogador>
                                 <img v-if="!escalacao.meio" src="../assets/img/mid.png">
                                 <i class="tim-icons icon-check-2" v-if="escalacao.meio"></i>
                                 <a><i class="tim-icons icon-simple-add"></i></a>
                             </button>
-                            <button :disabled="loading_escalacao || escalacao.cacador"  class="btn btn-round btn-lg btn-icon cacador" @click="escalarJogador('cacador')" v-b-modal.escolher-jogador>
+                            <button title="Caçador" :disabled="loading_escalacao || escalacao.cacador"  class="btn btn-round btn-lg btn-icon cacador" @click="escalarJogador('cacador')" v-b-modal.escolher-jogador>
                                 <img v-if="!escalacao.cacador" src="../assets/img/cacador.png">
                                 <i class="tim-icons icon-check-2" v-if="escalacao.cacador"></i>
                                 <a><i class="tim-icons icon-simple-add"></i></a>
                             </button>
-                            <button :disabled="loading_escalacao || escalacao.atirador"  class="btn btn-round btn-lg btn-icon atirador"  @click="escalarJogador('atirador')" v-b-modal.escolher-jogador>
+                            <button title="Atirador" :disabled="loading_escalacao || escalacao.atirador"  class="btn btn-round btn-lg btn-icon atirador"  @click="escalarJogador('atirador')" v-b-modal.escolher-jogador>
                                 <img v-if="!escalacao.atirador" src="../assets/img/atirador1.png">
                                 <i class="tim-icons icon-check-2" v-if="escalacao.atirador"></i>
                                 <a><i class="tim-icons icon-simple-add"></i></a>
                             </button>
-                            <button :disabled="loading_escalacao || escalacao.suporte"  class="btn btn-round btn-lg btn-icon suporte" @click="escalarJogador('suporte')" v-b-modal.escolher-jogador>
+                            <button title="Suporte" :disabled="loading_escalacao || escalacao.suporte"  class="btn btn-round btn-lg btn-icon suporte" @click="escalarJogador('suporte')" v-b-modal.escolher-jogador>
                                 <img v-if="!escalacao.suporte" src="../assets/img/suporte.png">
                                 <i class="tim-icons icon-check-2" v-if="escalacao.suporte"></i>
                                 <a><i class="tim-icons icon-simple-add"></i></a>

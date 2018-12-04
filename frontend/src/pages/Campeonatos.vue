@@ -1,7 +1,72 @@
 <template>
     <div class="container">
         <div class="row">
-          <div :class="{'col-md-4 opaco': showForm, 'col-md-12': !showForm}" 
+            <div v-show="showForm" class="col col md-12 form-campeonato">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col col-md-12" v-if="!camp.brasao">
+                                <label for="brasao">Brasão</label>
+                                <input type="file" class="form-control" id="brasao" 
+                                @change="onBrasaoChange"
+                                placeholder="Brasão" :disabled="loading">
+                            </div>
+                            <div class="col col-md-12" v-if="camp.brasao">
+                                <img v-if="typeof(camp.brasao) == 'file' || !imgPreview" 
+                                :src="'http://localhost:8000/storage/'+camp.brasao"
+                                width="80px" height="80px" style="border-radius: 50%">
+                                <img v-else :src="imgPreview"
+                                width="80px" height="80px" style="border-radius: 50%">
+                                <a href="javascript:void(0)" @click="camp.brasao = null;imgPreview = null">
+                                    <i class="tim-icons icon-simple-remove remove-brasao"></i>
+                                </a>
+                            </div>
+                            <div class="col col-md-6 mt-2">
+                                <div class="form-group">
+                                    <label for="titulo">Titulo</label>
+                                    <input type="text" class="form-control" id="titulo" 
+                                    v-model="camp.titulo"
+                                    placeholder="Titulo do campeonato" :disabled="loading">
+                                </div>
+                            </div>
+                            <div class="col col-md-6 my-2">
+                                <div class="form-group">
+                                    <label for="desc">Descrição</label>
+                                    <input type="text" class="form-control" id="desc" 
+                                    v-model="camp.desc"
+                                    placeholder="Descrição do campeonato" :disabled="loading">
+                                </div>
+                            </div>
+                            <div class="col col-md-6">
+                            <b-form-group label-class="label-radio" label="O campeonato é profissional?">
+                                <b-form-radio-group v-model="camp.fl_profissional"
+                                                :options="options"
+                                                name="radioProfissional">
+                                </b-form-radio-group>
+                            </b-form-group>
+                            </div>
+                            <div class="col col-md-6">
+                            <b-form-group label-class="label-radio" label="O campeonato é público?">
+                                <b-form-radio-group v-model="camp.fl_publico"
+                                                :options="options"
+                                                name="radioPublico">
+                                </b-form-radio-group>
+                            </b-form-group>
+                            </div>
+                            <button class="btn btn-primary btn-block" 
+                            @click="salvarCampeonato()" :disabled="loading">
+                                <span v-if="!loading">
+                                    {{camp.id ? 'Editar' :'Cadastrar'}} Campeonato
+                                </span>
+                                <div v-if="loading" class="loader"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div :class="{'opaco': showForm, 'col-md-12': !showForm}" 
           class="col mr-auto ml-auto lista-campeonatos">
             <div class="wizard-container">
               <div class="card card-header" data-color="primary">
@@ -40,15 +105,21 @@
                           </a>
                       </div>
                       <b-collapse :id="'collapse'+index">
-                          <div class="card-body">
+                        <div class="card-body">
                             <ul class="nav nav-pills nav-pills-primary">
-                              <li class="nav-item" v-for="equipe in camp.equipes" :key="equipe.id">
+                                <li class="nav-item" v-for="equipe in camp.equipes" :key="equipe.id">
                                 <a class="nav-link active" href="javascript:void(0)" style="width: 30px">
-                                  <img :src="'http://localhost:8000/storage/'+equipe.brasao" alt="">
+                                    <img :src="'http://localhost:8000/storage/'+equipe.brasao" alt="">
                                 </a>
-                              </li>
+                                </li>
+                                <button class="btn btn-round btn-primary btn-icon" 
+                                title="Adicionar Time">
+                                    <a href="javascript:void(0)">
+                                        <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
+                                    </a>
+                                </button>
                             </ul>
-                          </div>
+                        </div>
                       </b-collapse>
                     </div>
                   </div>
@@ -65,69 +136,6 @@
               </div>
             </div>
           </div>
-          <div v-show="showForm" class="col col md-8 form-campeonato">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col col-md-12" v-if="!camp.brasao">
-                            <label for="brasao">Brasão</label>
-                            <input type="file" class="form-control" id="brasao" 
-                            @change="onBrasaoChange"
-                            placeholder="Brasão" :disabled="loading">
-                        </div>
-                        <div class="col col-md-12" v-if="camp.brasao">
-                            <img v-if="typeof(camp.brasao) == 'file' || !imgPreview" 
-                            :src="'http://localhost:8000/storage/'+camp.brasao"
-                            width="80px" height="80px" style="border-radius: 50%">
-                            <img v-else :src="imgPreview"
-                            width="80px" height="80px" style="border-radius: 50%">
-                            <a href="javascript:void(0)" @click="camp.brasao = null;imgPreview = null">
-                                <i class="tim-icons icon-simple-remove remove-brasao"></i>
-                            </a>
-                        </div>
-                        <div class="col col-md-6 mt-2">
-                            <div class="form-group">
-                                <label for="titulo">Titulo</label>
-                                <input type="text" class="form-control" id="titulo" 
-                                v-model="camp.titulo"
-                                placeholder="Titulo do campeonato" :disabled="loading">
-                            </div>
-                        </div>
-                        <div class="col col-md-6 my-2">
-                            <div class="form-group">
-                                <label for="desc">Descrição</label>
-                                <input type="text" class="form-control" id="desc" 
-                                v-model="camp.desc"
-                                placeholder="Descrição do campeonato" :disabled="loading">
-                            </div>
-                        </div>
-                        <div class="col col-md-6">
-                          <b-form-group label-class="label-radio" label="O campeonato é profissional?">
-                            <b-form-radio-group v-model="camp.fl_profissional"
-                                              :options="options"
-                                              name="radioProfissional">
-                            </b-form-radio-group>
-                          </b-form-group>
-                        </div>
-                        <div class="col col-md-6">
-                          <b-form-group label-class="label-radio" label="O campeonato é público?">
-                            <b-form-radio-group v-model="camp.fl_publico"
-                                              :options="options"
-                                              name="radioPublico">
-                            </b-form-radio-group>
-                          </b-form-group>
-                        </div>
-                        <button class="btn btn-primary btn-block" 
-                        @click="salvarCampeonato()" :disabled="loading">
-                            <span v-if="!loading">
-                                {{camp.id ? 'Editar' :'Cadastrar'}} Campeonato
-                            </span>
-                            <div v-if="loading" class="loader"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
         </div>
     </div>
 </template>

@@ -7,6 +7,7 @@
         <sidebar-link to="/escalacao" name="Escalação" icon="tim-icons icon-notes"/>
         <sidebar-link to="/campeonatos" name="Camepeonatos" icon="tim-icons icon-trophy"/>
         <sidebar-link to="/atletas" name="Atletas" icon="tim-icons icon-user-run"/>
+        <sidebar-link to="/times" name="Times" icon="tim-icons icon-vector"/>
       </template>
     </side-bar>
     <div class="main-panel">
