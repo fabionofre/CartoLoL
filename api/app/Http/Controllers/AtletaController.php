@@ -83,9 +83,22 @@ class AtletaController extends Controller
      * @param  \App\Atleta  $atleta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Atleta $atleta)
+    public function update(Request $request, $id)
     {
-        //
+        $atleta = Atleta::find($id);
+        $atleta->nome = $request['nome'];
+        $atleta->sobrenome = $request['sobrenome'];
+        $atleta->apelido = $request['apelido'];
+        $atleta->criador_id = 3;
+        $atleta->data_nascimento = $request['data_nascimento'];
+
+        if (isset($request->foto)) {
+            $atleta->foto = $request->foto->getClientOriginalName();
+            $request->foto->storeAs('public', $request->foto->getClientOriginalName());
+        }
+
+        $atleta->save();
+        return ["message"=>"Atleta editado com sucesso!", "atleta"=>$atleta];
     }
 
     /**
@@ -94,8 +107,12 @@ class AtletaController extends Controller
      * @param  \App\Atleta  $atleta
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Atleta $atleta)
+    public function destroy($id)
     {
-        //
+        $atleta = Atleta::find($id);
+
+        $atleta->delete();
+
+        return ["message" => "Atleta deletado com sucesso!", "atleta"=>$atleta];
     }
 }
