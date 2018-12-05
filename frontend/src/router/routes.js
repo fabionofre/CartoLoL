@@ -10,6 +10,7 @@ import EditProfileForm from '@/pages/Profile/EditProfileForm';
 import Campeonatos from '@/pages/Campeonatos.vue';
 import Atletas from '@/pages/Atletas.vue';
 import Times from '@/pages/Times.vue';
+import Pontuacao from '@/pages/Pontuacao.vue';
 
 
 // Auth Pages
@@ -58,6 +59,11 @@ const routes = [
         path: "times",
         name: "times",
         component: Times
+      },
+      {
+        path: "pontuacao",
+        name: "pontuacao",
+        component:  Pontuacao
       }
     ]
   },

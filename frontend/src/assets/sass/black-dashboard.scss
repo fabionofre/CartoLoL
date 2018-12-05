@@ -18,6 +18,23 @@
     color: #ffd600 !important;
 }
 
+.IZ-select__input.IZ-select__input--focused {
+    border-color: #e14eca !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.IZ-select__input input {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.IZ-select__input {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: transparent !important;
+    border: 1px solid #2b3553 !important;
+    border-radius: .4285rem !important;
+}
+
 
 
 @import "black-dashboard/my-style.min.scss"

@@ -112,7 +112,7 @@
                                     <img :src="'http://localhost:8000/storage/'+equipe.brasao" alt="">
                                 </a>
                                 </li>
-                                <button class="btn btn-round btn-primary btn-icon" 
+                                <button @click="abrirModalEquipes(camp)" class="btn btn-round btn-primary btn-lg btn-icon" 
                                 title="Adicionar Time">
                                     <a href="javascript:void(0)">
                                         <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
@@ -132,6 +132,46 @@
                             <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
                         </a>
                   </button>
+                    <b-modal id="escolher-equipes" v-model="modalEquipes" title="Selecione as equipes participantes do campeonato!" cancel-title="Cancelar" 
+                    @cancel="handleCancelar()">
+                        <div>
+                            <div class="row">
+                                <div class="col offset-md-1 col-md-10">
+                                    <form @submit.prevent="getEquipes()">
+                                        <input class="zleague-form-control" @input="handleSearch" 
+                                        type="text" placeholder="Busque a equipe por nome!">
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col col-md-4" v-for="equipe in equipes" :key="equipe.id" 
+                                @click="selecionarEquipe(equipe)">
+                                    <div class="card card-modal" :class="{'card-modal-selecionada': equipe.selecionada}" >
+                                        <div class="card-body">
+                                            <div class="info-equipe info-modal">
+                                                <img class="foto" :src="'http://localhost:8000/storage/'+equipe.brasao">
+                                                <span class="nome">                                                    
+                                                    {{equipe.nome}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-12">
+                                    <button class="btn btn-info btn-block" @click="salvarEquipes()" 
+                                    :disabled="loading">
+                                        <span v-if="!loading">
+                                            Salvar
+                                        </span>
+                                        <div v-if="loading" class="loader"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div slot="modal-footer"></div>
+                    </b-modal>
                 </div>
               </div>
             </div>
@@ -158,7 +198,7 @@ export default {
             // criador_id: null,
             fl_publico: 1,
             fl_profissional: 1,
-            equipes: null
+            equipes: []
         },
         options: [
           {text: 'Sim', value: 1},
@@ -166,129 +206,186 @@ export default {
         ],
         showForm: false,
         loading: null,
-        imgPreview: null
+        imgPreview: null,
+        modalEquipes: false,
+        equipes: [],
+        search: '',
+        equipesSelecionadas: []
       }
     },
+    watch: {
+        search: function(val){
+            this.getEquipes();
+        }
+    },
     methods: {
-      getCampeonatos(){
-        axios.get("campeonatos")
-          .then(
-            response => {
-              this.campeonatos = response.data;
-              console.log(this.campeonatos);
-            },
-            error => console.error(error)
-          );
-      },
-      salvarCampeonato(){
-        this.loading = true;
-        const fd = new FormData();
-        fd.append('titulo', this.camp.titulo);
-        fd.append('desc', this.camp.desc);
-        fd.append('brasao', this.camp.brasao, this.camp.brasao.nome);
-        fd.append('fl_profissional', this.camp.fl_profissional ? 1 : 0);
-        fd.append('fl_publico', this.camp.fl_publico ? 1 : 0);
-        fd.append('data_inicio', '2018-12-01');
-        fd.append('data_fim', '2019-01-01');
-        fd.append('criador_id', 3);
-        if(this.camp.id){
-            // Edita o campeonato
-            // fd.append('equipes', this.campeonato.equipes);
-            fd.append('_method', 'put');
-            axios.post('campeonatos/'+this.camp.id, fd)
-                .then(
-                    (response) => {
-                      this.getCampeonatos();
-                      this.loading = false;
-                      this.$notify({type: 'success', message: 'Campeonato editado com sucesso!'});
-                      this.esconderForm();
-                    },
-                    (error) => {
-                      this.getCampeonatos();
-                      this.esconderForm();
-                      this.loading = false;
-                      this.$notify({type: 'danger', 
-                      message: 'Não foi possível editar o campeonato :('});
-                    }
-                )
-        }else{
-            // Cria um novo campeonato
-            axios.post('campeonatos', fd)
-                .then(
-                    (response) => {
-                      this.getCampeonatos();
-                      this.loading = false;
-                      this.$notify({type: 'success', message: 'Campeonato cadastrado com sucesso!'});
-                      this.esconderForm();
-                    },
-                    (error) => {
-                      this.getCampeonatos();
-                      this.loading = false;
-                      this.$notify({type: 'danger', 
-                      message: 'Não foi possível cadastrar o campeonato :('});
-                      this.esconderForm();
-                    }
-                )
-        }
-      },
-      editarCampeonato(camp){
-        this.showForm = true;
-        this.camp = Object.assign({}, camp);
-      },
-      deletarCampeonato(camp){
-        camp.excluindo = true;
-        this.loading = true;
-        axios.delete('campeonatos/'+camp.id)
+        handleSearch(evt){
+            setTimeout(() => {
+                this.search = evt.target.value;
+            }, 500);
+        },
+        getCampeonatos(){
+            axios.get("campeonatos")
             .then(
-                (response) => {
-                  delete camp.excluindo;
-                  this.loading = false;
-                  this.$notify({type: 'success', message: 'Campeonato deletado com sucesso!'});
-                  this.getCampeonatos();
+                response => {
+                    this.campeonatos = response.data;
                 },
-                (error) => {
-                  delete camp.excluindo;
-                  this.loading = false;
-                  this.$notify({type: 'danger', 
-                  message: 'Não foi possível deletar o campeonato :('});
-                  this.getCampeonatos();
+                error => console.error(error)
+            );
+        },
+        getEquipes(){
+            axios.get("equipes?s="+this.search)
+                .then(
+                    response => {
+                        if(this.equipesSelecionadas.length > 0){
+                            this.equipes = _.unionBy(this.equipesSelecionadas, response.data, 'id');
+                            return 0;
+                        }
+                        this.equipes = response.data;
+                    },
+                    error => console.error(error)
+                );
+        },
+        salvarCampeonato(){
+            this.loading = true;
+            const fd = new FormData();
+            fd.append('titulo', this.camp.titulo);
+            fd.append('desc', this.camp.desc);
+            fd.append('brasao', this.camp.brasao, this.camp.brasao.nome);
+            fd.append('fl_profissional', this.camp.fl_profissional ? 1 : 0);
+            fd.append('fl_publico', this.camp.fl_publico ? 1 : 0);
+            fd.append('data_inicio', '2018-12-01');
+            fd.append('data_fim', '2019-01-01');
+            fd.append('criador_id', 3);
+            if(this.camp.id){
+                // Edita o campeonato
+                if(typeof(this.camp.equipes[0]) == 'object'){
+                    this.camp.equipes = this.equipesSelecionadas.map(e => e.id);
                 }
-            )
-            .catch((response) => {
-              delete camp.excluindo;
-              this.$notify({type: 'danger', 
-              message: 'Houve algum problema no servidor, contate o administrador e'+
-              'verifique sua conexão com a internet!'});
-              this.getCampeonatos();
-            })
-      },
-      onBrasaoChange(){
-        this.camp.brasao = event.target.files[0];
-        this.previewBrasao(this.camp.brasao);
-      },
-      previewBrasao(foto) {
-        let reader = new FileReader();
-        reader.readAsDataURL(foto);
-        reader.onloadend = () => {
-            this.imgPreview = reader.result;
+                fd.append('equipes', this.camp.equipes);
+                fd.append('_method', 'put');
+                axios.post('campeonatos/'+this.camp.id, fd)
+                    .then(
+                        (response) => {
+                            this.getCampeonatos();
+                            this.loading = false;
+                            this.$notify({type: 'success', 
+                            message: 'Campeonato editado com sucesso!'});
+                            this.modalEquipes = false;
+                            this.esconderForm();
+                        },
+                        (error) => {
+                            this.getCampeonatos();
+                            this.esconderForm();
+                            this.loading = false;
+                            this.modalEquipes = false;
+                            this.$notify({type: 'danger', 
+                            message: 'Não foi possível editar o campeonato :('});
+                        }
+                    )
+            }else{
+                // Cria um novo campeonato
+                axios.post('campeonatos', fd)
+                    .then(
+                        (response) => {
+                        this.getCampeonatos();
+                        this.loading = false;
+                        this.$notify({type: 'success', message: 'Campeonato cadastrado com sucesso!'});
+                        this.esconderForm();
+                        },
+                        (error) => {
+                        this.getCampeonatos();
+                        this.loading = false;
+                        this.$notify({type: 'danger', 
+                        message: 'Não foi possível cadastrar o campeonato :('});
+                        this.esconderForm();
+                        }
+                    )
+            }
+        },
+        editarCampeonato(camp){
+            this.showForm = true;
+            this.camp = Object.assign({}, camp);
+        },
+        deletarCampeonato(camp){
+            camp.excluindo = true;
+            this.loading = true;
+            axios.delete('campeonatos/'+camp.id)
+                .then(
+                    (response) => {
+                    delete camp.excluindo;
+                    this.loading = false;
+                    this.$notify({type: 'success', message: 'Campeonato deletado com sucesso!'});
+                    this.getCampeonatos();
+                    },
+                    (error) => {
+                    delete camp.excluindo;
+                    this.loading = false;
+                    this.$notify({type: 'danger', 
+                    message: 'Não foi possível deletar o campeonato :('});
+                    this.getCampeonatos();
+                    }
+                )
+                .catch((response) => {
+                delete camp.excluindo;
+                this.$notify({type: 'danger', 
+                message: 'Houve algum problema no servidor, contate o administrador e'+
+                'verifique sua conexão com a internet!'});
+                this.getCampeonatos();
+                })
+        },
+        onBrasaoChange(){
+            this.camp.brasao = event.target.files[0];
+            this.previewBrasao(this.camp.brasao);
+        },
+        previewBrasao(foto) {
+            let reader = new FileReader();
+            reader.readAsDataURL(foto);
+            reader.onloadend = () => {
+                this.imgPreview = reader.result;
+            }
+        },
+        esconderForm(){
+            this.camp = {
+            id: null,
+            titulo: null,
+            // data_inicio: null,
+            // data_fim: null,
+            desc: null,
+            brasao: null,
+            // criador_id: null,
+            fl_publico: 1,
+            fl_profissional: 1,
+            equipes: null
+            };
+            this.imgPreview = null;
+            this.showForm = false;
+        },
+        selecionarEquipe(equipe){
+            equipe.selecionada = !equipe.selecionada;
+            this.$forceUpdate();
+            if(equipe.selecionada){
+                const equipesSelecionadas = [...this.equipesSelecionadas];
+                equipesSelecionadas.push(equipe);
+                this.equipesSelecionadas = _.uniqBy(equipesSelecionadas, 'id');
+            }else{
+                _.remove(this.equipesSelecionadas, (e) => e.id == equipe.id);
+            }
+        },
+        salvarEquipes(){
+            const equipesSelecionadas = [...this.equipesSelecionadas];
+            this.camp.equipes = equipesSelecionadas.map(e => e.id);
+            this.salvarCampeonato();
+        },
+        abrirModalEquipes(camp){
+            this.equipesSelecionadas = [];
+            this.modalEquipes = true;
+            this.camp = Object.assign({}, camp);
+            if(camp.equipes.length > 0){
+                this.equipesSelecionadas = _.forEach(camp.equipes, (e) => e.selecionada = true);
+            }
+            this.getEquipes();
         }
-      },
-      esconderForm(){
-        this.camp = {
-          id: null,
-          titulo: null,
-          // data_inicio: null,
-          // data_fim: null,
-          desc: null,
-          brasao: null,
-          // criador_id: null,
-          fl_publico: 1,
-          fl_profissional: 1,
-          equipes: null
-        };
-        this.imgPreview = null;
-        this.showForm = false;
-      }
   }
 }
 </script>
@@ -368,6 +465,71 @@ label {
 .remove-brasao {
     font-size: 25px;
 }
+
+.zleague-form-control {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #DCDCDC;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.card-modal {
+    cursor: pointer;
+    transition-timing-function: ease-in;
+    transition-duration: .3s;
+    opacity: 0.9;
+
+    &:hover {
+        height: 200px;
+        box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+        opacity: 1;
+    }
+
+    &-selecionada {
+        height: 200px;
+        box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+        opacity: 1;
+    }
+}
+
+.info-equipe {
+    display: flex;
+    flex-direction: row;
+    .foto {
+        width: 50px;
+        height: 50px;
+        border-radius: 20px;
+    }
+
+    .nome {
+        flex: 1 0 0;
+        align-self: center;
+        text-align: center;
+        padding-left: 10px;
+    }
+
+    a {
+        align-self: flex-start;
+        font-size: 30px;
+    }
+
+    &.info-modal{
+        display: flex;
+        flex-direction: column;
+        color: #FFFF;
+
+        .foto {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            align-self: center;
+        }
+
+    }
+
+}
+
 
 @keyframes spin {
     0% { transform: rotate(0deg); }

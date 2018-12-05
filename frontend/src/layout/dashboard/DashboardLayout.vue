@@ -3,11 +3,12 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
-        <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Juiz" icon="tim-icons icon-settings-gear-63"/>
+        <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Registrar Regras" icon="tim-icons icon-settings-gear-63"/>
         <sidebar-link to="/escalacao" name="Escalação" icon="tim-icons icon-notes"/>
         <sidebar-link to="/campeonatos" name="Camepeonatos" icon="tim-icons icon-trophy"/>
         <sidebar-link to="/atletas" name="Atletas" icon="tim-icons icon-user-run"/>
         <sidebar-link to="/times" name="Times" icon="tim-icons icon-vector"/>
+        <sidebar-link to="/pontuacao" name="Atribuir Ação" icon="tim-icons icon-shape-star"/>
       </template>
     </side-bar>
     <div class="main-panel">

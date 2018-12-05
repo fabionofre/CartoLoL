@@ -1,7 +1,8 @@
 <template>
     <div class="container">
         <div class="row">
-            <div :class="{'col-md-4 opaco': showForm, 'col-md-12': !showForm}" 
+            <div v-if="atletas.length > 0" 
+            :class="{'col-md-4 opaco': showForm, 'col-md-12': !showForm}" 
             class="col mr-auto ml-auto lista-atletas">
                 <div class="wizard-container">
                     <div class="card card-header" data-color="primary">
@@ -59,19 +60,22 @@
                                     </b-collapse>
                                 </div>
                             </div>
-                            <button v-if="!showForm" 
-                            class="btn btn-lg btn-round btn-primary btn-icon float-right my-fab" 
-                            title="Adicionar Campeonato"
-                            @click="showForm = true"
-                            >
-                                <a href="javascript:void(0)">
-                                    <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
-                                </a>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div v-else-if="!showForm">
+                <h3>Você ainda não cadastrou nenhum atleta!</h3>
+            </div>
+            <button v-if="!showForm" 
+            class="btn btn-lg btn-round btn-primary btn-icon float-right my-fab" 
+            title="Adicionar Campeonato"
+            @click="showForm = true"
+            >
+                <a href="javascript:void(0)">
+                    <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
+                </a>
+            </button>
             <div v-show="showForm" class="col col md-8 form-atleta">
                 <div class="card">
                     <div class="card-body">
@@ -116,6 +120,57 @@
                                     placeholder="Sobrenome do atleta" :disabled="loading">
                                 </div>
                             </div>
+                            <div class="col col-md-12 mb-3">
+                                <label>Equipe</label>
+                                <cool-select
+                                v-if="!atleta.equipe"
+                                v-model="atleta.equipe"
+                                :items="equipes"
+                                item-text="nome"
+                                >
+                                    <template
+                                    slot="item"
+                                    slot-scope="{ item: equipe }"
+                                    >
+                                        <div style="display: flex; align-items: center;">
+                                            <img
+                                            :src="'http://localhost:8000/storage/'+equipe.brasao"
+                                            class="equipe-brasao"
+                                            >
+
+                                            <div>
+                                                <b>{{ equipe.nome }}</b>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template
+                                    slot="selection"
+                                    slot-scope="{ item: equipe }"
+                                    >
+                                    <img
+                                    :src="'http://localhost:8000/storage/'+equipe.brasao"
+                                    class="equipe-brasao"
+                                    >
+                                    <div class="color-white">
+                                        <b>{{ equipe.nome }}</b>
+                                    </div>
+                                    </template>
+                                    <template
+                                    slot="no-data"
+                                    >
+                                        <b>Nenhuma equipe foi encontrada com esse nome :(</b>
+                                    </template>
+                                </cool-select>
+                                <div v-if="atleta.equipe">
+                                    <img
+                                    :src="'http://localhost:8000/storage/'+atleta.equipe.brasao"
+                                    class="possui-equipe-brasao"
+                                    >
+                                    <a href="javascript:void(0)" @click="atleta.equipe = null">
+                                        <i class="tim-icons icon-simple-remove remove-foto"></i>
+                                    </a>
+                                </div>
+                            </div>
                             <button class="btn btn-primary btn-block" 
                             @click="salvarAtleta()" :disabled="loading">
                                 <span v-if="!loading">
@@ -131,7 +186,9 @@
     </div>
 </template>
 <script>
+import { CoolSelect } from 'vue-cool-select'
 export default {
+    components: { CoolSelect },
     name: 'Atletas',
     data(){
         return {
@@ -141,16 +198,19 @@ export default {
                 apelido: null,
                 sobrenome: null,
                 foto: null,
+                equipe: null
                 // criador_id: null,
                 // data_nascimento: null
             },
             showForm: false,
             loading: null,
-            imgPreview: null
+            imgPreview: null,
+            equipes: []
         }
     },
     mounted(){
         this.getAtletas();
+        this.getEquipes();
     },
     methods: {
         getAtletas(){
@@ -182,6 +242,7 @@ export default {
             fd.append('nome', this.atleta.nome);
             fd.append('sobrenome', this.atleta.sobrenome);
             fd.append('apelido', this.atleta.apelido);
+            fd.append('equipe_id', this.atleta.equipe.id);
             fd.append('criador_id', 3);
             fd.append('data_nascimento', '1996-12-29');
             if(this.atleta.id){
@@ -224,6 +285,7 @@ export default {
             }
         },
         editarAtleta(atleta){
+            console.log(atleta);
             this.showForm = true;
             this.atleta = Object.assign({}, atleta);
         },
@@ -263,6 +325,15 @@ export default {
                     'verifique sua conexão com a internet!'});
                     this.getAtletas();
                 })
+        },
+        getEquipes(){
+            axios.get("equipes?s=")
+                .then(
+                    response => {
+                        this.equipes = response.data;
+                    },
+                    error => console.error(error)
+                );
         },
     }
 }
@@ -340,6 +411,21 @@ export default {
 
 label {
     color: #ffd600 !important; 
+}
+
+.color-white {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.equipe-brasao {
+    max-width: 30px;
+    margin-right: 10px;
+    border: 1px solid #eaecf0;
+}
+
+.possui-equipe-brasao {
+    max-width: 60px;
+    margin-right: 10px;
 }
 
 @keyframes spin {

@@ -37,10 +37,20 @@
                 </div>
             </div>
             <div class="col col-md-5" 
+            v-if="!(escalacao.meio || escalacao.topo || escalacao.cacador || escalacao.atirador
+            || escalacao.suporte)">
+                <h2 class="text-success">Z$ {{dinheiroTotal}}</h2>
+            </div>
+            <div class="col col-md-5" 
             v-if="escalacao.meio || escalacao.topo || escalacao.cacador || escalacao.atirador
             || escalacao.suporte">
                 <div class="card">
                     <div class="card-body card-jogadores">
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <h2 class="text-success">Z$ {{dinheiroTotal}}</h2>
+                            </div>
+                        </div>
                         <div class="row" v-if="escalacao.topo">
                             <div class="col col-md-2">
                                 <img class="foto-role-jogador mt-2" src="../assets/img/topo.png">
@@ -169,8 +179,8 @@
                 <div class="row my-1">
                     <div class="col offset-md-1 col-md-10">
                         <form @submit.prevent="getAtletas()">
-                            <input class="zleague-form-control" type="search" placeholder="Busque o atlelta por nome e tecle enter!"
-                             v-model="search">
+                            <input class="zleague-form-control" ref="inputsearch" type="text"  @input="handleSearch"
+                            placeholder="Busque o atlelta por nome e tecle enter!">
                         </form>
                     </div>
                 </div>
@@ -183,6 +193,9 @@
                                     <img class="foto" :src="'http://localhost:8000/storage/'+atleta.foto">
                                     <span class="nome">                                                    
                                         {{atleta.nome +" '"+ atleta.apelido +"' "+atleta.sobrenome}}
+                                    </span>
+                                    <span class="text-danger text-center">
+                                        Z$ {{atleta.preco}}
                                     </span>
                                 </div>
                             </div>
@@ -210,7 +223,20 @@ export default {
                 suporte: null
             },
             loading_escalacao: false,
-            loading_fullscreen: false
+            loading_fullscreen: false,
+            user: null,
+            dinheiroTotal: 0
+        }
+    },
+    created(){
+        if(this.$auth.isAuthenticated()){
+            this.user = this.$auth.getUser();
+            this.dinheiroTotal = this.user.patrimonio;
+        }
+    },
+    watch: {
+        search: function(val){
+            this.getAtletas();
         }
     },
     mounted(){
@@ -218,6 +244,11 @@ export default {
         this.getAtletas();
     },
     methods: {
+        handleSearch(evt){
+            setTimeout(() => {
+                this.search = evt.target.value;
+            }, 500);
+        },
         escalarJogador(role){
             this.modal_role = role;
         },
@@ -243,22 +274,35 @@ export default {
                 this.escalacao.atirador = atleta;
             else
                 this.escalacao.suporte = atleta;
-            console.log(this.escalacao);
+            this.dinheiroTotal = parseFloat(this.dinheiroTotal) - parseFloat(atleta.preco);
+            this.search = '';
+            this.$refs.inputsearch.value = '';
             this.$notify({type: 'success', message: atleta.apelido+' selecionado!'});
             this.$refs.modal.hide();
         },
         desescalarAtleta(role){
-            if(role == 'meio')
+            let atleta = null;
+            if(role == 'meio'){
+                atleta = Object.assign({}, this.escalacao.meio);
                 this.escalacao.meio = null;
-            else if(role == 'topo')
+            }
+            else if(role == 'topo'){
+                atleta = Object.assign({}, this.escalacao.topo);
                 this.escalacao.topo = null;
-            else if(role == 'cacador')
+            }
+            else if(role == 'cacador'){
+                atleta = Object.assign({}, this.escalacao.cacador);
                 this.escalacao.cacador = null;
-            else if(role == 'atirador')
+            }
+            else if(role == 'atirador'){
+                atleta = Object.assign({}, this.escalacao.atirador);
                 this.escalacao.atirador = null;
-            else
+            }
+            else{
+                atleta = Object.assign({}, this.escalacao.suporte);
                 this.escalacao.suporte = null;
-
+            }
+            this.dinheiroTotal = parseFloat(this.dinheiroTotal) + parseFloat(atleta.preco);
             this.$notify({type: 'warning', message: 'Atleta removido da escalação!'});
         },
         confirmarEscalacao(){
@@ -269,13 +313,15 @@ export default {
                 topo_id: this.escalacao.topo.id,
                 cacador_id: this.escalacao.cacador.id,
                 atirador_id: this.escalacao.atirador.id,
-                suporte_id: this.escalacao.suporte.id
+                suporte_id: this.escalacao.suporte.id,
+                patrimonio: this.dinheiroTotal
             }
             axios.post("escalacoes", escalacao)
                 .then(
                     (response) => {
                         this.loading_escalacao = false;
                         this.$notify({type: 'success', message: 'Time escalado com sucesso!'});
+                        this.$bus.$emit('att:user', 'vai');
                     },
                     (error) => {
                         this.loading_escalacao = false;

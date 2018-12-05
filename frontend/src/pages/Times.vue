@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div v-if="equipes.length > 0" class="row">
           <div :class="{'opaco': showForm, 'col-md-12': !showForm}" 
           class="col mr-auto ml-auto lista-equipes">
             <div class="wizard-container">
@@ -99,31 +99,28 @@
                                     <img :src="'http://localhost:8000/storage/'+atleta.foto" alt="">
                                 </a>
                                 </li>
-                                <button class="btn btn-round btn-lg btn-primary btn-icon" 
-                                title="Adicionar Atleta">
-                                    <a href="javascript:void(0)">
-                                        <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
-                                    </a>
-                                </button>
                             </ul>
                         </div>
                       </b-collapse>
                     </div>
                   </div>
-                  <button v-if="!showForm" 
-                    class="btn btn-lg btn-round btn-primary btn-icon float-right my-fab" 
-                    title="Adicionar Equipe"
-                    @click="showForm = true"
-                    >
-                        <a href="javascript:void(0)">
-                            <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
-                        </a>
-                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div v-else-if="!showForm">
+            <h3>Você ainda não cadastrou nenhuma equipe!</h3>
+        </div>
+        <button v-if="!showForm" 
+        class="btn btn-lg btn-round btn-primary btn-icon float-right my-fab" 
+        title="Adicionar Equipe"
+        @click="showForm = true"
+        >
+            <a href="javascript:void(0)">
+                <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
+            </a>
+        </button>
     </div>
 </template>
 <script>

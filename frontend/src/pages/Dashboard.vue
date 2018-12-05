@@ -7,7 +7,8 @@
           <div class="card-header">
             <div class="row">
               <div class="col-md-12 text-center text-success ml-auto mr-auto">
-                <h2 class="text-success">Mercado Aberto</h2>
+                <h2 class="text-success" v-if="mercado_fecha_em != 'Mercado fechado!'">Mercado Aberto</h2>
+                <h3 class="text-danger">{{mercado_fecha_em}}</h3>
               </div>
             </div>
           </div>
@@ -18,7 +19,7 @@
         <img src="../assets/img/hyperx-propaganda.jpg" height="250px;" width="100%;">
       </div>
 
-      <div class="col-lg-3 col-md-6">
+      <!-- <div class="col-lg-3 col-md-6">
         <div class="card card-stats">
           <div class="card-body">
             <div class="row">
@@ -42,7 +43,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="col-lg-3 col-md-6">
         <div class="card card-stats">
@@ -56,17 +57,17 @@
               <div class="col-7">
                 <div class="numbers">
                   <p class="card-category">Última Pontuação</p>
-                  <h3 class="card-title">+45 pts</h3>
+                  <h3 class="card-title">{{pontosTotal > 0 ? '+' : ''}} {{pontosTotal}} pts</h3>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card-footer">
+          <!-- <div class="card-footer">
             <hr>
             <div class="stats">
               <i class="tim-icons icon-sound-wave"></i> Última Pesquisa
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -82,21 +83,15 @@
               <div class="col-7">
                 <div class="numbers">
                   <p class="card-category">Patrimônio</p>
-                  <h3 class="card-title">5.000K</h3>
+                  <h3 class="card-title">Z$ {{user.patrimonio}}</h3>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <hr>
-            <div class="stats">
-              <i class="tim-icons icon-notes"></i> De acordo com os resultados
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6">
+      <!-- <div class="col-lg-3 col-md-6">
         <div class="card card-stats">
           <div class="card-body">
             <div class="row">
@@ -120,7 +115,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </div>
@@ -140,6 +135,21 @@
       BarChart,
       TaskList,
       UserTable
+    },
+    created(){
+      if(!(this.user) && this.$auth.isAuthenticated()){
+        this.user = this.$auth.getUser();
+      }
+      this.$bus.$on('att:user', this.getUser());
+    },
+    beforeDestroy() {
+        this.$bus.$off('att:user');
+    },
+    mounted(){
+      this.getRegrasPontuacao();
+      this.getInfoRodada();
+      this.minhaEscalacao();
+      this.getPontuacoes();
     },
     data() {
       return {
@@ -220,7 +230,19 @@
           },
           gradientColors: config.colors.primaryGradient,
           gradientStops: [1, 0.4, 0],
-        }
+        },
+        rodada_atual: null,
+        mercado_fecha_em: '',
+        user: null,
+        escalacao: {
+            topo: null,
+            meio: null,
+            cacador: null,
+            atirador: null,
+            suporte: null
+        },
+        atletasAcoes: [],
+        acoes: []
       }
     },
     computed: {
@@ -232,7 +254,14 @@
       },
       bigLineChartCategories() {
         return ['Abates', 'Assistências', 'Wards  '];
-      }
+      },
+      pontosTotal (){
+        let pontos_rodada = 0;
+        this.atletasAcoes.map(a => {
+          pontos_rodada += a.pontos;
+        });
+        return pontos_rodada;
+      },
     },
     methods: {
       initBigChart(index) {
@@ -257,6 +286,110 @@
         this.$refs.bigChart.updateGradients(chartData);
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;
+      },
+      getInfoRodada(){
+        axios.get("campeonatos/1")
+        .then(
+          response => {
+            this.rodada_atual = response.data.rodada_atual;
+            const diferenca_horas = this.rodada_atual.diferenca_horas_hoje;
+            if(diferenca_horas > 24){
+              const diferenca_dias = diferenca_horas / 24;
+              this.mercado_fecha_em = 'Fecha em ' + Math.round(diferenca_dias) + (diferenca_dias > 1 ? ' dias' : ' dias');
+            }else{
+              this.mercado_fecha_em = 'Fecha em ' + diferenca_horas + (diferenca_horas > 1 ? ' horas' : ' hora');
+              if(diferenca_horas == 0)
+                this.mercado_fecha_em = 'Mercado fechado!';
+            }
+          },
+          error => console.error(error)
+        );
+      },
+      minhaEscalacao(){
+          this.loading_fullscreen = true;
+          let primeiro_response;
+          axios.get("escalacoes/"+this.$auth.getUser().id)
+              .then(
+                  (response) => {
+
+                      if(!response.data){
+                          this.loading_fullscreen = false;
+                          return null;
+                      }
+                          
+                      let primeiro_response = response;
+                      axios.get("atletas/"+primeiro_response.data.topo_id)
+                          .then(response => {
+                              this.escalacao.topo = response.data;
+                              axios.get("atletas/"+primeiro_response.data.meio_id)
+                                  .then(response => {
+                                      this.escalacao.meio = response.data;
+                                      axios.get("atletas/"+primeiro_response.data.cacador_id)
+                                          .then(response => {
+                                              this.escalacao.cacador = response.data;
+                                              axios.get("atletas/"+primeiro_response.data.atirador_id)
+                                                  .then(response => {
+                                                      this.escalacao.atirador = response.data;
+                                                      axios.get("atletas/"+primeiro_response.data.suporte_id)
+                                                          .then(response => {
+                                                              this.escalacao.suporte = response.data;
+                                                              this.loading_fullscreen = false;
+                                                          });
+                                                  });
+                                          });
+                                  });
+                          });
+                  },
+                  (error) => {
+                      console.error(error);
+                  }
+              )
+      },
+      getPontuacoes(){
+        axios.get('pontuacoes')
+          .then(
+            response => {
+              const pontuacoes = response.data;
+              _.forEach(pontuacoes, p => {
+                let atleta = p.atleta;
+                this.atletasAcoes.push(atleta);
+              });
+              this.atletasAcoes = _.uniqBy(this.atletasAcoes, 'id');
+              this.atletasAcoes.map(a => a.pontos = 0);
+              _.forEach(pontuacoes, p => {
+                let atleta_id = p.atleta.id;
+                _.forEach(this.atletasAcoes, a => {
+                  if(atleta_id == a.id){
+                    // Dá os pontos aqui!
+                    let acao = _.find(this.acoes, acao => {
+                      return acao.acao_id == p.acao_id
+                    });
+                    if(acao)
+                      a.pontos += (acao.pontuacao * p.quantidade);               }
+                });
+              });
+            },
+            error => console.error(error)
+          )
+      },
+      getRegrasPontuacao(){
+        axios.get("regras-pontuacao?campeonato_id=1")
+          .then(
+            response => {
+              this.acoes = response.data;
+            },
+            error => console.error(error)
+          );
+      },
+      getUser(){
+        axios.post("auth/me")
+          .then(
+            response => {
+              this.user = response.data;
+              console.log(this.user);
+            },
+            error => console.error(error)
+          );
       }
     },
   };

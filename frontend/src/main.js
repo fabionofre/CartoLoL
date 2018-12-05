@@ -8,8 +8,12 @@ import EventBus from './plugins/event-bus';
 import axios from 'axios';
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import _ from "lodash";
+import VueSelect from 'vue-cool-select'
 
-
+Vue.use(VueSelect, {
+  theme: 'bootstrap'
+});
 
 Vue.use(BootstrapVue);
 Vue.use(BlackDashboard);
@@ -17,6 +21,7 @@ Vue.use(Auth);
 Vue.use(EventBus);
 
 window.axios = axios
+window._ = _;
 
 const token = localStorage.getItem('user_token')
 if (token) {
