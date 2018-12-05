@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Campeonato;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CampeonatoController extends Controller
 {
@@ -44,7 +45,7 @@ class CampeonatoController extends Controller
         $campeonato->brasao = $request->brasao->getClientOriginalName();
         $campeonato->fl_profissional = $request->fl_profissional;
         $campeonato->fl_publico = $request->fl_publico;
-        $campeonato->criador_id = $request->criador_id;
+        $campeonato->criador_id = 1;
         
 
 
@@ -63,9 +64,31 @@ class CampeonatoController extends Controller
      * @param  \App\Campeonato  $campeonato
      * @return \Illuminate\Http\Response
      */
-    public function show(Campeonato $campeonato)
+    public function show($id)
     {
-        //
+        
+        $campeonato = Campeonato::find($id);
+        $rodadas = $campeonato->rodadas;
+
+        $today = new Carbon();
+
+        foreach($campeonato->rodadas as $rodada){
+            $date_rodada = new Carbon($rodada->data);
+            if($date_rodada->greaterThan($today)){
+                $rodada_atual = $rodada;
+                break;
+            }
+        }
+
+        $rodada_atual['diferenca_horas_hoje'] = $today->diffInHours($rodada_atual->data);  
+
+
+        return [
+            "campeonato" => $campeonato,
+            "rodadas" => $rodadas,
+            "rodada_atual" => $rodada_atual
+        ];
+
     }
 
     /**
@@ -90,7 +113,7 @@ class CampeonatoController extends Controller
     {
         $campeonato = Campeonato::find($id);
 
-        $campeonato->criador_id = $request->criador_id;
+        $campeonato->criador_id = 1;
         $campeonato->data_inicio = $request->data_inicio;
         $campeonato->data_fim = $request->data_fim;
         $campeonato->desc = $request->desc;

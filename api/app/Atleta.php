@@ -14,7 +14,7 @@ class Atleta extends Model
 	protected $softDelete = true;
 
     protected $fillable = [
-    	'nome', 'sobrenome','foto', 'criador_id', 'data_nascimento', 'apelido'
+    	'nome', 'sobrenome','foto', 'criador_id', 'data_nascimento', 'apelido', 'equipe_id'
     ];
 
     protected $dates = [
@@ -26,7 +26,12 @@ class Atleta extends Model
 
     public function equipe()
     {
-        return $this->belongsTo('App\Atleta');
+        return $this->belongsTo('App\Equipe');
+    }
+
+    public function pontuacoes()
+    {
+        return $this->hasMany('App\Pontuacao');
     }
 
     public function getDataNascimentoAttribute($value) {

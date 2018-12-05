@@ -21,7 +21,8 @@ Route::resources([
     'funcoes' => 'FuncaoController',
     'acoes' => 'AcaoController',
     'regras-pontuacao' => 'RegraPontuacaoController',
-    'escalacoes' => 'EscalacaoController'
+    'escalacoes' => 'EscalacaoController',
+    'pontuacoes' => 'PontuacaoController'
 ]);
 
 

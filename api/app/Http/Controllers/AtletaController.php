@@ -14,7 +14,7 @@ class AtletaController extends Controller
      */
     public function index(Request $request)
     {
-        return Atleta::with('equipe')->where('nome', 'like','%'.$request->s.'%')->get();
+        return Atleta::with('equipe')->where('nome', 'like','%'.$request->s.'%')->orWhere('apelido', 'like','%'.$request->s.'%')->orWhere('sobrenome', 'like','%'.$request->s.'%')->get();
     }
 
     /**
@@ -39,7 +39,8 @@ class AtletaController extends Controller
         $atleta->nome = $request['nome'];
         $atleta->sobrenome = $request['sobrenome'];
         $atleta->apelido = $request['apelido'];
-        $atleta->criador_id = 3;
+        $atleta->criador_id = 1;
+        $atleta->equipe_id = $request['equipe_id'];
         $atleta->data_nascimento = $request['data_nascimento'];
         $atleta->foto = $request->foto->getClientOriginalName();
 
@@ -89,7 +90,8 @@ class AtletaController extends Controller
         $atleta->nome = $request['nome'];
         $atleta->sobrenome = $request['sobrenome'];
         $atleta->apelido = $request['apelido'];
-        $atleta->criador_id = 3;
+        $atleta->criador_id = 1;
+        $atleta->equipe_id = $request['equipe_id'];
         $atleta->data_nascimento = $request['data_nascimento'];
 
         if (isset($request->foto)) {

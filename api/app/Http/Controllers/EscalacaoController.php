@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Escalacao;
 use Illuminate\Http\Request;
+use App\User;
 
 class EscalacaoController extends Controller
 {
@@ -36,6 +37,14 @@ class EscalacaoController extends Controller
     public function store(Request $request)
     {
         $escalacao = Escalacao::where('invocador_id', $request['invocador_id'])->first();
+
+        $patrimonio = $request['patrimonio'];
+
+        $user = User::find($request['invocador_id']);
+        $user->patrimonio = $patrimonio;
+        $user->save();
+
+        unset($request['patrimonio']);
 
         if($escalacao){
             $esc = Escalacao::find($escalacao->id);
@@ -86,6 +95,14 @@ class EscalacaoController extends Controller
     public function update(Request $request, Escalacao $escalacao)
     {
         $escalacao = Escalacao::find($id);
+
+        $patrimonio = $request['patrimonio'];
+
+        $user = User::find($request['invocador_id']);
+        $user->patrimonio = $patrimonio;
+        $user->save();
+
+        unset($request['patrimonio']);
 
         $escalacao->fill($request->all());
 

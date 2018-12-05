@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRegraPontuacaosTable extends Migration
+class CreateRodadasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateRegraPontuacaosTable extends Migration
      */
     public function up()
     {
-        Schema::create('regras_pontuacao', function (Blueprint $table) {
+        Schema::create('rodadas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('acao_id')->unsigned();
-            $table->integer('funcao_id')->unsigned();
-            $table->integer('pontuacao');
+            $table->integer('num_rodada');
+            $table->unsignedInteger('campeonato_id');
+            $table->foreign('campeonato_id')->references('id')->on('campeonatos');
+            $table->date('data');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateRegraPontuacaosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regra_pontuacaos');
+        Schema::dropIfExists('rodadas');
     }
 }

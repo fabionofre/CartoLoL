@@ -13,9 +13,9 @@ class EquipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Equipe::with('atletas')->get();
+        return Equipe::with('atletas')->where('nome', 'like','%'.$request->s.'%')->get();
     }
 
     /**
@@ -41,7 +41,7 @@ class EquipeController extends Controller
         $equipe->nome = $request->nome;
         $equipe->brasao = $request->brasao->getClientOriginalName();
         $equipe->fl_profissional = $request->fl_profissional;
-        $equipe->criador_id = $request->criador_id;
+        $equipe->criador_id = 1;
 
         if ($request->brasao->isValid()) {
             $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
@@ -85,9 +85,7 @@ class EquipeController extends Controller
     {
         $equipe = Equipe::find($id);
 
-        // dd($request['atletas']);
-
-        $equipe->criador_id = $request['criador_id'];
+        $equipe->criador_id = 1;
         $equipe->fl_profissional = $request['fl_profissional'];
         $equipe->nome = $request['nome'];
 
@@ -96,35 +94,35 @@ class EquipeController extends Controller
             $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
         }
 
-        $atletas = array();
+        // $atletas = array();
 
-        if(is_string($request['atletas']))
-        {
-            $request['atletas'] = explode(",",$request['atletas']);
-        }
+        // if(is_string($request['atletas']))
+        // {
+        //     $request['atletas'] = explode(",",$request['atletas']);
+        // }
 
-        $atletas_equipe = $equipe->atletas()->get()->toArray();
+        // $atletas_equipe = $equipe->atletas()->get()->toArray();
 
-        if(is_array($atletas_equipe)){
-            foreach($atletas_equipe as $atleta){
-                $x = Atleta::find($atleta['id']);
-                $x->equipe_id = null;
-                $x->save();
-            }
-        }
+        // if(is_array($atletas_equipe)){
+        //     foreach($atletas_equipe as $atleta){
+        //         $x = Atleta::find($atleta['id']);
+        //         $x->equipe_id = null;
+        //         $x->save();
+        //     }
+        // }
 
-        if(is_array($request['atletas'])){
-            foreach($request['atletas'] as $a){
-                $aux = Atleta::find($a);
-                $atletas[] = $aux;
-            }
-        }
+        // if(is_array($request['atletas'])){
+        //     foreach($request['atletas'] as $a){
+        //         $aux = Atleta::find($a);
+        //         $atletas[] = $aux;
+        //     }
+        // }
 
-        $equipe->atletas()->saveMany($atletas);
+        // $equipe->atletas()->saveMany($atletas);
 
         $equipe->save();
 
-        return ["message"=>"Equipe modificada com sucesso!", "equipe"=>$atletas];
+        return ["message"=>"Equipe modificada com sucesso!", "equipe"=>$equipe];
     }
 
     /**
