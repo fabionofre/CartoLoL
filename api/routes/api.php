@@ -22,10 +22,12 @@ Route::resources([
     'acoes' => 'AcaoController',
     'regras-pontuacao' => 'RegraPontuacaoController',
     'escalacoes' => 'EscalacaoController',
-    'pontuacoes' => 'PontuacaoController'
+    'pontuacoes' => 'PontuacaoController',
+    'ligas' => 'LigaController',
+    'participantes-liga' => 'ParticipanteLigaController'
 ]);
 
-
+Route::get('minha-pontuacao/{id}', 'PontuacaoController@minhaPontuacao');
 
 Route::group([
 
@@ -33,7 +35,6 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');

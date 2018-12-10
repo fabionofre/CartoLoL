@@ -26,4 +26,8 @@ class Campeonato extends Model
         return $this->hasMany('App\Rodada');
     }
 
+    public function ligas(){
+        return $this->hasMany('App\Liga');
+    }
+
 }

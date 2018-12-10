@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Campeonato;
 use App\Pontuacao;
+use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -38,8 +39,8 @@ class PontuacaoController extends Controller
      */
     public function store(Request $request)
     {
-       $campeonato = Campeonato::find(1);
-       $rodadas = $campeonato->rodadas;
+        $campeonato = Campeonato::find(1);
+        $rodadas = $campeonato->rodadas;
 
         $today = new Carbon();
 
@@ -106,5 +107,12 @@ class PontuacaoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function minhaPontuacao($usuario_id){
+        $user = User::find($usuario_id);
+
+        
+        
     }
 }

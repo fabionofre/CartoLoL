@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Escalacao;
+use App\Campeonato;
 use Illuminate\Http\Request;
 use App\User;
+use Carbon\Carbon;
 
 class EscalacaoController extends Controller
 {
@@ -46,17 +48,34 @@ class EscalacaoController extends Controller
 
         unset($request['patrimonio']);
 
+        $campeonato = Campeonato::find(1);
+        $rodadas = $campeonato->rodadas;
+
+        $today = new Carbon();
+
+        foreach($campeonato->rodadas as $rodada){
+            $date_rodada = new Carbon($rodada->data);
+            if($date_rodada->greaterThan($today)){
+                $rodada_atual = $rodada;
+                break;
+            }
+        }
+
+        $requestData = $request->all();
+
+        $requestData['rodada_id'] = $rodada_atual['id'];
+
         if($escalacao){
             $esc = Escalacao::find($escalacao->id);
 
-            $esc->fill($request->all());
+            $esc->fill($requestData);
 
             $esc->save();
 
             return $esc;
         }
 
-        $escalacao = Escalacao::create($request->all());
+        $escalacao = Escalacao::create($requestData);
 
         return $escalacao;
     }

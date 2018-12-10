@@ -28,6 +28,11 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public function ligasParticipo()
+    {
+        return $this->belongsToMany('App\Liga', 'participantes_liga', 'liga_id', 'invocador_id');
+    }
+
     // Rest omitted for brevity
 
     /**
@@ -48,6 +53,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function minhasLigas(){
+        return $this->hasMany('App\Liga');
     }
 
 }
