@@ -38,7 +38,10 @@ class Atleta extends Model
     	return Carbon::parse($value)->diff(Carbon::now())->format('%y anos');
     }
 
-
+    public function escaladoEm()
+    {
+        return $this->hasMany('App\Escalacao');
+    }
 
 
 }

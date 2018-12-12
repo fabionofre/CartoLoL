@@ -15,10 +15,10 @@ class AddPivotTableParticipantesLiga extends Migration
     {
         Schema::create('participantes_liga', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('liga_id');
-            $table->foreign('liga_id')->references('id')->on('ligas');
             $table->unsignedInteger('invocador_id');
             $table->foreign('invocador_id')->references('id')->on('users');
+            $table->unsignedInteger('liga_id');
+            $table->foreign('liga_id')->references('id')->on('ligas');
             $table->unique(['liga_id', 'invocador_id']);
             $table->timestamps();
         });

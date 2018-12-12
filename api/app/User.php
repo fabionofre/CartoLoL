@@ -30,7 +30,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function ligasParticipo()
     {
-        return $this->belongsToMany('App\Liga', 'participantes_liga', 'liga_id', 'invocador_id');
+        return $this->belongsToMany('App\Liga', 'participantes_liga', 'invocador_id', 'liga_id');
     }
 
     // Rest omitted for brevity

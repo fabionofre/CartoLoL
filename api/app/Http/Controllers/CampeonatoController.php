@@ -15,7 +15,7 @@ class CampeonatoController extends Controller
      */
     public function index()
     {
-        return Campeonato::with('equipes.atletas')->get();
+        return Campeonato::with(['equipes.atletas'])->get();
     }
 
     /**

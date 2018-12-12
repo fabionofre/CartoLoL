@@ -88,7 +88,7 @@ class EscalacaoController extends Controller
      */
     public function show($invocador_id)
     {
-        $escalacao = Escalacao::where('invocador_id', $invocador_id)->first();
+        $escalacao = Escalacao::with(['topo', 'meio', 'cacador', 'atirador', 'suporte'])->where('invocador_id', $invocador_id)->first();
 
         return $escalacao;
     }

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Liga extends Model
 {
+
+    protected $fillable = ['liga_id', 'invocador_id'];
     
     public function participantes()
     {
-        return $this->belongsToMany('App\User', 'participantes_liga', 'invocador_id', 'liga_id');
+        return $this->belongsToMany('App\User', 'participantes_liga', 'liga_id', 'invocador_id');
     }
 
     public function campeonato(){

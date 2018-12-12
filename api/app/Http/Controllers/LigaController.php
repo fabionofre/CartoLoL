@@ -14,7 +14,8 @@ class LigaController extends Controller
      */
     public function index()
     {
-        return Liga::with(['participantes', 'campeonato', 'criador'])->get();
+        $ligas = Liga::with(['participantes', 'campeonato', 'criador'])->get();
+        return $ligas;
     }
 
     /**
@@ -38,7 +39,7 @@ class LigaController extends Controller
         $liga = new Liga;
         $liga->desc = $request->desc;
         $liga->brasao = $request->brasao->getClientOriginalName();
-        $liga->criador_id = 1;
+        $liga->criador_id = $request->criador_id;
         $liga->campeonato_id = $request->campeonato_id;
 
         if ($request->brasao->isValid()) {
