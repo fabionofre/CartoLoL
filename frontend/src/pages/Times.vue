@@ -165,7 +165,7 @@ export default {
         fd.append('nome', this.equipe.nome);
         fd.append('brasao', this.equipe.brasao, this.equipe.brasao.nome);
         fd.append('fl_profissional', this.equipe.fl_profissional ? 1 : 0);
-        fd.append('criador_id', 3);
+        fd.append('criador_id', 1);
         if(this.equipe.id){
             // Edita a equipe
             // fd.append('atletas', this.equipe.atletas);

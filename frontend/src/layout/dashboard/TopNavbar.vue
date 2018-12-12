@@ -159,17 +159,8 @@
         this.showMenu = !this.showMenu;
       },
       logout() {
-        axios.post("auth/logout?token="+this.token)
-          .then(
-            response => {
-              console.log(response);
-              this.$auth.destroyToken();
-              this.$router.push('login');
-            },
-            error => {
-              console.error(error);
-            }
-          )
+        this.$auth.destroyToken();
+        this.$router.push('login');
       },
       goToPerfil(){
         this.$router.push('perfil');

@@ -199,8 +199,6 @@ export default {
                 sobrenome: null,
                 foto: null,
                 equipe: null
-                // criador_id: null,
-                // data_nascimento: null
             },
             showForm: false,
             loading: null,
@@ -217,7 +215,6 @@ export default {
             axios.get("atletas")
                 .then(
                     response => {
-                        console.log(response);
                         this.atletas = response.data;
                     },
                     error => console.error(error)
@@ -243,7 +240,7 @@ export default {
             fd.append('sobrenome', this.atleta.sobrenome);
             fd.append('apelido', this.atleta.apelido);
             fd.append('equipe_id', this.atleta.equipe.id);
-            fd.append('criador_id', 3);
+            fd.append('criador_id', 1);
             fd.append('data_nascimento', '1996-12-29');
             if(this.atleta.id){
                 fd.append('_method', 'put');
@@ -285,7 +282,6 @@ export default {
             }
         },
         editarAtleta(atleta){
-            console.log(atleta);
             this.showForm = true;
             this.atleta = Object.assign({}, atleta);
         },

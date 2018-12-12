@@ -1,14 +1,15 @@
 <template>
     <div>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" :class="{active: showLista}" href="Javascript:void(0);" @click="showLista = true">Lista Regras de Pontuação</a>
+                <a class="nav-link" :class="{active: showLista}" href="Javascript:void(0);" 
+                @click="showLista = true">Lista Regras de Pontuação</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" :class="{active: !showLista}" href="Javascript:void(0);" @click="showLista = false">Cadastrar Regras de Pontuação</a>
+                <a class="nav-link" :class="{active: !showLista}" href="Javascript:void(0);" 
+                @click="showLista = false">Cadastrar Regras de Pontuação</a>
             </li>
         </ul>
-
         <div class="mt-5 content" v-if="showLista">
             <div class="row">
                 <div class="col-md-4 mb-5" v-if="pontos_topo.length > 0">

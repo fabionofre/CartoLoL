@@ -5,10 +5,11 @@
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Registrar Regras" icon="tim-icons icon-settings-gear-63"/>
         <sidebar-link to="/escalacao" name="Escalação" icon="tim-icons icon-notes"/>
-        <sidebar-link to="/campeonatos" name="Camepeonatos" icon="tim-icons icon-trophy"/>
-        <sidebar-link to="/atletas" name="Atletas" icon="tim-icons icon-user-run"/>
-        <sidebar-link to="/times" name="Times" icon="tim-icons icon-vector"/>
-        <sidebar-link to="/pontuacao" name="Atribuir Ação" icon="tim-icons icon-shape-star"/>
+        <sidebar-link to="/campeonatos" v-if="user && user.tipo_usuario_id != 1" name="Camepeonatos" icon="tim-icons icon-trophy"/>
+        <sidebar-link to="/atletas" v-if="user && user.tipo_usuario_id != 1" name="Atletas" icon="tim-icons icon-user-run"/>
+        <sidebar-link to="/times" v-if="user && user.tipo_usuario_id != 1" name="Times" icon="tim-icons icon-vector"/>
+        <sidebar-link to="/pontuacao" v-if="user && user.tipo_usuario_id != 1" name="Atribuir Ação" icon="tim-icons icon-shape-star"/>
+        <sidebar-link to="/ligas" name="Ligas" icon="tim-icons icon-molecule-40"/>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -56,7 +57,6 @@ export default {
       }
     },
     setUsuario(user){
-      console.log(user);
       this.user = user;
     },
   }

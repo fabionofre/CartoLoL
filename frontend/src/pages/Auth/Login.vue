@@ -132,6 +132,12 @@ export default {
         axios.post("auth/login", this.form)
           .then(
             response => {
+              console.log(response);
+              if(response.data.confirmado == 0){
+                this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'info', message: "Por favor, confirme seu e-mail!"});
+                this.form = {email:null,password:null};
+                return 0;
+              }
               window.location = "http://localhost:8080/#/?login=true&token="+response.data.access_token;
             },
             (err) => {

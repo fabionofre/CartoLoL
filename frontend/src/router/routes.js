@@ -6,7 +6,7 @@ import NotFound from "@/pages/NotFoundPage.vue";
 import Dashboard from "@/pages/Dashboard.vue";
 import Juiz from "@/pages/Juiz.vue";
 import Escalacao from "@/pages/Escalacao.vue";
-import EditProfileForm from '@/pages/Profile/EditProfileForm';
+import Perfil from '@/pages/Perfil';
 import Campeonatos from '@/pages/Campeonatos.vue';
 import Atletas from '@/pages/Atletas.vue';
 import Times from '@/pages/Times.vue';
@@ -18,6 +18,9 @@ import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
 import RecuperarSenha from "@/pages/Auth/Esqueci-senha/RecuperarSenha";
 import NovaSenha from "@/pages/Auth/Esqueci-senha/NovaSenha";
+
+// Liga
+import Ligas from "@/pages/Ligas";
 
 const routes = [
   {
@@ -43,7 +46,7 @@ const routes = [
       {
         path: "perfil",
         name: "perfil",
-        component: EditProfileForm
+        component: Perfil
       },
       {
         path: "campeonatos",
@@ -64,6 +67,11 @@ const routes = [
         path: "pontuacao",
         name: "pontuacao",
         component:  Pontuacao
+      },
+      {
+        path: "Ligas",
+        name: "ligas",
+        component: Ligas
       }
     ]
   },

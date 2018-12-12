@@ -228,6 +228,7 @@ export default {
             axios.get("campeonatos")
             .then(
                 response => {
+                    console.log(response.data);
                     this.campeonatos = response.data;
                 },
                 error => console.error(error)
@@ -256,7 +257,7 @@ export default {
             fd.append('fl_publico', this.camp.fl_publico ? 1 : 0);
             fd.append('data_inicio', '2018-12-01');
             fd.append('data_fim', '2019-01-01');
-            fd.append('criador_id', 3);
+            fd.append('criador_id', 1);
             if(this.camp.id){
                 // Edita o campeonato
                 if(typeof(this.camp.equipes[0]) == 'object'){
@@ -334,7 +335,7 @@ export default {
                 this.getCampeonatos();
                 })
         },
-        onBrasaoChange(){
+        onBrasaoChange(event){
             this.camp.brasao = event.target.files[0];
             this.previewBrasao(this.camp.brasao);
         },

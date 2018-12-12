@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div :class="{'col-md-4': showForm, 'col-md-12': !showForm}" class="lista-pontuacao">
+            <div v-if="pontuacoes.length > 0"  :class="{'col-md-4': showForm, 'col-md-12': !showForm}" class="lista-pontuacao">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Ações</h3>
@@ -12,6 +12,7 @@
                     </div>
                 </div>
             </div>
+            <h3 v-else-if="!showForm">Não há nenhuma pontuação atribuída em nossa base dados!</h3>
             <div v-show="showForm" class="col col md-8 form-pontuacao">
                 <div class="card">
                     <div class="card-body">
@@ -100,7 +101,7 @@
                             <button class="btn btn-primary btn-block" 
                             @click="salvarPontuacao()" :disabled="loading">
                                 <span v-if="!loading">
-                                    {{pontuacao.id ? 'Editar' :'Cadastrar'}} Ação
+                                    {{pontuacao.id ? 'Editar' :'Atribuir'}} Pontuação
                                 </span>
                                 <div v-if="loading" class="loader"></div>
                             </button>

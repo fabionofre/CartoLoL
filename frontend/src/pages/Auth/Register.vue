@@ -87,7 +87,7 @@
                                         <i class="tim-icons icon-single-02"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Nome">
+                                    <input type="text" v-model="form.nome" class="form-control" placeholder="Nome">
                                     </div>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
@@ -95,7 +95,7 @@
                                         <i class="tim-icons icon-controller"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Apelido">
+                                    <input type="text" v-model="form.apelido" class="form-control" placeholder="Apelido">
                                     </div>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
@@ -113,18 +113,10 @@
                                     </div>
                                     <input type="password" class="form-control" v-model="form.password" placeholder="Senha">
                                     </div>
-                                    <div class="form-check text-left">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox">
-                                        <span class="form-check-sign"></span>
-                                        Eu aceito os
-                                        <a href="../termosECondicoes/termosECondicoes.html">termos e condições</a>.
-                                    </label>
-                                    </div>
                                 </form>
                                 </div>
                                 <div class="card-footer">
-                                <a href="../dashboard.html" @click.prevent="register()" class="btn btn-primary btn-round btn-lg">Iniciar</a>
+                                <a href="javascript:void(0)" @click.prevent="register()" class="btn btn-primary btn-round btn-lg">Iniciar</a>
                                 </div>
                             </div>
                             </div>
@@ -142,19 +134,21 @@ export default {
         return {
             form: {
                 email: null,
-                password: null
+                password: null,
+                nome: null,
+                apelido: null
             }
         }
     },
     methods: {
         register(){
-            console.log(this.form);
             axios.post("auth/register", this.form)
                 .then(
                     response => {
-                        window.location = "http://localhost:8080/#/?login=true&token="+response.data;
+                        this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'info', message: "Link de confirmação enviado para o seu e-mail!"});
+                        window.location = "http://localhost:8080/#/login";
                     },
-                    error => console.error(erro)
+                    error => console.error(error)
                 );
         }
     }
