@@ -74,9 +74,22 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        $user->nome = $request->nome;
+        $user->apelido = $request->apelido;
+
+        if (isset($request->foto)) {
+            $user->foto = $request->foto->getClientOriginalName();
+            $request->foto->storeAs('public', $request->foto->getClientOriginalName());
+        }
+
+        $user->save();
+
+        return ["message" => "Usuário editado com sucesso!", "usuario"=>$user];
+
     }
 
     /**

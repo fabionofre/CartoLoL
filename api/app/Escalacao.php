@@ -30,4 +30,8 @@ class Escalacao extends Model
     	return $this->belongsTo('App\Atleta', 'meio_id');
     }
 
+    public function invocador(){
+        return $this->belongsTo('App\User', 'invocador_id');
+    }
+
 }

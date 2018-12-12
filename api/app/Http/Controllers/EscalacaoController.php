@@ -17,7 +17,9 @@ class EscalacaoController extends Controller
      */
     public function index()
     {
-        //
+        $escalacoes = Escalacao::with(['topo', 'meio', 'cacador', 'atirador', 'suporte', 'invocador'])->get();
+
+        return $escalacoes;
     }
 
     /**

@@ -79,7 +79,6 @@ class LoginController extends Controller
         }
 
         $token = auth()->login($user);
-
         return redirect("http://localhost:8080/#/?login=true&token=".$token);
     }
 

@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'email', 'password','tipo_usuario_id', 'provider_id', 'foto', 'patrimonio'
+        'email', 'password','tipo_usuario_id', 'provider_id', 'foto', 'patrimonio', 'nome', 'apelido', 'token'
     ];
 
     /**
@@ -31,6 +31,10 @@ class User extends Authenticatable implements JWTSubject
     public function ligasParticipo()
     {
         return $this->belongsToMany('App\Liga', 'participantes_liga', 'invocador_id', 'liga_id');
+    }
+
+    public function escalacoes(){
+        return $this->hasMany('App\Escalacao', 'invocador_id');
     }
 
     // Rest omitted for brevity

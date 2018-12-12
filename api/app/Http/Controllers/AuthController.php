@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'confirmacao']]);
     }
 
     /**
@@ -30,11 +31,20 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if(Auth::guard('api')->attempt($credentials)) {
+            $user = Auth::guard('api')->user();
         }
 
-        return $this->respondWithToken($token);
+        if($user->confirmado == 1){
+            if (! $token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            return $this->respondWithToken($token);
+
+        }
+
+        return ["confirmado" => 0];
     }
 
     /**
@@ -61,17 +71,43 @@ class AuthController extends Controller
 
     public function register(Request $request){
 
+        $confirmation_token = str_random(25);
+
         $user = User::create([
-            'name' => $request['name'],
+            'nome' => $request['nome'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'tipo_usuario_id' => 1
+            'apelido' => $request['apelido'],
+            'tipo_usuario_id' => 1,
+            'token' => $confirmation_token
         ]);
 
+        $u = $request->all();
+        $u['token'] = $confirmation_token;
 
-        $token = auth()->login($user);
+        Mail::send('mails.confirmation', $u, function($message) use($u){
+            $message->to($u['email']);
+            $message->subject('Confirmação de e-mail');
+        });
 
-        return $token;
+
+
+        return $user;
+    }
+
+    public function confirmacao($token){
+        $user = User::where('token', $token)->first();
+        
+        if(!is_null($user)){
+            $user->confirmado = 1;
+            $user->token = '';
+            $user->save();
+
+            $jwt_token = auth()->login($user);
+
+            return redirect("http://localhost:8080/#/?login=true&token=".$jwt_token);
+        }
+
     }
 
     /**
