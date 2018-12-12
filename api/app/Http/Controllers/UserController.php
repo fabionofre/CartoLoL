@@ -51,7 +51,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('ligasParticipo.participantes')->find($id);
+        $user = User::with(['ligasParticipo.participantes', 'ligasParticipo.campeonato', 'ligasParticipo.criador'])->find($id);
 
         return $user;
     }
