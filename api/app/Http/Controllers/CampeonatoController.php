@@ -66,10 +66,9 @@ class CampeonatoController extends Controller
      */
     public function show($id)
     {
-        
+        $rodada_atual = null;
         $campeonato = Campeonato::find($id);
         $rodadas = $campeonato->rodadas;
-
         $today = new Carbon();
 
         foreach($campeonato->rodadas as $rodada){
@@ -80,13 +79,17 @@ class CampeonatoController extends Controller
             }
         }
 
-        $rodada_atual['diferenca_horas_hoje'] = $today->diffInHours($rodada_atual->data);  
+        if($rodada_atual){
+            $rodada_atual->diferenca_horas_hoje = $today->diffInHours($rodada_atual->data);  
+        }else{
+        }
+
 
 
         return [
             "campeonato" => $campeonato,
             "rodadas" => $rodadas,
-            "rodada_atual" => $rodada_atual
+            "rodada_atual" => $rodada_atual,
         ];
 
     }
