@@ -40,27 +40,27 @@
       <div class="content">
         <div class="container">
           <div class="col-lg-4 col-md-6 ml-auto mr-auto">
-            <form class="form">
+            <form class="form" @submit.prevent="login()">
               <div class="card card-login card-white">
                 <div class="card-header">
                   <img src="../../assets/img/card-primary.png" alt="">
                   <h1 class="card-title">Login</h1>
                 </div>
                 <div class="card-body">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                  <div class="form-group">
+                    <!-- <div class="input-group-prepend">
                       <div class="input-group-text">
                         <i class="tim-icons icon-email-85"></i>
                       </div>
-                    </div>
+                    </div> -->
                     <input type="text" class="form-control" placeholder="E-mail" v-model="form.email">
                   </div>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                  <div class="form-group">
+                    <!-- <div class="input-group-prepend">
                       <div class="input-group-text">
                         <i class="tim-icons icon-lock-circle"></i>
                       </div>
-                    </div>
+                    </div> -->
                     <input type="password" placeholder="Senha" class="form-control" v-model="form.password">
                   </div>
                   <div class="pull-right">
@@ -70,8 +70,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                  <a @click="login()" class="btn btn-primary btn-lg btn-block mb-3">Iniciar</a>
-                  <div class="text-center">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block mb-3" style="color: white;">Iniciar</button>
+                  <!-- <div class="text-center">
                       <a class="text-primary">OU</a><br/>
                   <button @click.prevent="loginFacebook()" class="btn btn-icon btn-round btn-facebook">
                     <i class="fab fa-facebook-f"></i>
@@ -82,7 +82,7 @@
                   <button class="btn btn-icon btn-round btn-google">
                     <i class="fab fa-google"></i>
                   </button>
-                </div>
+                </div> -->
                   <div class="pull-left">
                     <h6>
                       <router-link to="register" class="link footer-link">Criar Conta</router-link>
@@ -120,7 +120,7 @@ export default {
     },
     methods:{
       loginFacebook(){
-        axios.get("http://localhost:8000/login/facebook")
+        axios.get("http://192.168.3.105:8000/login/facebook")
           .then(
             response => {
               console.log(response)
@@ -138,7 +138,7 @@ export default {
                 this.form = {email:null,password:null};
                 return 0;
               }
-              window.location = "http://localhost:8080/#/?login=true&token="+response.data.access_token;
+              window.location = "http://192.168.3.105:8080/#/?login=true&token="+response.data.access_token;
             },
             (err) => {
               this.form = {};

@@ -72,7 +72,7 @@
                            menu-classes="dropdown-navbar">
               <a slot="title" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true">
                 <div class="photo">
-                  <img v-if="user.foto" :src="'http://localhost:8000/storage/'+user.foto">
+                  <img v-if="user.foto" :src="'http://192.168.3.105:8000/storage/'+user.foto">
                   <img v-if="!user.foto" src="../../assets/img/default-avatar.png">
                 </div>
                 <b class="caret d-none d-lg-block d-xl-block"></b>

@@ -25,4 +25,11 @@
   };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@media screen and (max-width: 768px){
+  .notifications .alert[data-notify='container'] {
+    width: 80% !important;
+    left: 45px;
+  }
+}
+</style>

@@ -22,7 +22,7 @@
       <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
-            <div class="row">
+            <div class="row d-flex align-items-center">
               <div class="col-5">
                 <div class="info-icon text-center icon-primary">
                   <i class="tim-icons icon-shape-star"></i>
@@ -90,7 +90,7 @@
               <div class="col-3">
                 <div class="text-center">
                   <img class="foto-player-card" 
-                  :src="'http://localhost:8000/storage/'+atletaDestaque.foto" 
+                  :src="'http://192.168.3.105:8000/storage/'+atletaDestaque.foto" 
                   alt="photo">
                 </div>
               </div>
@@ -141,7 +141,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://localhost:8000/storage/'+atleta.foto" 
+                          :src="'http://192.168.3.105:8000/storage/'+atleta.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -194,7 +194,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://localhost:8000/storage/'+escalacao.invocador.foto" 
+                          :src="'http://192.168.3.105:8000/storage/'+escalacao.invocador.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -246,7 +246,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://localhost:8000/storage/'+jogador.foto" 
+                          :src="'http://192.168.3.105:8000/storage/'+jogador.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -271,7 +271,7 @@
           <div class="card-header">
             <h5 class="card-title text-center">
               <img class="brasao-liga" 
-              :src="'http://localhost:8000/storage/'+liga.brasao" 
+              :src="'http://192.168.3.105:8000/storage/'+liga.brasao" 
               alt="photo">
               <h2 class="mt-3">{{liga.desc}}</h2>
             </h5>
@@ -303,7 +303,7 @@
                     <td class="text-center">
                       <div>
                         <img class="foto-player" 
-                        :src="'http://localhost:8000/storage/'+invocador.foto" 
+                        :src="'http://192.168.3.105:8000/storage/'+invocador.foto" 
                         alt="photo">
                       </div>
                     </td>

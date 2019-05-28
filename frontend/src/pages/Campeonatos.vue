@@ -13,7 +13,7 @@
                             </div>
                             <div class="col col-md-12" v-if="camp.brasao">
                                 <img v-if="typeof(camp.brasao) == 'file' || !imgPreview" 
-                                :src="'http://localhost:8000/storage/'+camp.brasao"
+                                :src="'http://192.168.3.105:8000/storage/'+camp.brasao"
                                 width="80px" height="80px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="80px" height="80px" style="border-radius: 50%">
@@ -79,7 +79,7 @@
                     <div class="card card-plain" v-for="(camp, index) in campeonatos" :key="camp.id">
                       <div class="card-header campeonato-card-header" id="headingOne">
                           <div class="info-campeonato">
-                              <img :src="'http://localhost:8000/storage/'+camp.brasao"
+                              <img :src="'http://192.168.3.105:8000/storage/'+camp.brasao"
                               width="80px" height="80px" style="border-radius: 50%">
                               <span>{{camp.desc}}</span>
                           </div>
@@ -109,7 +109,7 @@
                             <ul class="nav nav-pills nav-pills-primary">
                                 <li class="nav-item" v-for="equipe in camp.equipes" :key="equipe.id">
                                 <a class="nav-link active" href="javascript:void(0)" style="width: 30px">
-                                    <img :src="'http://localhost:8000/storage/'+equipe.brasao" alt="">
+                                    <img :src="'http://192.168.3.105:8000/storage/'+equipe.brasao" alt="">
                                 </a>
                                 </li>
                                 <button @click="abrirModalEquipes(camp)" class="btn btn-round btn-primary btn-lg btn-icon" 
@@ -149,7 +149,7 @@
                                     <div class="card card-modal" :class="{'card-modal-selecionada': equipe.selecionada}" >
                                         <div class="card-body">
                                             <div class="info-equipe info-modal">
-                                                <img class="foto" :src="'http://localhost:8000/storage/'+equipe.brasao">
+                                                <img class="foto" :src="'http://192.168.3.105:8000/storage/'+equipe.brasao">
                                                 <span class="nome">                                                    
                                                     {{equipe.nome}}
                                                 </span>

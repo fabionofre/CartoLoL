@@ -15,7 +15,7 @@
                                 <div class="card card-plain" v-for="(atleta, index) in atletas" :key="atleta.id">
                                     <div class="card-header atleta-card-header" id="headingOne">
                                         <div class="info-atleta">
-                                            <img :src="'http://localhost:8000/storage/'+atleta.foto"
+                                            <img :src="'http://192.168.3.105:8000/storage/'+atleta.foto"
                                             width="80px" height="80px" style="border-radius: 50%">
                                             {{atleta.nome}} 
                                             <span class="text-primary">{{atleta.apelido}}</span> 
@@ -88,7 +88,7 @@
                             </div>
                             <div class="col col-md-12" v-if="atleta.foto">
                                 <img v-if="typeof(atleta.foto) == 'file' || !imgPreview" 
-                                :src="'http://localhost:8000/storage/'+atleta.foto"
+                                :src="'http://192.168.3.105:8000/storage/'+atleta.foto"
                                 width="80px" height="80px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="80px" height="80px" style="border-radius: 50%">
@@ -120,7 +120,7 @@
                                     placeholder="Sobrenome do atleta" :disabled="loading">
                                 </div>
                             </div>
-                            <div class="col col-md-12 mb-3">
+                            <div class="col col-md-6 mb-3">
                                 <label>Equipe</label>
                                 <cool-select
                                 v-if="!atleta.equipe"
@@ -134,7 +134,7 @@
                                     >
                                         <div style="display: flex; align-items: center;">
                                             <img
-                                            :src="'http://localhost:8000/storage/'+equipe.brasao"
+                                            :src="'http://192.168.3.105:8000/storage/'+equipe.brasao"
                                             class="equipe-brasao"
                                             >
 
@@ -148,7 +148,7 @@
                                     slot-scope="{ item: equipe }"
                                     >
                                     <img
-                                    :src="'http://localhost:8000/storage/'+equipe.brasao"
+                                    :src="'http://192.168.3.105:8000/storage/'+equipe.brasao"
                                     class="equipe-brasao"
                                     >
                                     <div class="color-white">
@@ -163,13 +163,20 @@
                                 </cool-select>
                                 <div v-if="atleta.equipe">
                                     <img
-                                    :src="'http://localhost:8000/storage/'+atleta.equipe.brasao"
+                                    :src="'http://192.168.3.105:8000/storage/'+atleta.equipe.brasao"
                                     class="possui-equipe-brasao"
                                     >
                                     <a href="javascript:void(0)" @click="atleta.equipe = null">
                                         <i class="tim-icons icon-simple-remove remove-foto"></i>
                                     </a>
                                 </div>
+                            </div>
+                            <div class="form-group has-label col-md-6 mb-3" style="margin-left: -15px; display: inline-block; vertical-align: top">
+                                <label>Função</label>
+                                <select class="form-control" required v-model="atleta.funcao_id">
+                                    <option disabled selected value="0">Selecione a Ação</option>
+                                    <option v-for="opt in funcoes" :key="opt.id" :value="opt.id">{{opt.descricao}}</option>
+                                </select>
                             </div>
                             <button class="btn btn-primary btn-block" 
                             @click="salvarAtleta()" :disabled="loading">
@@ -198,12 +205,35 @@ export default {
                 apelido: null,
                 sobrenome: null,
                 foto: null,
-                equipe: null
+                equipe: null,
+                funcao_id: null
             },
             showForm: false,
             loading: null,
             imgPreview: null,
-            equipes: []
+            equipes: [],
+            funcoes: [
+                {
+                    id: 1,
+                    descricao: "Meio"
+                },
+                {
+                    id: 2,
+                    descricao: "Topo"
+                },
+                {
+                    id: 3,
+                    descricao: "Caçador"
+                },
+                {
+                    id: 4,
+                    descricao: "Atirador"
+                },
+                {
+                    id: 5,
+                    descricao: "Suporte"
+                }
+            ]
         }
     },
     mounted(){
@@ -242,6 +272,7 @@ export default {
             fd.append('equipe_id', this.atleta.equipe.id);
             fd.append('criador_id', 1);
             fd.append('data_nascimento', '1996-12-29');
+            fd.append('funcao_id', this.atleta.funcao_id);
             if(this.atleta.id){
                 fd.append('_method', 'put');
                 axios.post('atletas/'+this.atleta.id, fd)
@@ -335,6 +366,10 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+select.form-control {
+    color: #8965e0;
+}
+
 .lista-atletas {
     transition-timing-function: ease-out;
     transition-duration: .6s;
