@@ -30,6 +30,7 @@
   .notifications .alert[data-notify='container'] {
     width: 80% !important;
     left: 45px;
+    transform: unset !important;
   }
 }
 </style>
