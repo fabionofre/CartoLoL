@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Rodada;
 
 class Campeonato extends Model
 {
@@ -16,9 +17,11 @@ class Campeonato extends Model
         'titulo', 'desc', 'data_inicio', 'data_fim', 'fl_publico', 'fl_profissional', 'criador_id', 'brasao', 'equipes'
     ];
 
+    protected $appends = ['rodada_atual'];
+
     public function equipes()
     {
-        return $this->belongsToMany('App\Equipe', 'disputam_campeonato', 'equipe_id', 'campeonato_id');
+        // return $this->belongsToMany('App\Equipe', 'disputam_campeonato', 'equipe_id', 'campeonato_id');
     }
 
     public function rodadas()
@@ -28,6 +31,11 @@ class Campeonato extends Model
 
     public function ligas(){
         return $this->hasMany('App\Liga');
+    }
+
+    public function getRodadaAtualAttribute(){
+        $rodada = Rodada::where('campeonato_id', $this->id)->first(); 
+        return $rodada;
     }
 
 }

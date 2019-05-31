@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoUsuarioSeeder::class);
         $this->call(UserTableSeeder::class);
         $this->call(CampeonatoTableSeeder::class);
-        $this->call(RodadaTableSeeder::class);
     }
 }
 
@@ -37,7 +36,7 @@ class UserTableSeeder extends Seeder {
 
     public function run()
     {
-        User::create(array('email' => 'fabio@zleague.com', 'password' => bcrypt(123), 'tipo_usuario_id' => 1, 'foto' => 'faboka.jpg'));
+        User::create(array('nome' => 'Fábio', 'apelido' => 'Faboka', 'email' => 'fabio@zleague.com', 'password' => bcrypt(123), 'tipo_usuario_id' => 1, 'foto' => 'faboka.jpg'));
     }
 
 }
@@ -48,14 +47,14 @@ class CampeonatoTableSeeder extends Seeder {
 
         DB::table('campeonatos')->insert([
             [
-                'titulo' => 'CBLOL',
-                'desc' => 'Circuito Brasileiro de League of Legends',
+                'titulo' => 'ZLeague Campeonato',
+                'desc' => 'Campeonato para validação do ZLeague',
                 'data_inicio' => new Carbon(),
                 'criador_id' => 1,
                 'fl_publico' => 1,
-                'data_fim' => (new Carbon())->addWeeks(10),
+                'data_fim' => (new Carbon())->addWeeks(1),
                 'fl_profissional' => 1,
-                'brasao' => 'cblol.jpg'
+                'brasao' => 'cblol.jpg',
             ]
         ]);
     }

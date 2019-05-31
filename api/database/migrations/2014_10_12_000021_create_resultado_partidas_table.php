@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DisputamCampeonato extends Migration
+class CreateResultadoPartidasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class DisputamCampeonato extends Migration
      */
     public function up()
     {
-        Schema::create('disputam_campeonato', function(Blueprint $table){
+        Schema::create('resultado_partidas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('equipe_id')->unsigned();
-            $table->integer('campeonato_id')->unsigned();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +26,6 @@ class DisputamCampeonato extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disputam_campeonato');
+        Schema::dropIfExists('resultado_partidas');
     }
 }

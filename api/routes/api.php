@@ -24,7 +24,8 @@ Route::resources([
     'escalacoes' => 'EscalacaoController',
     'pontuacoes' => 'PontuacaoController',
     'ligas' => 'LigaController',
-    'participantes-liga' => 'ParticipanteLigaController'
+    'participantes-liga' => 'ParticipanteLigaController',
+    'rodadas' => 'RodadaController'
 ]);
 
 Route::get('minha-pontuacao/{id}', 'PontuacaoController@minhaPontuacao');

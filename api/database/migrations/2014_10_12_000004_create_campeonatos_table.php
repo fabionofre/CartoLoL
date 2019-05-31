@@ -24,6 +24,7 @@ class CreateCampeonatosTable extends Migration
             $table->boolean('fl_publico');
             $table->boolean('fl_profissional');
             $table->string('brasao', 300);
+            $table->enum('estado', ['em_criacao', 'em_andamento', 'finalizado'])->default('em_criacao');
             $table->softDeletes();
             $table->timestamps();
         });

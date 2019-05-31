@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableAtletasAddColumnFuncaoId extends Migration
+class AlterTableCampeonatos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AlterTableAtletasAddColumnFuncaoId extends Migration
      */
     public function up()
     {
-        Schema::table('atletas', function (Blueprint $table) {
-            $table->unsignedInteger('funcao_id')->nullable();
-            $table->foreign('funcao_id')->references('id')->on('funcoes');
+        Schema::table('campeonatos', function (Blueprint $table) {
+            $table->integer('rodada_atual_id')->unsigned()->nullable();
         });
     }
 
@@ -26,8 +25,8 @@ class AlterTableAtletasAddColumnFuncaoId extends Migration
      */
     public function down()
     {
-        Schema::table('atletas', function (Blueprint $table) {
-            $table->dropColumn('funcao_id');
+        Schema::table('campeonatos', function (Blueprint $table) {
+            $table->dropForeign(['rodada_atual_id']);
         });
     }
 }

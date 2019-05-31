@@ -16,9 +16,10 @@ class CreateRodadasTable extends Migration
         Schema::create('rodadas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('num_rodada');
-            $table->unsignedInteger('campeonato_id');
-            $table->foreign('campeonato_id')->references('id')->on('campeonatos');
-            $table->date('data');
+            $table->string('descricao');
+            $table->unsignedInteger('campeonato_id')->nullable()->onDelete('set null');
+            $table->enum('estado', ['em_criacao', 'em_andamento', 'finalizado'])->default('em_criacao');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

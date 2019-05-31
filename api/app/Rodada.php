@@ -3,11 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rodada extends Model
 {
 
-    public function equipe()
+    use SoftDeletes;
+
+    protected $softDelete = true;
+
+    public function campeonato()
     {
         return $this->belongsTo('App\Campeonato');
     }
@@ -16,4 +21,10 @@ class Rodada extends Model
     {
         return $this->hasMany('App\Pontuacao');
     }
+
+    public function partidas()
+    {
+        return $this->hasMany('App\Partida');
+    }
+
 }

@@ -21,10 +21,6 @@ class CreateAtletasTable extends Migration
             $table->date('data_nascimento');
             $table->unsignedInteger('criador_id');
             $table->foreign('criador_id')->references('id')->on('users');
-            $table->unsignedInteger('equipe_id')->nullable();
-            $table->foreign('equipe_id')->references('id')->on('equipes')->onDelete('set null');
-            // $table->unsignedInteger('funcao_id')->nullable();
-            // $table->foreign('funcao_id')->references('id')->on('funcoes');
             $table->string('foto', 300);
             $table->softDeletes();
             $table->timestamps();

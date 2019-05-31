@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Campeonato;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Rodada;
 
 class CampeonatoController extends Controller
 {
@@ -15,7 +16,7 @@ class CampeonatoController extends Controller
      */
     public function index()
     {
-        return Campeonato::with(['equipes.atletas'])->get();
+        return Campeonato::with(['rodadas'])->get();
     }
 
     /**
@@ -66,30 +67,10 @@ class CampeonatoController extends Controller
      */
     public function show($id)
     {
-        $rodada_atual = null;
         $campeonato = Campeonato::find($id);
-        $rodadas = $campeonato->rodadas;
-        $today = new Carbon();
-
-        foreach($campeonato->rodadas as $rodada){
-            $date_rodada = new Carbon($rodada->data);
-            if($date_rodada->greaterThan($today)){
-                $rodada_atual = $rodada;
-                break;
-            }
-        }
-
-        if($rodada_atual){
-            $rodada_atual->diferenca_horas_hoje = $today->diffInHours($rodada_atual->data);  
-        }else{
-        }
-
-
 
         return [
             "campeonato" => $campeonato,
-            "rodadas" => $rodadas,
-            "rodada_atual" => $rodada_atual,
         ];
 
     }
@@ -129,15 +110,20 @@ class CampeonatoController extends Controller
             $request->brasao->storeAs('public', $request->brasao->getClientOriginalName());
         }
 
-        $equipes = array();
+        foreach($campeonato->rodadas as $rodada) {
+            $rodada->campeonato()->dissociate()->save();
+        }   
 
-        if(is_string($request->equipes))
+        if(is_string($request->rodadas))
         {
-            $request->equipes = explode(",",$request->equipes);
+            $request->rodadas = explode(",",$request->rodadas);
+            foreach($request->rodadas as $rodada){
+                $rodada_temp = Rodada::find($rodada);
+                $rodada_temp->campeonato()->associate($id)->save();
+            }
         }
 
 
-        $campeonato->equipes()->sync($request->equipes);
 
         $campeonato->save();
 
