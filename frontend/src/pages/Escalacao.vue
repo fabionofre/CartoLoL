@@ -1,7 +1,7 @@
 <template>
     <div class="escalacao">
+        <div v-if="loading_fullscreen" class="loader-fullscreen"></div>
         <div class="container d-none d-md-block d-lg-block">
-            <div v-if="loading_fullscreen" class="loader-fullscreen"></div>
             <div class="row" v-if="!loading_fullscreen">
                 <div class="col col-md-7">
                     <div class="card">
@@ -175,7 +175,7 @@
                 </div>
             </div>
         </div>
-        <div class="container d-block d-md-none d-lg-none">
+        <div class="container d-block d-md-none d-lg-none" v-if="!loading_fullscreen">
             <div class="row" v-if="!escalacao.topo">
                 <div class="col-12">
                     <div class="card">
@@ -361,6 +361,19 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <button class="btn btn-primary btn-block" 
+                    @click="confirmarEscalacao()"
+                    :disabled="!(escalacao.meio && escalacao.topo &&
+                    escalacao.cacador && escalacao.atirador
+                    && escalacao.suporte) || loading_escalacao"
+                    >
+                        <span v-if="!loading_escalacao">Confirmar Escalação!</span>
+                        <div v-if="loading_escalacao" class="loader"></div>
+                    </button>
+                </div>
+            </div>
         </div>
         <b-modal id="escolher-jogador" ref="modal" :title="'Escale o '+modal_role+'!'" cancel-title="Cancelar" 
             @cancel="handleCancelar()">
@@ -527,43 +540,25 @@ export default {
         },
         minhaEscalacao(){
             this.loading_fullscreen = true;
-            let primeiro_response;
             axios.get("escalacoes/"+this.$auth.getUser().id)
-                .then(
-                    (response) => {
+            .then(
+                (response) => {
 
-                        if(!response.data){
-                            this.loading_fullscreen = false;
-                            return null;
-                        }
-                            
-                        let primeiro_response = response;
-                        axios.get("atletas/"+primeiro_response.data.topo_id)
-                            .then(response => {
-                                this.escalacao.topo = response.data;
-                                axios.get("atletas/"+primeiro_response.data.meio_id)
-                                    .then(response => {
-                                        this.escalacao.meio = response.data;
-                                        axios.get("atletas/"+primeiro_response.data.cacador_id)
-                                            .then(response => {
-                                                this.escalacao.cacador = response.data;
-                                                axios.get("atletas/"+primeiro_response.data.atirador_id)
-                                                    .then(response => {
-                                                        this.escalacao.atirador = response.data;
-                                                        axios.get("atletas/"+primeiro_response.data.suporte_id)
-                                                            .then(response => {
-                                                                this.escalacao.suporte = response.data;
-                                                                this.loading_fullscreen = false;
-                                                            });
-                                                    });
-                                            });
-                                    });
-                            });
-                    },
-                    (error) => {
-                        console.error(error);
+                    if(!response.data){
+                        this.loading_fullscreen = false;
+                        return null;
                     }
-                )
+                        
+                    this.escalacao.topo = response.data.topo;
+                    this.escalacao.meio = response.data.meio;
+                    this.escalacao.cacador = response.data.cacador;
+                    this.escalacao.atirador = response.data.atirador;
+                    this.escalacao.suporte = response.data.suporte;
+                    this.loading_fullscreen = false;
+                }),
+                (error) => {
+                    console.error(error);
+                }
         }
     }
 }
@@ -738,6 +733,11 @@ export default {
         left: 30%;
         animation: spin 2s linear infinite;
         position: relative;  
+        @media screen and (max-width: 768px){
+            width: 250px;
+            height: 250px;
+            left: 15%;
+        }
     }
 
     @keyframes spin {

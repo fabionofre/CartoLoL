@@ -33,4 +33,10 @@
     transform: unset !important;
   }
 }
+
+@media screen and (max-width: 991.98px){
+  .navbar {
+      top: inherit !important;
+  }
+}
 </style>
