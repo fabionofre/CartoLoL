@@ -152,7 +152,10 @@ export default {
                 {id: 6, "descricao":"Primeiro Abate"},
                 {id: 7, "descricao":"Primeira Torre"},
                 {id: 8, "descricao":"Morte"},
-                {id: 9, "descricao":"Vitória"}
+                {id: 9, "descricao":"Vitória"},
+                {id: 10, "descricao":"Farm"},
+                {id: 11, "descricao":"Dano"},
+                {id: 12, "descricao":"Dano Recebido"},
             ]
         }
     },

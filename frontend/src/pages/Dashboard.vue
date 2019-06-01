@@ -226,7 +226,7 @@
                         {{escalacao.invocador.apelido}}
                       </td>
                       <td class="text-center">
-                        {{escalacao.pontos}}
+                        {{escalacao.pontos / 5}}
                       </td>
                     </tr>
                   </tbody>
@@ -338,7 +338,7 @@
                     <td class="text-center">
                       <div v-if="invocador.calculando" 
                       class="loader-calculando"></div>
-                      <span v-else>{{invocador.escalacao.pontos}}</span>
+                      <span v-else>{{invocador.escalacao.pontos / 5}}</span>
                     </td>
                   </tr>
                 </tbody>

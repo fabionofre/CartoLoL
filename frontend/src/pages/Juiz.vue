@@ -39,7 +39,7 @@
                                         </td>
                                         <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-top-suporte"></i></td>
                                         <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
-                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar"><input type="number" step="0.01" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
                                         <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-top-suporte">Salvar</button></td>
                                         <td v-if="pontos.salvando"><div class="loader editar top-suporte"></div></td>
                                     </tr>
@@ -86,7 +86,7 @@
                                         </td>
                                         <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-cacador"></i></td>
                                         <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
-                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar"><input type="number" step="0.01" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
                                         <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-cacador">Salvar</button></td>
                                         <td v-if="pontos.salvando"><div class="loader editar cacador"></div></td>
                                     </tr>
@@ -132,7 +132,7 @@
                                             <span>{{pontos.pontuacao > 0 ? '+':'-'}}{{pontos.pontuacao}}</span>
                                         </td>
                                         <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-meio"></i></td>
-                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar"><input type="number" step="0.01" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
                                         <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
                                         <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-meio">Salvar</button></td>
                                         <td v-if="pontos.salvando"><div class="loader editar meio"></div></td>
@@ -180,7 +180,7 @@
                                         </td>
                                         <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-atirador"></i></td>
                                         <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
-                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar"><input type="number" step="0.01" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
                                         <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-atirador">Salvar</button></td>
                                         <td v-if="pontos.salvando"><div class="loader editar atirador"></div></td>
                                     </tr>
@@ -227,7 +227,7 @@
                                         </td>
                                         <td v-if="!pontos.editar" @click="editPonto(pontos);"><i class="tim-icons icon-pencil icone-editar icone-top-suporte"></i></td>
                                         <td v-if="!pontos.editar && !pontos.salvando"><a href="Javascript:void(0)" @click="excluirPonto(pontos);" class="lixeira"><i class="fa fa-trash"></i></a></td>
-                                        <td v-if="pontos.editar"><input type="number" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
+                                        <td v-if="pontos.editar"><input type="number" step="0.01" class="input-edit-ponto" v-model="pontos.pontuacao" :class="{desativado: pontos.salvando}" :disabled="pontos.salvando"></td>
                                         <td v-if="pontos.editar && !pontos.salvando"><button @click="savePonto(pontos);" class="btn btn-sm btn-primary btn-top-suporte">Salvar</button></td>
                                         <td v-if="pontos.salvando"><div class="loader editar top-suporte"></div></td>
                                     </tr>
@@ -340,7 +340,7 @@
                                     </div>
                                     <div class="form-group has-label col-md-6" style="display: inline-block; vertical-align: top">
                                         <label for="pontuacao">Pontuação: *</label>
-                                        <input class="form-control" v-model="form.pontuacao" name="pontuacao" id="pontuacao" type="number"
+                                        <input class="form-control" step="0.01" v-model="form.pontuacao" name="pontuacao" id="pontuacao" type="number"
                                             required :disabled="salvando"/>
                                     </div>
                                 </div>
@@ -393,6 +393,8 @@ export default {
         savePonto(ponto){
             ponto.salvando = true;
             this.$forceUpdate();
+            ponto.pontuacao = parseFloat(ponto.pontuacao);
+            console.log(typeof(ponto.pontuacao));
             axios.put("regras-pontuacao/"+ponto.id, ponto)
                 .then(
                     (response) => {
@@ -483,6 +485,12 @@ export default {
                 return 'Morte';
             else if(id == 9)
                 return 'Vitória';
+            else if(id == 10)
+                return 'Farm';
+            else if(id == 11)
+                return 'Dano';
+            else if(id == 12)
+                return 'Dano Recebido';
         }
     }
 }
