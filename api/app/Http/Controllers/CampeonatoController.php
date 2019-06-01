@@ -104,6 +104,10 @@ class CampeonatoController extends Controller
         $campeonato->fl_profissional = $request->fl_profissional;
         $campeonato->fl_publico = $request->fl_publico;
         $campeonato->titulo = $request->titulo;
+        $campeonato->estado = $request->estado;
+        if($request->rodada_atual_id != 'null'){
+            $campeonato->rodada_atual_id = $request->rodada_atual_id;
+        }
 
         if (isset($request->brasao)) {
             $campeonato->brasao = $request->brasao->getClientOriginalName();
@@ -119,7 +123,7 @@ class CampeonatoController extends Controller
             $request->rodadas = explode(",",$request->rodadas);
             foreach($request->rodadas as $rodada){
                 $rodada_temp = Rodada::find($rodada);
-                $rodada_temp->campeonato()->associate($id)->save();
+                $temp = $rodada_temp->campeonato()->associate($id)->save();
             }
         }
 
@@ -143,5 +147,19 @@ class CampeonatoController extends Controller
         $campeonato->delete();
 
         return ["message" => "Campeonato deletado com sucesso!", "campeonato"=>$campeonato];
+    }
+
+    public function passarRodada($campId)
+    {
+
+        $campeonato = Campeonato::find($campId);
+
+        $nova_rodada = Rodada::where('num_rodada', $campeonato->rodada_atual_id + 1)->first();
+
+        $campeonato->rodada_atual_id = $nova_rodada->id;
+
+        $campeonato->save();
+
+        return ["message" => "Rodada passada com sucesso!", "nova_rodada"=>$nova_rodada];
     }
 }

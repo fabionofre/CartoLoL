@@ -40,7 +40,8 @@ class EscalacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $escalacao = Escalacao::where('invocador_id', $request['invocador_id'])->first();
+        $campeonato = Campeonato::find(1)->first();
+        $escalacao = Escalacao::where('invocador_id', $request['invocador_id'])->where('rodada_id', $campeonato->rodada_atual_id)->first();
 
         $patrimonio = $request['patrimonio'];
 
@@ -50,22 +51,9 @@ class EscalacaoController extends Controller
 
         unset($request['patrimonio']);
 
-        $campeonato = Campeonato::find(1);
-        $rodadas = $campeonato->rodadas;
-
-        $today = new Carbon();
-
-        foreach($campeonato->rodadas as $rodada){
-            $date_rodada = new Carbon($rodada->data);
-            if($date_rodada->greaterThan($today)){
-                $rodada_atual = $rodada;
-                break;
-            }
-        }
-
         $requestData = $request->all();
 
-        $requestData['rodada_id'] = $rodada_atual['id'];
+        // $requestData['rodada_id'] = $rodada_atual['id'];
 
         if($escalacao){
             $esc = Escalacao::find($escalacao->id);
@@ -90,7 +78,15 @@ class EscalacaoController extends Controller
      */
     public function show($invocador_id)
     {
-        $escalacao = Escalacao::with(['topo', 'meio', 'cacador', 'atirador', 'suporte'])->where('invocador_id', $invocador_id)->first();
+        $campeonato = Campeonato::find(1)->first();
+        $escalacao = Escalacao::with(['topo', 'meio', 'cacador', 'atirador', 'suporte'])->where('invocador_id', $invocador_id)->where('rodada_id', $campeonato->rodada_atual_id)->first();
+
+        return $escalacao;
+    }
+
+    public function minhasEscalacoes($invocador_id)
+    {
+        $escalacao = Escalacao::with(['topo', 'meio', 'cacador', 'atirador', 'suporte'])->where('invocador_id', $invocador_id)->get();
 
         return $escalacao;
     }

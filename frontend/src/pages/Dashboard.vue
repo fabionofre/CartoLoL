@@ -3,12 +3,12 @@
     <div v-if="loading_fullscreen" class="loader-fullscreen"></div>
     <div v-else class="row">
       <div class="col-12">
-        <div class="card">
+        <div class="card" v-if="campeonato && temPropriedade(campeonato, 'rodada_atual')">
           <div class="card-header">
             <div class="row">
               <div class="col-md-12 text-center text-success ml-auto mr-auto">
-                <h2 class="text-success" v-if="mercado_fecha_em != 'Mercado fechado!'">Mercado Aberto</h2>
-                <h3 class="text-danger">{{mercado_fecha_em}}</h3>
+                <!-- <h2 class="text-success">{{campeonato.rodada_atual.descricao}}</h2> -->
+                <h2 class="text-success">Ranking Geral</h2>
               </div>
             </div>
           </div>
@@ -30,8 +30,8 @@
               </div>
               <div class="col-7">
                 <div class="numbers">
-                  <p class="card-category">Sua Pontuação</p>
-                  <h3 class="card-title">{{meusPontos > 0 ? '+' : ''}} {{meusPontos}} pts</h3>
+                  <p class="card-category">Sua Pontuação no Campeonato</p>
+                  <h3 class="card-title">+{{pontuacaoCampeonato}} pts</h3>
                 </div>
               </div>
             </div>
@@ -44,7 +44,27 @@
           </div> -->
         </div>
       </div>
-      <div class="col-lg-3 col-md-3">
+
+      <!-- <div class="col-lg-3 col-md-3">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row d-flex align-items-center">
+              <div class="col-5">
+                <div class="info-icon text-center icon-primary">
+                  <i class="tim-icons icon-shape-star"></i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category">Sua Pontuação na Rodada</p>
+                  <h3 class="card-title">+{{pontuacaoRodada}} pts</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
             <div class="row">
@@ -62,7 +82,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
@@ -187,7 +207,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(escalacao, key) in escalacoes" 
+                    <tr v-for="(escalacao, key) in top10" 
                     :key="escalacao.id"
                     :class="{'table-success': escalacao.invocador.id == user.id}"
                     >
@@ -195,7 +215,8 @@
                         <div>
                           <img class="foto-player" 
                           :src="'http://192.168.3.105:8000/storage/'+escalacao.invocador.foto" 
-                          alt="photo">
+                          alt="photo" v-if="escalacao.invocador.foto">
+                          <img class="foto-player" v-if="!escalacao.invocador.foto" src="../assets/img/default-avatar.png">
                         </div>
                       </td>
                       <td class="text-center">
@@ -304,14 +325,15 @@
                       <div>
                         <img class="foto-player" 
                         :src="'http://192.168.3.105:8000/storage/'+invocador.foto" 
-                        alt="photo">
+                        alt="photo" v-if="invocador.foto">
+                        <img class="foto-player" v-if="!invocador.foto" src="../assets/img/default-avatar.png">
                       </div>
                     </td>
                     <td class="text-center">
                       {{key+1}}º
                     </td>
                     <td class="text-center">
-                      {{invocador.email}}
+                      {{invocador.apelido}}
                     </td>
                     <td class="text-center">
                       <div v-if="invocador.calculando" 
@@ -355,11 +377,12 @@
         this.$bus.$off('att:user');
     },
     mounted(){
-      this.getUser();
+      this.getPontuacoes();
       this.getRegrasPontuacao();
-      this.getInfoRodada();
-      this.minhaEscalacao();
+      this.getUser();
+      this.getCampeonato();
       this.getEscalacoes();
+      this.minhasEscalacoes();
     },
     data() {
       return {
@@ -441,8 +464,6 @@
           gradientColors: config.colors.primaryGradient,
           gradientStops: [1, 0.4, 0],
         },
-        rodada_atual: null,
-        mercado_fecha_em: '',
         user: null,
         escalacao: {
             topo: null,
@@ -451,17 +472,21 @@
             atirador: null,
             suporte: null
         },
+        escalacoes: [],
         atletasAcoes: [],
         acoes: [],
         token: null,
-        meusPontos: 0,
         loading_fullscreen: false,
         atletasEscalacao: [],
         escalacoes: [],
         top10: [],
         colocacaoGeral: null,
         atletasDaRodada: [],
-        atletaDestaque: null
+        atletaDestaque: null,
+        campeonato: null,
+        pontuacaoCampeonato: 0,
+        pontuacaoRodada: 0,
+        pontuacoes: []
       }
     },
     computed: {
@@ -500,8 +525,8 @@
                       _.forEach(atletasAcoes, a => {
                           if(atleta_id == a.id){
                           // Dá os pontos aqui!
-                          let acao = _.find(this.acoes, acao => {
-                              return acao.acao_id == p.acao_id
+                          let acao = _.find(this.acoes, ac => {
+                              return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
                           });
                           if(acao)
                               a.pontos += (acao.pontuacao * p.quantidade);       
@@ -541,7 +566,8 @@
                     if(e.invocador_id == this.user.id)
                       this.colocacaoGeral = index+1;  
                   });
-                  this.top10 = this.escalacoes.slice(0,10);
+                  const top10 = this.escalacoes.slice(0,10);
+                  this.top10 = _.uniqBy(top10, 'invocador_id');
               });
           });
       },
@@ -574,115 +600,125 @@
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;
       },
-      getInfoRodada(){
+      getCampeonato(){
         axios.get("campeonatos/1")
         .then(
           response => {
-            this.rodada_atual = response.data.rodada_atual;
-            const diferenca_horas = this.rodada_atual.diferenca_horas_hoje;
-            if(diferenca_horas > 24){
-              const diferenca_dias = diferenca_horas / 24;
-              this.mercado_fecha_em = 'Fecha em ' + Math.round(diferenca_dias) + (diferenca_dias > 1 ? ' dias' : ' dias');
-            }else{
-              this.mercado_fecha_em = 'Fecha em ' + diferenca_horas + (diferenca_horas > 1 ? ' horas' : ' hora');
-              if(diferenca_horas == 0)
-                this.mercado_fecha_em = 'Mercado fechado!';
-            }
+            this.campeonato = response.data.campeonato;
           },
           error => console.error(error)
         );
       },
-      minhaEscalacao(){
+      minhasEscalacoes(){
         this.loading_fullscreen = true;
-        axios.get("escalacoes/"+this.$auth.getUser().id)
-            .then(
-                (response) => {
+        axios.get("minhas-escalacoes/"+this.$auth.getUser().id)
+          .then(
+              (response) => {
 
-                    if(!response.data){
-                        this.loading_fullscreen = false;
-                        return null;
-                    }
-                        
-                    this.escalacao.topo = response.data.topo;
-                    this.escalacao.meio = response.data.meio;
-                    this.escalacao.cacador = response.data.cacador;
-                    this.escalacao.atirador = response.data.atirador;
-                    this.escalacao.suporte = response.data.suporte;
-                    this.getPontuacoes();
-                }),
-                (error) => {
-                    console.error(error);
-                }
+                  if(!response.data){
+                      this.loading_fullscreen = false;
+                      return null;
+                  }
+
+                  this.escalacoes = response.data;
+                  this.escalacoes.map(e => {
+                    const temp = this.getPontuacaoEscalacao(e);
+                    e.pontos += temp;
+                    this.pontuacaoCampeonato += temp;
+                  });
+                  this.loading_fullscreen = false;
+                  
+                  // setTimeout(() => {
+                  //   console.log(this.escalacoes);
+                  //   this.escalacoes.map(e => {
+                  //     console.log("PONTOS", e.pontos);
+                  //     this.pontuacaoCampeonato += e.pontos;
+                  //   });
+                  //   this.loading_fullscreen = false;
+                  // }, 1000)
+                  
+
+              }),
+              (error) => {
+                  console.error(error);
+              }
+      },
+      getPontuacaoEscalacao(escalacao){
+        const atletas = [];
+        let atletasAcoes = [];
+        let escalacaoPontos = 0;
+        _.forEach(this.pontuacoes, p => {
+          let atleta = p.atleta;
+          atletasAcoes.push(atleta);
+        });
+        atletasAcoes = _.uniqBy(atletasAcoes, 'id');
+        atletasAcoes.map(a => a.pontos = 0);
+        _.forEach(this.pontuacoes, p => {
+          let atleta_id = p.atleta.id;
+          if(escalacao.rodada_id == p.rodada_id){
+            _.forEach(atletasAcoes, a => {
+              if(atleta_id == a.id){
+                // Dá os pontos aqui!
+                let acao = _.find(this.acoes, ac => {
+                  return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
+                });
+                console.log(this.acoes);
+                if(acao)
+                  a.pontos += (acao.pontuacao * p.quantidade);               
+              }
+            });
+          }
+        });
+        let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
+        if(topo){
+          escalacaoPontos += topo.pontos;
+          escalacao.topo.pontos = topo.pontos;
+        }else{
+          escalacao.topo.pontos = 0;
+        }
+        // this.atletasEscalacao.push(this.escalacao.topo);
+        let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
+        if(meio){
+          escalacaoPontos += meio.pontos;
+          escalacao.meio.pontos = meio.pontos;
+        }else{
+          escalacao.meio.pontos = 0;
+        }
+        // this.atletasEscalacao.push(this.escalacao.meio);
+        let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
+        if(cacador){
+          escalacaoPontos += cacador.pontos;
+          escalacao.cacador.pontos = cacador.pontos;
+        }else{
+          escalacao.cacador.pontos = 0;
+        }
+        // this.atletasEscalacao.push(this.escalacao.cacador);
+        let suporte = _.find(atletasAcoes, a =>escalacao.suporte.id == a.id);
+        if(suporte){
+          escalacaoPontos += suporte.pontos;
+          escalacao.suporte.pontos = suporte.pontos;
+        }else{
+          escalacao.suporte.pontos = 0;
+        }
+        // this.atletasEscalacao.push(this.escalacao.suporte);
+        let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
+        if(atirador){
+          escalacaoPontos += atirador.pontos;
+          escalacao.atirador.pontos = atirador.pontos;
+        }else{
+          escalacao.atirador.pontos = 0;
+        }
+        // this.atletasEscalacao.push(this.escalacao.atirador);
+        // this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
+        console.log("Escalacao da rodada: ",escalacao.rodada_id+" - ", escalacaoPontos);
+
+        return escalacaoPontos;
       },
       getPontuacoes(){
         axios.get('pontuacoes')
-          .then(
-            response => {
-              const pontuacoes = response.data;
-              _.forEach(pontuacoes, p => {
-                let atleta = p.atleta;
-                this.atletasAcoes.push(atleta);
-              });
-              this.atletasAcoes = _.uniqBy(this.atletasAcoes, 'id');
-              this.atletasAcoes.map(a => a.pontos = 0);
-              _.forEach(pontuacoes, p => {
-                let atleta_id = p.atleta.id;
-                _.forEach(this.atletasAcoes, a => {
-                  if(atleta_id == a.id){
-                    // Dá os pontos aqui!
-                    let acao = _.find(this.acoes, acao => {
-                      return acao.acao_id == p.acao_id
-                    });
-                    if(acao)
-                      a.pontos += (acao.pontuacao * p.quantidade);               }
-                });
-              });
-              let topo = _.find(this.atletasAcoes, a => this.escalacao.topo.id == a.id);
-              if(topo){
-                this.meusPontos += topo.pontos;
-                this.escalacao.topo.pontos = topo.pontos;
-              }else{
-                this.escalacao.topo.pontos = 0;
-              }
-              this.atletasEscalacao.push(this.escalacao.topo);
-              let meio = _.find(this.atletasAcoes, a => this.escalacao.meio.id == a.id);
-              if(meio){
-                this.meusPontos += meio.pontos;
-                this.escalacao.meio.pontos = meio.pontos;
-              }else{
-                this.escalacao.meio.pontos = 0;
-              }
-
-              this.atletasEscalacao.push(this.escalacao.meio);
-              let cacador = _.find(this.atletasAcoes, a => this.escalacao.cacador.id == a.id);
-              if(cacador){
-                this.meusPontos += cacador.pontos;
-                this.escalacao.cacador.pontos = cacador.pontos;
-              }else{
-                this.escalacao.cacador.pontos = 0;
-              }
-              this.atletasEscalacao.push(this.escalacao.cacador);
-              let suporte = _.find(this.atletasAcoes, a => this.escalacao.suporte.id == a.id);
-              if(suporte){
-                this.meusPontos += suporte.pontos;
-                this.escalacao.suporte.pontos = suporte.pontos;
-              }else{
-                this.escalacao.suporte.pontos = 0;
-              }
-              this.atletasEscalacao.push(this.escalacao.suporte);
-              let atirador = _.find(this.atletasAcoes, a => this.escalacao.atirador.id == a.id);
-              if(atirador){
-                this.meusPontos += atirador.pontos;
-                this.escalacao.atirador.pontos = atirador.pontos;
-              }else{
-                this.escalacao.atirador.pontos = 0;
-              }
-              this.atletasEscalacao.push(this.escalacao.atirador);
-              this.loading_fullscreen = false;
-              this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
-            },
-            error => console.error(error)
-          )
+          .then(response => {
+            this.pontuacoes = response.data;
+          });
       },
       getRegrasPontuacao(){
         axios.get("regras-pontuacao?campeonato_id=1")
@@ -706,6 +742,13 @@
           error => console.error(error)
           )
       },
+      temPropriedade(obj, prop){
+        if(obj.hasOwnProperty(prop)){
+          return true;
+        }else{
+          return false;
+        }
+      },
       calcularPontos(invocador){
         invocador.calculando = true;
         invocador.escalacao = {
@@ -718,6 +761,8 @@
 
                     if(!response.data){
                         this.loading_fullscreen = false;
+                        delete invocador.calculando;
+                        invocador.escalacao.pontos = 0;
                         return null;
                     };
                         
@@ -742,8 +787,8 @@
                                 _.forEach(atletasAcoes, a => {
                                     if(atleta_id == a.id){
                                     // Dá os pontos aqui!
-                                    let acao = _.find(this.acoes, acao => {
-                                        return acao.acao_id == p.acao_id
+                                    let acao = _.find(this.acoes, ac => {
+                                        return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id)
                                     });
                                     if(acao)
                                         a.pontos += (acao.pontuacao * p.quantidade);               
@@ -810,6 +855,11 @@
     left: 30%;
     animation: spin 2s linear infinite;
     position: relative;  
+    @media screen and (max-width: 768px){
+        width: 250px;
+        height: 250px;
+        left: 15%;
+    }
 }
 
 .brasao-liga {

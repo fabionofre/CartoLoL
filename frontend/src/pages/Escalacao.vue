@@ -40,7 +40,7 @@
                 <div class="col col-md-5" 
                 v-if="!(escalacao.meio || escalacao.topo || escalacao.cacador || escalacao.atirador
                 || escalacao.suporte)">
-                    <h2 class="text-success">Z$ {{dinheiroTotal}}</h2>
+                    <!-- <h2 class="text-success">Z$ {{dinheiroTotal}}</h2> -->
                 </div>
                 <div class="col col-md-5" 
                 v-if="escalacao.meio || escalacao.topo || escalacao.cacador || escalacao.atirador
@@ -49,7 +49,7 @@
                         <div class="card-body card-jogadores">
                             <div class="row">
                                 <div class="col col-md-12">
-                                    <h2 class="text-success">Z$ {{dinheiroTotal}}</h2>
+                                    <!-- <h2 class="text-success">Z$ {{dinheiroTotal}}</h2> -->
                                 </div>
                             </div>
                             <div class="row" v-if="escalacao.topo">
@@ -176,6 +176,9 @@
             </div>
         </div>
         <div class="container d-block d-md-none d-lg-none" v-if="!loading_fullscreen">
+            <div class="row d-flex justify-content-center text-center" v-if="campeonato">
+                <h3>Sua escalação para <br/>{{campeonato.rodada_atual.descricao}}</h3>
+            </div>
             <div class="row" v-if="!escalacao.topo">
                 <div class="col-12">
                     <div class="card">
@@ -396,9 +399,9 @@
                                     <span class="nome">                                                    
                                         {{atleta.nome +" '"+ atleta.apelido +"' "+atleta.sobrenome}}
                                     </span>
-                                    <span class="text-danger text-center">
+                                    <!-- <span class="text-danger text-center">
                                         Z$ {{atleta.preco}}
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -428,7 +431,8 @@ export default {
             loading_escalacao: false,
             loading_fullscreen: false,
             user: null,
-            dinheiroTotal: 0
+            dinheiroTotal: 0,
+            campeonato: null
         }
     },
     created(){
@@ -445,6 +449,7 @@ export default {
     mounted(){
         this.minhaEscalacao();
         this.getAtletas();
+        this.getCampeonato();
     },
     methods: {
         handleSearch(evt){
@@ -464,6 +469,7 @@ export default {
                 .then(
                     (response) => {
                         this.atletas = response.data;
+                        console.log(this.atletas);
                         if(this.modal_role){
                             this.filteredAtletas = [...this.atletas].filter(a => a.funcao.descricao == this.modal_role);
                             console.log(this.filteredAtletas);
@@ -523,7 +529,8 @@ export default {
                 cacador_id: this.escalacao.cacador.id,
                 atirador_id: this.escalacao.atirador.id,
                 suporte_id: this.escalacao.suporte.id,
-                patrimonio: this.dinheiroTotal
+                patrimonio: this.dinheiroTotal,
+                rodada_id: this.campeonato.rodada_atual_id
             }
             axios.post("escalacoes", escalacao)
                 .then(
@@ -559,6 +566,16 @@ export default {
                 (error) => {
                     console.error(error);
                 }
+        },
+        getCampeonato(){
+            axios.get("campeonatos/1")
+            .then(
+                (response) => {
+                    console.log(response);
+                    this.campeonato = response.data.campeonato;
+                },
+                (error) => console.error(error)
+            );
         }
     }
 }

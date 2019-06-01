@@ -11,6 +11,7 @@ import Campeonatos from '@/pages/Campeonatos.vue';
 import Atletas from '@/pages/Atletas.vue';
 import Times from '@/pages/Times.vue';
 import Pontuacao from '@/pages/Pontuacao.vue';
+import Rodada from '@/pages/Rodadas.vue';
 
 
 // Auth Pages
@@ -52,6 +53,11 @@ const routes = [
         path: "campeonatos",
         name: "campeonatos",
         component: Campeonatos
+      },
+      {
+        path: "rodadas",
+        name: "rodadas",
+        component: Rodada
       },
       {
         path: "atletas",

@@ -43,7 +43,7 @@ class RodadaController extends Controller
         $rodada->estado = 1;
 
         $rodada->save();
-        return ["message"=>"Equipe criada com sucesso!", "equipe"=>$equipe];
+        return ["message"=>"Rodada criada com sucesso!", "rodada"=>$rodada];
 
     }
 
@@ -76,7 +76,7 @@ class RodadaController extends Controller
      * @param  \App\Rodada  $rodada
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rodada $rodada)
+    public function update(Request $request, $id)
     {
         $rodada = Rodada::find($id);
 
@@ -95,7 +95,7 @@ class RodadaController extends Controller
      * @param  \App\Rodada  $rodada
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rodada $rodada)
+    public function destroy($id)
     {
         $rodada = Rodada::find($id);
 

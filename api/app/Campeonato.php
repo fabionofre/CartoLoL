@@ -17,7 +17,7 @@ class Campeonato extends Model
         'titulo', 'desc', 'data_inicio', 'data_fim', 'fl_publico', 'fl_profissional', 'criador_id', 'brasao', 'equipes'
     ];
 
-    protected $appends = ['rodada_atual'];
+    protected $appends = ['rodada_atual', 'possui_rodada', 'primeira_rodada', 'ultima_rodada'];
 
     public function equipes()
     {
@@ -34,7 +34,26 @@ class Campeonato extends Model
     }
 
     public function getRodadaAtualAttribute(){
+        $rodada = Rodada::where('id', $this->rodada_atual_id)->first(); 
+        return $rodada;
+    }
+
+    public function getPossuiRodadaAttribute(){
         $rodada = Rodada::where('campeonato_id', $this->id)->first(); 
+        if($rodada){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getPrimeiraRodadaAttribute(){
+        $rodada = Rodada::where('campeonato_id', $this->id)->orderBy('num_rodada', 'asc')->first(); 
+        return $rodada;
+    }
+
+    public function getUltimaRodadaAttribute(){
+        $rodada = Rodada::where('campeonato_id', $this->id)->orderBy('num_rodada', 'desc')->first(); 
         return $rodada;
     }
 

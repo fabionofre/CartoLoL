@@ -25,10 +25,13 @@ Route::resources([
     'pontuacoes' => 'PontuacaoController',
     'ligas' => 'LigaController',
     'participantes-liga' => 'ParticipanteLigaController',
-    'rodadas' => 'RodadaController'
+    'rodadas' => 'RodadaController',
+    'partidas' => 'PartidaController'
 ]);
 
 Route::get('minha-pontuacao/{id}', 'PontuacaoController@minhaPontuacao');
+Route::get('campeonatos/passar/rodada/{campId}', 'CampeonatoController@passarRodada');
+Route::get('minhas-escalacoes/{id}', 'EscalacaoController@minhasEscalacoes');
 
 Route::group([
 

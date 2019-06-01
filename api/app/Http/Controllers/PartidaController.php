@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Campeonato;
-use App\Pontuacao;
-use App\User;
+use App\Partida;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
-
-class PontuacaoController extends Controller
+class PartidaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +14,7 @@ class PontuacaoController extends Controller
      */
     public function index()
     {
-        return Pontuacao::with(['atleta', 'rodada'])->get();
+        //
     }
 
     /**
@@ -39,27 +35,22 @@ class PontuacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $campeonato = Campeonato::find(1);
+        $partida = new Partida;
+        $partida->rodada_id = $request->rodada_id;
+        $partida->timea_id = $request->timea_id;
+        $partida->timeb_id = $request->timeb_id;
 
-        $pontuacao = new Pontuacao;
-        $pontuacao->atleta_id = $request['atleta_id'];
-        $pontuacao->acao_id = $request['acao_id'];
-        $pontuacao->rodada_id = $campeonato->rodada_atual_id;
-        $pontuacao->quantidade = $request['quantidade'];
-
-        $pontuacao->save();
-
-        return ["pontuacao" => $pontuacao];
-
+        $partida->save();
+        return ["message"=>"Partida criada com sucesso!", "partida"=>$partida];
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Partida  $partida
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Partida $partida)
     {
         //
     }
@@ -67,10 +58,10 @@ class PontuacaoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Partida  $partida
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Partida $partida)
     {
         //
     }
@@ -79,10 +70,10 @@ class PontuacaoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Partida  $partida
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Partida $partida)
     {
         //
     }
@@ -90,18 +81,15 @@ class PontuacaoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Partida  $partida
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
-    }
+        $partida = Partida::find($id);
 
-    public function minhaPontuacao($usuario_id){
-        $user = User::find($usuario_id);
+        $partida->delete();
 
-        
-        
+        return ["message" => "Partida deletada com sucesso!", "partida"=>$partida];
     }
 }

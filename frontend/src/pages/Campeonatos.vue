@@ -97,6 +97,20 @@
                                   <div v-if="camp.excluindo" class="loader-lixeira"></div>
                                   <i v-else class="fa fa-trash"></i>
                               </button>
+                              <button v-if="camp.estado == 'em_criacao'" @click="iniciarCampeonato(camp);" class="btn btn-primary" 
+                              title="Iniciar">
+                                Iniciar Campeonato
+                              </button>
+                              <button v-if="(camp.estado == 'em_andamento') && (camp.rodada_atual_id == camp.ultima_rodada.id)" 
+                              @click="finalizarCampeonato(camp);" class="btn btn-danger" 
+                              title="Iniciar">
+                                Finalizar Campeonato
+                              </button>
+                              <button v-if="(camp.estado == 'em_andamento') && (camp.rodada_atual_id != camp.ultima_rodada.id)" 
+                              @click="passarRodada(camp);" class="btn btn-warning" 
+                              title="Iniciar">
+                                Passar Rodada
+                              </button>
                           </div>
                           <a  class="flecha-collapse" v-b-toggle="'collapse'+index" 
                               data-toggle="collapse" 
@@ -107,13 +121,11 @@
                       <b-collapse :id="'collapse'+index">
                         <div class="card-body">
                             <ul class="nav nav-pills nav-pills-primary">
-                                <li class="nav-item" v-for="equipe in camp.equipes" :key="equipe.id">
-                                <a class="nav-link active" href="javascript:void(0)" style="width: 30px">
-                                    <img :src="'http://192.168.3.105:8000/storage/'+equipe.brasao" alt="">
-                                </a>
+                                <li class="nav-item rodada-container" :class="{'rodada-atual': rodada.id == camp.rodada_atual_id}" v-for="rodada in camp.rodadas" :key="rodada.id">
+                                    {{rodada.descricao}}
                                 </li>
-                                <button @click="abrirModalEquipes(camp)" class="btn btn-round btn-primary btn-lg btn-icon" 
-                                title="Adicionar Time">
+                                <button @click="abrirModalRodadas(camp)" class="btn btn-round btn-primary btn-lg btn-icon" 
+                                title="Adicionar Rodada">
                                     <a href="javascript:void(0)">
                                         <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
                                     </a>
@@ -132,26 +144,26 @@
                             <i class="tim-icons icon-simple-add" style="color: #FFF"></i>
                         </a>
                   </button>
-                    <b-modal id="escolher-equipes" v-model="modalEquipes" title="Selecione as equipes participantes do campeonato!" cancel-title="Cancelar" 
+                    <b-modal id="escolher-rodadas" v-model="modalRodadas" title="Selecione as rodadas participantes do campeonato!" cancel-title="Cancelar" 
                     @cancel="handleCancelar()">
                         <div>
                             <div class="row">
                                 <div class="col offset-md-1 col-md-10">
-                                    <form @submit.prevent="getEquipes()">
+                                    <form @submit.prevent="getRodadas()">
                                         <input class="zleague-form-control" @input="handleSearch" 
-                                        type="text" placeholder="Busque a equipe por nome!">
+                                        type="text" placeholder="Busque a rodada por descrição!">
                                     </form>
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col col-md-4" v-for="equipe in equipes" :key="equipe.id" 
-                                @click="selecionarEquipe(equipe)">
-                                    <div class="card card-modal" :class="{'card-modal-selecionada': equipe.selecionada}" >
+                                <div class="col col-md-4" v-for="rodada in rodadas" :key="rodada.id" 
+                                @click="selecionarRodada(rodada)">
+                                    <div class="card card-modal" :class="{'card-modal-selecionada': rodada.selecionada}" >
                                         <div class="card-body">
-                                            <div class="info-equipe info-modal">
-                                                <img class="foto" :src="'http://192.168.3.105:8000/storage/'+equipe.brasao">
+                                            <div class="info-rodada info-modal">
+                                                <!-- <img class="foto" :src="'http://192.168.3.105:8000/storage/'+rodada.brasao"> -->
                                                 <span class="nome">                                                    
-                                                    {{equipe.nome}}
+                                                    {{rodada.descricao}}
                                                 </span>
                                             </div>
                                         </div>
@@ -160,7 +172,7 @@
                             </div>
                             <div class="row">
                                 <div class="col col-md-12">
-                                    <button class="btn btn-info btn-block" @click="salvarEquipes()" 
+                                    <button class="btn btn-info btn-block" @click="salvarRodadas()" 
                                     :disabled="loading">
                                         <span v-if="!loading">
                                             Salvar
@@ -198,7 +210,8 @@ export default {
             // criador_id: null,
             fl_publico: 1,
             fl_profissional: 1,
-            equipes: []
+            rodadas: [],
+            estado: 1
         },
         options: [
           {text: 'Sim', value: 1},
@@ -207,15 +220,15 @@ export default {
         showForm: false,
         loading: null,
         imgPreview: null,
-        modalEquipes: false,
-        equipes: [],
+        modalRodadas: false,
+        rodadas: [],
         search: '',
-        equipesSelecionadas: []
+        rodadasSelecionadas: []
       }
     },
     watch: {
         search: function(val){
-            this.getEquipes();
+            this.getRodadas();
         }
     },
     methods: {
@@ -234,15 +247,15 @@ export default {
                 error => console.error(error)
             );
         },
-        getEquipes(){
-            axios.get("equipes?s="+this.search)
+        getRodadas(){
+            axios.get("rodadas?s="+this.search)
                 .then(
                     response => {
-                        if(this.equipesSelecionadas.length > 0){
-                            this.equipes = _.unionBy(this.equipesSelecionadas, response.data, 'id');
+                        if(this.rodadasSelecionadas.length > 0){
+                            this.rodadas = _.unionBy(this.rodadasSelecionadas, response.data, 'id');
                             return 0;
                         }
-                        this.equipes = response.data;
+                        this.rodadas = response.data;
                     },
                     error => console.error(error)
                 );
@@ -255,15 +268,17 @@ export default {
             fd.append('brasao', this.camp.brasao, this.camp.brasao.nome);
             fd.append('fl_profissional', this.camp.fl_profissional ? 1 : 0);
             fd.append('fl_publico', this.camp.fl_publico ? 1 : 0);
+            fd.append('estado', this.camp.estado);
+            fd.append('rodada_atual_id', this.camp.rodada_atual_id);
             fd.append('data_inicio', '2018-12-01');
             fd.append('data_fim', '2019-01-01');
             fd.append('criador_id', 1);
             if(this.camp.id){
                 // Edita o campeonato
-                if(typeof(this.camp.equipes[0]) == 'object'){
-                    this.camp.equipes = this.equipesSelecionadas.map(e => e.id);
+                if(typeof(this.camp.rodadas[0]) == 'object'){
+                    this.camp.rodadas = this.rodadasSelecionadas.map(e => e.id);
                 }
-                fd.append('equipes', this.camp.equipes);
+                fd.append('rodadas', this.camp.rodadas);
                 fd.append('_method', 'put');
                 axios.post('campeonatos/'+this.camp.id, fd)
                     .then(
@@ -272,14 +287,14 @@ export default {
                             this.loading = false;
                             this.$notify({type: 'success', 
                             message: 'Campeonato editado com sucesso!'});
-                            this.modalEquipes = false;
+                            this.modalRodadas = false;
                             this.esconderForm();
                         },
                         (error) => {
                             this.getCampeonatos();
                             this.esconderForm();
                             this.loading = false;
-                            this.modalEquipes = false;
+                            this.modalRodadas = false;
                             this.$notify({type: 'danger', 
                             message: 'Não foi possível editar o campeonato :('});
                         }
@@ -307,6 +322,29 @@ export default {
         editarCampeonato(camp){
             this.showForm = true;
             this.camp = Object.assign({}, camp);
+        },
+        iniciarCampeonato(camp){
+            if(camp.possui_rodada){
+                camp.estado = 2;
+                camp.rodada_atual_id = camp.primeira_rodada.id;
+                this.camp = Object.assign({}, camp);
+                this.salvarCampeonato();
+            }else{
+                this.$notify({type: 'danger', 
+                message: 'Você não pode iniciar um campeonato sem antes escolher suas rodadas!'});  
+            }
+        },
+        finalizarCampeonato(camp){
+            camp.estado = 3;
+            this.camp = Object.assign({}, camp);
+            this.salvarCampeonato();
+        },
+        passarRodada(camp){
+            axios.get('campeonatos/passar/rodada/'+camp.id)
+                .then(response => {
+                    this.$notify({type: 'success', message: 'Rodada passada com sucesso!'});
+                    this.getCampeonatos();
+                });
         },
         deletarCampeonato(camp){
             camp.excluindo = true;
@@ -357,35 +395,35 @@ export default {
             // criador_id: null,
             fl_publico: 1,
             fl_profissional: 1,
-            equipes: null
+            rodadas: null
             };
             this.imgPreview = null;
             this.showForm = false;
         },
-        selecionarEquipe(equipe){
-            equipe.selecionada = !equipe.selecionada;
+        selecionarRodada(rodada){
+            rodada.selecionada = !rodada.selecionada;
             this.$forceUpdate();
-            if(equipe.selecionada){
-                const equipesSelecionadas = [...this.equipesSelecionadas];
-                equipesSelecionadas.push(equipe);
-                this.equipesSelecionadas = _.uniqBy(equipesSelecionadas, 'id');
+            if(rodada.selecionada){
+                const rodadasSelecionadas = [...this.rodadasSelecionadas];
+                rodadasSelecionadas.push(rodada);
+                this.rodadasSelecionadas = _.uniqBy(rodadasSelecionadas, 'id');
             }else{
-                _.remove(this.equipesSelecionadas, (e) => e.id == equipe.id);
+                _.remove(this.rodadasSelecionadas, (r) => r.id == rodada.id);
             }
         },
-        salvarEquipes(){
-            const equipesSelecionadas = [...this.equipesSelecionadas];
-            this.camp.equipes = equipesSelecionadas.map(e => e.id);
+        salvarRodadas(){
+            const rodadasSelecionadas = [...this.rodadasSelecionadas];
+            this.camp.rodadas = rodadasSelecionadas.map(r => r.id);
             this.salvarCampeonato();
         },
-        abrirModalEquipes(camp){
-            this.equipesSelecionadas = [];
-            this.modalEquipes = true;
+        abrirModalRodadas(camp){
+            this.rodadasSelecionadas = [];
+            this.modalRodadas = true;
             this.camp = Object.assign({}, camp);
-            if(camp.equipes.length > 0){
-                this.equipesSelecionadas = _.forEach(camp.equipes, (e) => e.selecionada = true);
+            if(camp.rodadas.length > 0){
+                this.rodadasSelecionadas = _.forEach(camp.rodadas, (r) => r.selecionada = true);
             }
-            this.getEquipes();
+            this.getRodadas();
         }
   }
 }
@@ -427,8 +465,14 @@ export default {
     }
 
     .acoes {
+        display: flex;
         flex: 1 0 0 ;
         align-self: flex-start;
+
+        button {
+            margin: 0 10px;
+        }
+
     }
 
     .flecha-collapse {
@@ -482,19 +526,19 @@ label {
     opacity: 0.9;
 
     &:hover {
-        height: 200px;
+        height: 110px;
         box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
         opacity: 1;
     }
 
     &-selecionada {
-        height: 200px;
+        height: 90px;
         box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
         opacity: 1;
     }
 }
 
-.info-equipe {
+.info-rodada {
     display: flex;
     flex-direction: row;
     .foto {
@@ -507,7 +551,6 @@ label {
         flex: 1 0 0;
         align-self: center;
         text-align: center;
-        padding-left: 10px;
     }
 
     a {
@@ -529,6 +572,21 @@ label {
 
     }
 
+}
+
+.rodada-container {
+    box-shadow: 20px 20px 40px 0px rgb(13, 15, 70);
+    background: rgb(84, 87, 245);
+    height: 30px;
+    padding-top: 5px;
+    width: 15%;
+    text-align: center;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.rodada-atual {
+    background: green;
 }
 
 

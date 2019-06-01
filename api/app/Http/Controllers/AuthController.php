@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Mail;
+use App\ParticipanteLiga;
 
 class AuthController extends Controller
 {
@@ -84,6 +85,12 @@ class AuthController extends Controller
 
         $u = $request->all();
         $u['token'] = $confirmation_token;
+
+        $participanteLiga = new ParticipanteLiga();
+        $participanteLiga->liga_id = 1;
+        $participanteLiga->invocador_id = $user->id;
+
+        $participanteLiga->save();
 
         Mail::send('mails.confirmation', $u, function($message) use($u){
             $message->to($u['email']);

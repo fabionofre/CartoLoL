@@ -6,10 +6,11 @@
         <sidebar-link to="/juiz" v-if="user && user.tipo_usuario_id != 1" name="Registrar Regras" icon="tim-icons icon-settings-gear-63"/>
         <sidebar-link to="/escalacao" name="Escalação" icon="tim-icons icon-notes"/>
         <sidebar-link to="/campeonatos" v-if="user && user.tipo_usuario_id != 1" name="Camepeonatos" icon="tim-icons icon-trophy"/>
+        <sidebar-link to="/rodadas" v-if="user && user.tipo_usuario_id != 1" name="Rodadas" icon="tim-icons icon-molecule-40"/>
         <sidebar-link to="/atletas" v-if="user && user.tipo_usuario_id != 1" name="Atletas" icon="tim-icons icon-user-run"/>
         <sidebar-link to="/times" v-if="user && user.tipo_usuario_id != 1" name="Times" icon="tim-icons icon-vector"/>
         <sidebar-link to="/pontuacao" v-if="user && user.tipo_usuario_id != 1" name="Atribuir Ação" icon="tim-icons icon-shape-star"/>
-        <sidebar-link to="/ligas" name="Ligas" icon="tim-icons icon-molecule-40"/>
+        <sidebar-link to="/ligas" v-if="user && user.tipo_usuario_id != 1" name="Ligas" icon="tim-icons icon-molecule-40"/>
       </template>
     </side-bar>
     <div class="main-panel">
