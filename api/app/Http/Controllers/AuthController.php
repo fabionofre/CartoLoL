@@ -93,8 +93,8 @@ class AuthController extends Controller
         $participanteLiga->save();
 
         Mail::send('mails.confirmation', $u, function($message) use($u){
-            $message->to($u['email']);
             $message->subject('Confirmação de e-mail');
+            $message->to($u['email']);
         });
 
 
@@ -104,7 +104,7 @@ class AuthController extends Controller
 
     public function confirmacao($token){
         $user = User::where('token', $token)->first();
-        
+
         if(!is_null($user)){
             $user->confirmado = 1;
             $user->token = '';
@@ -112,7 +112,7 @@ class AuthController extends Controller
 
             $jwt_token = auth()->login($user);
 
-            return redirect("http://localhost:8080/#/?login=true&token=".$jwt_token);
+            return redirect("http://192.168.3.102:8080/#/?login=true&token=".$jwt_token);
         }
 
     }

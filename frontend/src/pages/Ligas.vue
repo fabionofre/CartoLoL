@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col col-md-12 text-center" v-if="liga.brasao">
                                     <img v-if="typeof(liga.brasao) == 'file' || !imgPreview" 
-                                    :src="'http://192.168.3.105:8000/storage/'+liga.brasao"
+                                    :src="'http://192.168.3.102:8000/storage/'+liga.brasao"
                                     width="80px" height="80px" style="border-radius: 50%">
                                     <img v-else :src="imgPreview"
                                     width="80px" height="80px" style="border-radius: 50%">
@@ -56,7 +56,7 @@
                                         >
                                             <div style="display: flex; align-items: center;">
                                                 <img
-                                                :src="'http://192.168.3.105:8000/storage/'+campeonato.brasao"
+                                                :src="'http://192.168.3.102:8000/storage/'+campeonato.brasao"
                                                 class="campeonato-brasao"
                                                 >
 
@@ -70,7 +70,7 @@
                                         slot-scope="{ item: campeonato }"
                                         >
                                             <img
-                                            :src="'http://192.168.3.105:8000/storage/'+campeonato.brasao"
+                                            :src="'http://192.168.3.102:8000/storage/'+campeonato.brasao"
                                             class="campeonato-brasao"
                                             >
                                             <div class="color-white">
@@ -87,7 +87,7 @@
                                     </cool-select>
                                     <div v-if="liga.campeonato">
                                         <img
-                                        :src="'http://192.168.3.105:8000/storage/'+liga.campeonato.brasao"
+                                        :src="'http://192.168.3.102:8000/storage/'+liga.campeonato.brasao"
                                         class="possui-campeonato-brasao"
                                         >
                                         <a href="javascript:void(0)" @click="liga.campeonato = null">
@@ -136,7 +136,7 @@
                                     :key="liga.id" style="color: #fff">
                                         <td>
                                             <img
-                                            :src="'http://192.168.3.105:8000/storage/'+liga.brasao"
+                                            :src="'http://192.168.3.102:8000/storage/'+liga.brasao"
                                             class="liga-brasao"
                                             >  
                                         </td>
@@ -219,7 +219,7 @@
                                         </th>
                                         <td>
                                             <img
-                                            :src="'http://192.168.3.105:8000/storage/'+invocador.foto"
+                                            :src="'http://192.168.3.102:8000/storage/'+invocador.foto"
                                             class="liga-brasao"
                                             >  
                                         </td>
@@ -243,7 +243,7 @@
                             style="border-radius: 100px"
                             width="200px"
                             height="200px"
-                            :src="'http://192.168.3.105:8000/storage/'+liga.brasao"
+                            :src="'http://192.168.3.102:8000/storage/'+liga.brasao"
                             > 
                             <h1 class="mt-3" style="text-align: center">{{liga.desc}}</h1>
                         </div>

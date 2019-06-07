@@ -13,7 +13,7 @@
                             </div>
                             <div class="col col-md-12" v-if="camp.brasao">
                                 <img v-if="typeof(camp.brasao) == 'file' || !imgPreview" 
-                                :src="'http://192.168.3.105:8000/storage/'+camp.brasao"
+                                :src="'http://192.168.3.102:8000/storage/'+camp.brasao"
                                 width="80px" height="80px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="80px" height="80px" style="border-radius: 50%">
@@ -79,7 +79,7 @@
                     <div class="card card-plain" v-for="(camp, index) in campeonatos" :key="camp.id">
                       <div class="card-header campeonato-card-header" id="headingOne">
                           <div class="info-campeonato">
-                              <img :src="'http://192.168.3.105:8000/storage/'+camp.brasao"
+                              <img :src="'http://192.168.3.102:8000/storage/'+camp.brasao"
                               width="80px" height="80px" style="border-radius: 50%">
                               <span>{{camp.desc}}</span>
                           </div>
@@ -161,7 +161,7 @@
                                     <div class="card card-modal" :class="{'card-modal-selecionada': rodada.selecionada}" >
                                         <div class="card-body">
                                             <div class="info-rodada info-modal">
-                                                <!-- <img class="foto" :src="'http://192.168.3.105:8000/storage/'+rodada.brasao"> -->
+                                                <!-- <img class="foto" :src="'http://192.168.3.102:8000/storage/'+rodada.brasao"> -->
                                                 <span class="nome">                                                    
                                                     {{rodada.descricao}}
                                                 </span>

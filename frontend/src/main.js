@@ -28,7 +28,7 @@ if (token) {
   window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 }
 
-window.axios.defaults.baseURL = 'http://192.168.3.105:8000/api';
+window.axios.defaults.baseURL = 'http://192.168.3.102:8000/api';
 
 /* eslint-disable no-new */
 new Vue({

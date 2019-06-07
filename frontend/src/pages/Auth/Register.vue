@@ -146,7 +146,7 @@ export default {
                 .then(
                     response => {
                         this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'info', message: "Link de confirmação enviado para o seu e-mail!"});
-                        window.location = "http://192.168.3.105:8080/#/login";
+                        window.location = "http://192.168.3.102:8080/#/login";
                     },
                     error => console.error(error)
                 );

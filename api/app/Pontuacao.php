@@ -8,9 +8,8 @@ class Pontuacao extends Model
 {
     protected $table = 'pontuacoes';
 
-    // protected $appends = ['atleta', 'rodada', 'acao'];
-
-    // public function getAtletaObjAttribute(){
+    // protected $appends = ['atleta'];
+    // public function getAtletaAttribute(){
     // 	$atleta = Atleta::find($this->atleta_id)->first();
     // 	return $atleta;
     // }

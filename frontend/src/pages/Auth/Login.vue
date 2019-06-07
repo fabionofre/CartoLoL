@@ -88,11 +88,11 @@
                       <router-link to="register" class="link footer-link">Criar Conta</router-link>
                     </h6>
                   </div>
-                  <div class="pull-right">
+                  <!-- <div class="pull-right">
                       <h6>
                           <a href="javascript:void(0)" class="link footer-link">Precisa de Ajuda?</a>
                       </h6>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </form>
@@ -120,7 +120,7 @@ export default {
     },
     methods:{
       loginFacebook(){
-        axios.get("http://192.168.3.105:8000/login/facebook")
+        axios.get("http://192.168.3.102:8000/login/facebook")
           .then(
             response => {
               console.log(response)
@@ -138,7 +138,7 @@ export default {
                 this.form = {email:null,password:null};
                 return 0;
               }
-              window.location = "http://192.168.3.105:8080/#/?login=true&token="+response.data.access_token;
+              window.location = "http://192.168.3.102:8080/#/?login=true&token="+response.data.access_token;
             },
             (err) => {
               this.form = {};

@@ -110,7 +110,7 @@
               <div class="col-3">
                 <div class="text-center">
                   <img class="foto-player-card" 
-                  :src="'http://192.168.3.105:8000/storage/'+atletaDestaque.foto" 
+                  :src="'http://192.168.3.102:8000/storage/'+atletaDestaque.foto" 
                   alt="photo">
                 </div>
               </div>
@@ -161,7 +161,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.105:8000/storage/'+atleta.foto" 
+                          :src="'http://192.168.3.102:8000/storage/'+atleta.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -214,7 +214,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.105:8000/storage/'+escalacao.invocador.foto" 
+                          :src="'http://192.168.3.102:8000/storage/'+escalacao.invocador.foto" 
                           alt="photo" v-if="escalacao.invocador.foto">
                           <img class="foto-player" v-if="!escalacao.invocador.foto" src="../assets/img/default-avatar.png">
                         </div>
@@ -267,7 +267,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.105:8000/storage/'+jogador.foto" 
+                          :src="'http://192.168.3.102:8000/storage/'+jogador.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -292,7 +292,7 @@
           <div class="card-header">
             <h5 class="card-title text-center">
               <img class="brasao-liga" 
-              :src="'http://192.168.3.105:8000/storage/'+liga.brasao" 
+              :src="'http://192.168.3.102:8000/storage/'+liga.brasao" 
               alt="photo">
               <h2 class="mt-3">{{liga.desc}}</h2>
             </h5>
@@ -324,7 +324,7 @@
                     <td class="text-center">
                       <div>
                         <img class="foto-player" 
-                        :src="'http://192.168.3.105:8000/storage/'+invocador.foto" 
+                        :src="'http://192.168.3.102:8000/storage/'+invocador.foto" 
                         alt="photo" v-if="invocador.foto">
                         <img class="foto-player" v-if="!invocador.foto" src="../assets/img/default-avatar.png">
                       </div>
@@ -519,55 +519,72 @@
                       atletasAcoes.push(atleta);
                   });
                   atletasAcoes = _.uniqBy(atletasAcoes, 'id');
-                  atletasAcoes.map(a => a.pontos = 0);
-                  _.forEach(pontuacoes, p => {
-                  let atleta_id = p.atleta.id;
-                      _.forEach(atletasAcoes, a => {
-                          if(atleta_id == a.id){
-                          // Dá os pontos aqui!
-                          let acao = _.find(this.acoes, ac => {
-                              return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
-                          });
-                          if(acao)
-                              a.pontos += (acao.pontuacao * p.quantidade);       
-                          }
-                      });
-                  });
-                  const atletasDaRodada = _.orderBy(atletasAcoes, ['pontos'], ['desc']);
-                  this.atletasDaRodada = atletasDaRodada.slice(0, 10);
-                  this.atletaDestaque = this.atletasDaRodada[0];
-                  todasEscalacoes.map(escalacao => {
-                    escalacao.pontos = 0;
-                    let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
-                    if(topo){
-                      escalacao.pontos += topo.pontos;
-                    }
-                    let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
-                    if(meio){
-                      escalacao.pontos += meio.pontos;
-                    }
-                    let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
-                    if(cacador){
-                      escalacao.pontos += cacador.pontos;
-                    }
-                    let suporte = _.find(atletasAcoes, a => escalacao.suporte.id == a.id);
-                    if(suporte){
-                        escalacao.pontos += suporte.pontos;
-                    }
-                    let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
-                    if(atirador){
-                      escalacao.pontos += atirador.pontos;
-                    }
-                    delete escalacao.calculando;
-                    this.$forceUpdate();
-                  });
-                  this.escalacoes = _.orderBy(todasEscalacoes, ['pontos'], ['desc']);
-                  this.escalacoes.map((e, index) => {
-                    if(e.invocador_id == this.user.id)
-                      this.colocacaoGeral = index+1;  
-                  });
-                  const top10 = this.escalacoes.slice(0,10);
-                  this.top10 = _.uniqBy(top10, 'invocador_id');
+                  if(atletasAcoes[0]){
+                    atletasAcoes.map(a => a.pontos = 0);
+                    _.forEach(pontuacoes, p => {
+                    let atleta_id = p.atleta.id;
+                        _.forEach(atletasAcoes, a => {
+                            if(atleta_id == a.id){
+                            // Dá os pontos aqui!
+                            let acao = _.find(this.acoes, ac => {
+                                return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
+                            });
+                            if(acao)
+                                a.pontos += (acao.pontuacao * p.quantidade);       
+                            }
+                        });
+                    });
+                    const atletasDaRodada = _.orderBy(atletasAcoes, ['pontos'], ['desc']);
+                    this.atletasDaRodada = atletasDaRodada.slice(0, 10);
+                    this.atletaDestaque = this.atletasDaRodada[0];
+                    todasEscalacoes.map(escalacao => {
+                      escalacao.pontos = 0;
+                      if(escalacao.topo){
+                        let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
+                        if(topo){
+                          escalacao.pontos += topo.pontos;
+                        }
+                      }
+                      if(escalacao.meio){
+                        let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
+                        if(meio){
+                          escalacao.pontos += meio.pontos;
+                        }
+                      }
+                      if(escalacao.cacador){
+                        let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
+                        if(cacador){
+                          escalacao.pontos += cacador.pontos;
+                        }
+                      }
+                      if(escalacao.cacador){
+                        let suporte = _.find(atletasAcoes, a => escalacao.suporte.id == a.id);
+                        if(suporte){
+                            escalacao.pontos += suporte.pontos;
+                        }
+                      }
+                      if(escalacao.atirador){
+                        let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
+                        if(atirador){
+                          escalacao.pontos += atirador.pontos;
+                        }
+                      }
+                      delete escalacao.calculando;
+                      this.$forceUpdate();
+                    });
+                    this.escalacoes = _.orderBy(todasEscalacoes, ['pontos'], ['desc']);
+                    this.escalacoes.map((e, index) => {
+                      if(e.invocador_id == this.user.id)
+                        this.colocacaoGeral = index+1;  
+                    });
+                    const top10 = this.escalacoes.slice(0,10);
+                    this.top10 = _.uniqBy(top10, 'invocador_id');
+                  }else{
+                    todasEscalacoes = todasEscalacoes.map(e => {
+                      e.calculando = false;
+                      return e;
+                    });
+                  }
               });
           });
       },
@@ -652,65 +669,77 @@
           atletasAcoes.push(atleta);
         });
         atletasAcoes = _.uniqBy(atletasAcoes, 'id');
-        atletasAcoes.map(a => a.pontos = 0);
-        _.forEach(this.pontuacoes, p => {
-          let atleta_id = p.atleta.id;
-          if(escalacao.rodada_id == p.rodada_id){
-            _.forEach(atletasAcoes, a => {
-              if(atleta_id == a.id){
-                // Dá os pontos aqui!
-                let acao = _.find(this.acoes, ac => {
-                  return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
-                });
-                console.log(this.acoes);
-                if(acao)
-                  a.pontos += (acao.pontuacao * p.quantidade);               
-              }
-            });
+        if(atletasAcoes[0]){
+          atletasAcoes.map(a => a.pontos = 0);
+          _.forEach(this.pontuacoes, p => {
+            let atleta_id = p.atleta.id;
+            if(escalacao.rodada_id == p.rodada_id){
+              _.forEach(atletasAcoes, a => {
+                if(atleta_id == a.id){
+                  // Dá os pontos aqui!
+                  let acao = _.find(this.acoes, ac => {
+                    return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id);
+                  });
+                  console.log(this.acoes);
+                  if(acao)
+                    a.pontos += (acao.pontuacao * p.quantidade);               
+                }
+              });
+            }
+          });
+          if(escalacao.topo){
+            let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
+            if(topo){
+              escalacaoPontos += topo.pontos;
+              escalacao.topo.pontos = topo.pontos;
+            }else{
+              escalacao.topo.pontos = 0;
+            }
           }
-        });
-        let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
-        if(topo){
-          escalacaoPontos += topo.pontos;
-          escalacao.topo.pontos = topo.pontos;
-        }else{
-          escalacao.topo.pontos = 0;
+          // this.atletasEscalacao.push(this.escalacao.topo);
+          if(escalacao.meio){
+            let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
+            if(meio){
+              escalacaoPontos += meio.pontos;
+              escalacao.meio.pontos = meio.pontos;
+            }else{
+              escalacao.meio.pontos = 0;
+            }
+          }
+          // this.atletasEscalacao.push(this.escalacao.meio);
+          if(escalacao.cacador){
+            let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
+            if(cacador){
+              escalacaoPontos += cacador.pontos;
+              escalacao.cacador.pontos = cacador.pontos;
+            }else{
+              escalacao.cacador.pontos = 0;
+            }
+          }
+          // this.atletasEscalacao.push(this.escalacao.cacador);
+          if(escalacao.suporte){
+            let suporte = _.find(atletasAcoes, a =>escalacao.suporte.id == a.id);
+            if(suporte){
+              escalacaoPontos += suporte.pontos;
+              escalacao.suporte.pontos = suporte.pontos;
+            }else{
+              escalacao.suporte.pontos = 0;
+            }
+          }
+          // this.atletasEscalacao.push(this.escalacao.suporte);
+          if(escalacao.atirador){
+            let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
+            if(atirador){
+              escalacaoPontos += atirador.pontos;
+              escalacao.atirador.pontos = atirador.pontos;
+            }else{
+              escalacao.atirador.pontos = 0;
+            }
+          }
+          // this.atletasEscalacao.push(this.escalacao.atirador);
+          // this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
+          console.log("Escalacao da rodada: ",escalacao.rodada_id+" - ", escalacaoPontos);
         }
-        // this.atletasEscalacao.push(this.escalacao.topo);
-        let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
-        if(meio){
-          escalacaoPontos += meio.pontos;
-          escalacao.meio.pontos = meio.pontos;
-        }else{
-          escalacao.meio.pontos = 0;
-        }
-        // this.atletasEscalacao.push(this.escalacao.meio);
-        let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
-        if(cacador){
-          escalacaoPontos += cacador.pontos;
-          escalacao.cacador.pontos = cacador.pontos;
-        }else{
-          escalacao.cacador.pontos = 0;
-        }
-        // this.atletasEscalacao.push(this.escalacao.cacador);
-        let suporte = _.find(atletasAcoes, a =>escalacao.suporte.id == a.id);
-        if(suporte){
-          escalacaoPontos += suporte.pontos;
-          escalacao.suporte.pontos = suporte.pontos;
-        }else{
-          escalacao.suporte.pontos = 0;
-        }
-        // this.atletasEscalacao.push(this.escalacao.suporte);
-        let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
-        if(atirador){
-          escalacaoPontos += atirador.pontos;
-          escalacao.atirador.pontos = atirador.pontos;
-        }else{
-          escalacao.atirador.pontos = 0;
-        }
-        // this.atletasEscalacao.push(this.escalacao.atirador);
-        // this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
-        console.log("Escalacao da rodada: ",escalacao.rodada_id+" - ", escalacaoPontos);
 
         return escalacaoPontos;
       },
@@ -774,13 +803,14 @@
                     axios.get('pontuacoes')
                         .then(
                         response => {
-                            const pontuacoes = response.data;
-                            let atletasAcoes = [];
-                            _.forEach(pontuacoes, p => {
-                                let atleta = p.atleta;
-                                atletasAcoes.push(atleta);
-                            });
-                            atletasAcoes = _.uniqBy(atletasAcoes, 'id');
+                          const pontuacoes = response.data;
+                          let atletasAcoes = [];
+                          _.forEach(pontuacoes, p => {
+                              let atleta = p.atleta;
+                              atletasAcoes.push(atleta);
+                          });
+                          atletasAcoes = _.uniqBy(atletasAcoes, 'id');
+                          if(atletasAcoes[0]){
                             atletasAcoes.map(a => a.pontos = 0);
                             _.forEach(pontuacoes, p => {
                             let atleta_id = p.atleta.id;
@@ -818,6 +848,11 @@
                             }
                             delete invocador.calculando;
                             this.$forceUpdate();
+                          }else{
+                            invocador.escalacao.pontos = 0;
+                            delete invocador.calculando;
+                            this.$forceUpdate();
+                          }
                         }),
                         (error) => {
                             console.error(error);
