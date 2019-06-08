@@ -110,7 +110,7 @@
               <div class="col-3">
                 <div class="text-center">
                   <img class="foto-player-card" 
-                  :src="'http://192.168.3.102:8000/storage/'+atletaDestaque.foto" 
+                  :src="'http://www.zleague.com.br:8000/storage/'+atletaDestaque.foto" 
                   alt="photo">
                 </div>
               </div>
@@ -161,7 +161,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.102:8000/storage/'+atleta.foto" 
+                          :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -214,7 +214,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.102:8000/storage/'+escalacao.invocador.foto" 
+                          :src="'http://www.zleague.com.br:8000/storage/'+escalacao.invocador.foto" 
                           alt="photo" v-if="escalacao.invocador.foto">
                           <img class="foto-player" v-if="!escalacao.invocador.foto" src="../assets/img/default-avatar.png">
                         </div>
@@ -267,7 +267,7 @@
                       <td class="text-center">
                         <div>
                           <img class="foto-player" 
-                          :src="'http://192.168.3.102:8000/storage/'+jogador.foto" 
+                          :src="'http://www.zleague.com.br:8000/storage/'+jogador.foto" 
                           alt="photo">
                         </div>
                       </td>
@@ -292,7 +292,7 @@
           <div class="card-header">
             <h5 class="card-title text-center">
               <img class="brasao-liga" 
-              :src="'http://192.168.3.102:8000/storage/'+liga.brasao" 
+              :src="'http://www.zleague.com.br:8000/storage/'+liga.brasao" 
               alt="photo">
               <h2 class="mt-3">{{liga.desc}}</h2>
             </h5>
@@ -324,7 +324,7 @@
                     <td class="text-center">
                       <div>
                         <img class="foto-player" 
-                        :src="'http://192.168.3.102:8000/storage/'+invocador.foto" 
+                        :src="'http://www.zleague.com.br:8000/storage/'+invocador.foto" 
                         alt="photo" v-if="invocador.foto">
                         <img class="foto-player" v-if="!invocador.foto" src="../assets/img/default-avatar.png">
                       </div>

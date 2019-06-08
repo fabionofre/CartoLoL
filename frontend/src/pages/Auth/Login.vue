@@ -120,7 +120,7 @@ export default {
     },
     methods:{
       loginFacebook(){
-        axios.get("http://192.168.3.102:8000/login/facebook")
+        axios.get("http://www.zleague.com.br:8000/login/facebook")
           .then(
             response => {
               console.log(response)
@@ -138,7 +138,7 @@ export default {
                 this.form = {email:null,password:null};
                 return 0;
               }
-              window.location = "http://192.168.3.102:8080/#/?login=true&token="+response.data.access_token;
+              window.location = "http://www.zleague.com.br:8080/#/?login=true&token="+response.data.access_token;
             },
             (err) => {
               this.form = {};

@@ -77,14 +77,14 @@
                                 <div class="confronto d-flex align-items-center" v-for="confronto in r.partidas" :key="confronto.id">
                                     <div class="container-brasao">
                                         <img
-                                        :src="'http://192.168.3.102:8000/storage/'+confronto.timea.brasao"
+                                        :src="'http://www.zleague.com.br:8000/storage/'+confronto.timea.brasao"
                                         class="possui-equipe-brasao"
                                         >
                                     </div>
                                     <span class="mx-3">VS</span>
                                     <div class="container-brasao">
                                         <img
-                                        :src="'http://192.168.3.102:8000/storage/'+confronto.timeb.brasao"
+                                        :src="'http://www.zleague.com.br:8000/storage/'+confronto.timeb.brasao"
                                         class="possui-equipe-brasao"
                                         >
                                     </div>
@@ -136,7 +136,7 @@
                         >
                             <div style="display: flex; align-items: center;">
                                 <img
-                                :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                                :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                                 class="equipe-brasao"
                                 >
 
@@ -150,7 +150,7 @@
                         slot-scope="{ item: equipe }"
                         >
                         <img
-                        :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                        :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                         class="equipe-brasao"
                         >
                         <div class="color-white">
@@ -165,7 +165,7 @@
                     </cool-select>
                     <div v-if="partida.equipea">
                         <img
-                        :src="'http://192.168.3.102:8000/storage/'+partida.equipea.brasao"
+                        :src="'http://www.zleague.com.br:8000/storage/'+partida.equipea.brasao"
                         class="possui-equipe-brasao"
                         >
                         <a href="javascript:void(0)" @click="partida.equipea = null">
@@ -190,7 +190,7 @@
                         >
                             <div style="display: flex; align-items: center;">
                                 <img
-                                :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                                :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                                 class="equipe-brasao"
                                 >
 
@@ -204,7 +204,7 @@
                         slot-scope="{ item: equipe }"
                         >
                         <img
-                        :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                        :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                         class="equipe-brasao"
                         >
                         <div class="color-white">
@@ -219,7 +219,7 @@
                     </cool-select>
                     <div v-if="partida.equipeb">
                         <img
-                        :src="'http://192.168.3.102:8000/storage/'+partida.equipeb.brasao"
+                        :src="'http://www.zleague.com.br:8000/storage/'+partida.equipeb.brasao"
                         class="possui-equipe-brasao"
                         >
                         <a href="javascript:void(0)" @click="partida.equipeb = null">

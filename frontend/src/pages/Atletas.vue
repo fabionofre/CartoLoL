@@ -15,7 +15,7 @@
                                 <div class="card card-plain" v-for="(atleta, index) in atletas" :key="atleta.id">
                                     <div class="card-header atleta-card-header" id="headingOne">
                                         <div class="info-atleta">
-                                            <img :src="'http://192.168.3.102:8000/storage/'+atleta.foto"
+                                            <img :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto"
                                             width="80px" height="80px" style="border-radius: 50%">
                                             {{atleta.nome}} 
                                             <span class="text-primary">{{atleta.apelido}}</span> 
@@ -88,7 +88,7 @@
                             </div>
                             <div class="col col-md-12" v-if="atleta.foto">
                                 <img v-if="typeof(atleta.foto) == 'file' || !imgPreview" 
-                                :src="'http://192.168.3.102:8000/storage/'+atleta.foto"
+                                :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto"
                                 width="80px" height="80px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="80px" height="80px" style="border-radius: 50%">
@@ -134,7 +134,7 @@
                                     >
                                         <div style="display: flex; align-items: center;">
                                             <img
-                                            :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                                            :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                                             class="equipe-brasao"
                                             >
 
@@ -148,7 +148,7 @@
                                     slot-scope="{ item: equipe }"
                                     >
                                     <img
-                                    :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                                    :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                                     class="equipe-brasao"
                                     >
                                     <div class="color-white">
@@ -163,7 +163,7 @@
                                 </cool-select>
                                 <div v-if="atleta.equipe">
                                     <img
-                                    :src="'http://192.168.3.102:8000/storage/'+atleta.equipe.brasao"
+                                    :src="'http://www.zleague.com.br:8000/storage/'+atleta.equipe.brasao"
                                     class="possui-equipe-brasao"
                                     >
                                     <a href="javascript:void(0)" @click="atleta.equipe = null">

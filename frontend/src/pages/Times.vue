@@ -13,7 +13,7 @@
                             </div>
                             <div class="col col-md-6" v-if="equipe.brasao">
                                 <img v-if="typeof(equipe.brasao) == 'file' || !imgPreview" 
-                                :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                                :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                                 width="80px" height="80px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="80px" height="80px" style="border-radius: 50%">
@@ -66,7 +66,7 @@
                     <div class="card card-plain" v-for="(equipe, index) in equipes" :key="equipe.id">
                       <div class="card-header equipe-card-header" id="headingOne">
                           <div class="info-equipe">
-                              <img :src="'http://192.168.3.102:8000/storage/'+equipe.brasao"
+                              <img :src="'http://www.zleague.com.br:8000/storage/'+equipe.brasao"
                               width="80px" height="80px" style="border-radius: 50%">
                               <span>{{equipe.nome}}</span>
                           </div>
@@ -96,7 +96,7 @@
                             <ul class="nav nav-pills nav-pills-primary">
                                 <li class="nav-item" v-for="atleta in equipe.atletas" :key="atleta.id">
                                 <a class="nav-link active" :title="atleta.apelido" href="javascript:void(0)">
-                                    <img :src="'http://192.168.3.102:8000/storage/'+atleta.foto" alt="">
+                                    <img :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto" alt="">
                                 </a>
                                 </li>
                             </ul>

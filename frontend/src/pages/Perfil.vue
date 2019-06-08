@@ -47,7 +47,7 @@
                             </div>
                             <div class="col offset-md-3 col-md-12" v-if="user.foto">
                                 <img v-if="typeof(user.foto) == 'file' || !imgPreview" 
-                                :src="'http://192.168.3.102:8000/storage/'+user.foto"
+                                :src="'http://www.zleague.com.br:8000/storage/'+user.foto"
                                 width="200px" height="200px" style="border-radius: 50%">
                                 <img v-else :src="imgPreview"
                                 width="200px" height="200px" style="border-radius: 50%">

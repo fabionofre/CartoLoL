@@ -61,7 +61,7 @@
                                         <div class="card-body">
                                             <div class="info-jogador">
                                                 <img class="foto" 
-                                                :src="'http://192.168.3.102:8000/storage/'+escalacao.topo.foto">
+                                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.topo.foto">
                                                 <span class="nome">
                                                     {{escalacao.topo.nome +" '"+ 
                                                     escalacao.topo.apelido +"' "+
@@ -82,7 +82,7 @@
                                         <div class="card-body">
                                             <div class="info-jogador">
                                                 <img class="foto"
-                                                :src="'http://192.168.3.102:8000/storage/'+escalacao.meio.foto">
+                                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.meio.foto">
                                                 <span class="nome">
                                                     {{escalacao.meio.nome +" '"+ 
                                                     escalacao.meio.apelido +"' "+
@@ -103,7 +103,7 @@
                                         <div class="card-body">
                                             <div class="info-jogador">
                                                 <img class="foto" 
-                                                :src="'http://192.168.3.102:8000/storage/'+escalacao.cacador.foto">
+                                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.cacador.foto">
                                                 <span class="nome">
                                                     {{escalacao.cacador.nome +" '"+ 
                                                     escalacao.cacador.apelido +"' "+
@@ -124,7 +124,7 @@
                                         <div class="card-body">
                                             <div class="info-jogador">
                                                 <img class="foto" 
-                                                :src="'http://192.168.3.102:8000/storage/'+escalacao.suporte.foto">
+                                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.suporte.foto">
                                                 <span class="nome">
                                                     {{escalacao.suporte.nome +" '"+ 
                                                     escalacao.suporte.apelido +"' "+
@@ -145,7 +145,7 @@
                                         <div class="card-body">
                                             <div class="info-jogador">
                                                 <img class="foto" 
-                                                :src="'http://192.168.3.102:8000/storage/'+escalacao.atirador.foto">
+                                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.atirador.foto">
                                                 <span class="nome">
                                                     {{escalacao.atirador.nome +" '"+ 
                                                     escalacao.atirador.apelido +"' "+
@@ -204,7 +204,7 @@
                         <div class="card-body">               
                             <div class="info-jogador">
                                 <img class="foto" 
-                                :src="'http://192.168.3.102:8000/storage/'+escalacao.topo.foto">
+                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.topo.foto">
                                 <span class="nome">
                                     {{escalacao.topo.nome +" '"+ 
                                     escalacao.topo.apelido +"' "+
@@ -241,7 +241,7 @@
                         <div class="card-body">               
                             <div class="info-jogador">
                                 <img class="foto" 
-                                :src="'http://192.168.3.102:8000/storage/'+escalacao.meio.foto">
+                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.meio.foto">
                                 <span class="nome">
                                     {{escalacao.meio.nome +" '"+ 
                                     escalacao.meio.apelido +"' "+
@@ -278,7 +278,7 @@
                         <div class="card-body">               
                             <div class="info-jogador">
                                 <img class="foto" 
-                                :src="'http://192.168.3.102:8000/storage/'+escalacao.cacador.foto">
+                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.cacador.foto">
                                 <span class="nome">
                                     {{escalacao.cacador.nome +" '"+ 
                                     escalacao.cacador.apelido +"' "+
@@ -315,7 +315,7 @@
                         <div class="card-body">               
                             <div class="info-jogador">
                                 <img class="foto" 
-                                :src="'http://192.168.3.102:8000/storage/'+escalacao.suporte.foto">
+                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.suporte.foto">
                                 <span class="nome">
                                     {{escalacao.suporte.nome +" '"+ 
                                     escalacao.suporte.apelido +"' "+
@@ -352,7 +352,7 @@
                         <div class="card-body">               
                             <div class="info-jogador">
                                 <img class="foto" 
-                                :src="'http://192.168.3.102:8000/storage/'+escalacao.atirador.foto">
+                                :src="'http://www.zleague.com.br:8000/storage/'+escalacao.atirador.foto">
                                 <span class="nome">
                                     {{escalacao.atirador.nome +" '"+ 
                                     escalacao.atirador.apelido +"' "+
@@ -395,7 +395,7 @@
                         <div class="card card-modal">
                             <div class="card-body">
                                 <div class="info-jogador info-modal">
-                                    <img class="foto" :src="'http://192.168.3.102:8000/storage/'+atleta.foto">
+                                    <img class="foto" :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto">
                                     <span class="nome">                                                    
                                         {{atleta.nome +" '"+ atleta.apelido +"' "+atleta.sobrenome}}
                                     </span>

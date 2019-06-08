@@ -30,7 +30,7 @@
                                     >
                                         <div style="display: flex; align-items: center;">
                                             <img
-                                            :src="'http://192.168.3.102:8000/storage/'+atleta.foto"
+                                            :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto"
                                             class="atleta-foto"
                                             >
 
@@ -46,7 +46,7 @@
                                     slot-scope="{ item: atleta }"
                                     >
                                         <img
-                                        :src="'http://192.168.3.102:8000/storage/'+atleta.foto"
+                                        :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto"
                                         class="atleta-foto"
                                         >
                                         <div class="color-white">
