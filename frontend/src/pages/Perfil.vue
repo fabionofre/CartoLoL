@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col col-md-7">
+            <div class="col-12 col-md-5 col-lg-5">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col col-md-5">
+            <div class="col-12 col-md-5 col-lg-5">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -62,7 +62,7 @@
             <button class="btn btn-primary btn-block" 
             @click="editUser()" :disabled="loading">
                 <span v-if="!loading">
-                    Editar Perfil
+                    Atualizar Perfil
                 </span>
                 <div v-if="loading" class="loader"></div>
             </button>
