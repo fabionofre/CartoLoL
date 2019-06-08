@@ -390,7 +390,7 @@
                     </div>
                 </div>
                 <div class="row mt-5">
-                    <div class="col col-md-4" v-for="atleta in filteredAtletas" :key="atleta.id" 
+                    <div class="col-6 col-md-4 col-lg-4 col-sm-6" v-for="atleta in filteredAtletas" :key="atleta.id" 
                     @click="escalarAtleta(atleta)">
                         <div class="card card-modal">
                             <div class="card-body">
