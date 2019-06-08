@@ -116,7 +116,7 @@
                                 </form>
                                 </div>
                                 <div class="card-footer">
-                                <a href="javascript:void(0)" @click.prevent="register()" class="btn btn-primary btn-round btn-lg">Iniciar</a>
+                                <button href="javascript:void(0)" @click.prevent="register()" class="btn btn-primary btn-round btn-lg" :disabled="loading">Iniciar</button>
                                 </div>
                             </div>
                             </div>
@@ -137,18 +137,24 @@ export default {
                 password: null,
                 nome: null,
                 apelido: null
-            }
+            },
+            loading: false
         }
     },
     methods: {
         register(){
+            this.loading = true;
             axios.post("auth/register", this.form)
                 .then(
                     response => {
+                        this.loading = false;
                         this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'info', message: "Link de confirmação enviado para o seu e-mail!"});
                         window.location = "http://www.zleague.com.br:80/#/login";
                     },
-                    error => console.error(error)
+                    error => {
+                        this.$notify({verticalAlign: 'top', horizontalAlign: 'center', type: 'danger', message: "Algo deu errrado, consulte os administradores"});
+                        this.loading = false;
+                    }
                 );
         }
     }
