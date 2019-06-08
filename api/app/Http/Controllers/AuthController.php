@@ -112,7 +112,7 @@ class AuthController extends Controller
 
             $jwt_token = auth()->login($user);
 
-            return redirect("http://192.168.3.102:8080/#/?login=true&token=".$jwt_token);
+            return redirect("http://www.zleague.com.br:80/#/?login=true&token=".$jwt_token);
         }
 
     }
