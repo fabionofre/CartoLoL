@@ -20,7 +20,7 @@ frontend/*.sln
 # API
 api/node_modules
 api/public/hot
-api/public/storage
+# api/public/storage
 api/storage/*.key
 api/vendor
 api/.idea
