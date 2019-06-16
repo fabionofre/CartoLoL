@@ -19,7 +19,7 @@
         <img src="../assets/img/hyperx-propaganda.jpg" height="250px;" width="100%;">
       </div>
 
-      <div class="col-lg-3 col-md-3">
+      <!-- <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
             <div class="row d-flex align-items-center">
@@ -36,14 +36,8 @@
               </div>
             </div>
           </div>
-          <!-- <div class="card-footer">
-            <hr>
-            <div class="stats">
-              <i class="tim-icons icon-sound-wave"></i> Última Pesquisa
-            </div>
-          </div> -->
         </div>
-      </div>
+      </div> -->
 
       <!-- <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
