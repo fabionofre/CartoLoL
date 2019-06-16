@@ -39,7 +39,7 @@
         </div>
       </div> -->
 
-      <!-- <div class="col-lg-3 col-md-3">
+      <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
             <div class="row d-flex align-items-center">
@@ -50,14 +50,14 @@
               </div>
               <div class="col-7">
                 <div class="numbers">
-                  <p class="card-category">Sua Pontuação na Rodada</p>
-                  <h3 class="card-title">+{{pontuacaoRodada}} pts</h3>
+                  <p class="card-category">Sua Pontuação</p>
+                  <h3 class="card-title">+{{parseFloat(meusPontos / 5).toFixed(2)}} pts</h3>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- <div class="col-lg-3 col-md-3">
         <div class="card card-stats">
           <div class="card-body">
@@ -121,58 +121,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div 
-      v-if="(escalacao.topo || escalacao.meio || escalacao.cacador || escalacao.atirador ||
-      escalacao.suporte)" 
-      class="col-lg-6 col-md-6">
-        <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Sua escalação</h3>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead class="text-primary">
-                    <tr>
-                      <th class="text-center">
-                        #
-                      </th>
-                      <th>
-                        Nome
-                      </th>
-                      <th>
-                        Apelido
-                      </th>
-                      <th>
-                        Pontos
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="atleta in atletasEscalacao" :key="atleta.id">
-                      <td class="text-center">
-                        <div>
-                          <img class="foto-player" 
-                          :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto" 
-                          alt="photo">
-                        </div>
-                      </td>
-                      <td>
-                        {{atleta.nome}}
-                      </td>
-                      <td>
-                        {{atleta.apelido}}
-                      </td>
-                      <td>
-                        {{parseFloat(atleta.pontos).toFixed(2)}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
         </div>
       </div>
       <div 
@@ -273,6 +221,58 @@
                       </td>
                       <td class="text-center">
                         {{parseFloat(jogador.pontos).toFixed(2)}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div 
+      v-if="atletasEscalacao.length >= 5" 
+      class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Sua escalação</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class="text-primary">
+                    <tr>
+                      <th class="text-center">
+                        #
+                      </th>
+                      <th>
+                        Nome
+                      </th>
+                      <th>
+                        Apelido
+                      </th>
+                      <th>
+                        Pontos
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="atleta in atletasEscalacao" 
+                    :key="atleta.id">
+                      <td class="text-center">
+                        <div>
+                          <img class="foto-player" 
+                          :src="'http://www.zleague.com.br:8000/storage/'+atleta.foto" 
+                          alt="photo">
+                        </div>
+                      </td>
+                      <td>
+                        {{atleta.nome}}
+                      </td>
+                      <td>
+                        {{atleta.apelido}}
+                      </td>
+                      <td>
+                        {{parseFloat(atleta.pontos).toFixed(2)}}
                       </td>
                     </tr>
                   </tbody>
@@ -480,7 +480,8 @@
         campeonato: null,
         pontuacaoCampeonato: 0,
         pontuacaoRodada: 0,
-        pontuacoes: []
+        pontuacoes: [],
+        meusPontos: 0
       }
     },
     computed: {
@@ -537,31 +538,48 @@
                         let topo = _.find(atletasAcoes, a => escalacao.topo.id == a.id);
                         if(topo){
                           escalacao.pontos += topo.pontos;
+                          escalacao.topo.pontos = topo.pontos;
                         }
                       }
                       if(escalacao.meio){
                         let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
                         if(meio){
                           escalacao.pontos += meio.pontos;
+                          escalacao.meio.pontos = meio.pontos;
                         }
                       }
                       if(escalacao.cacador){
                         let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
                         if(cacador){
                           escalacao.pontos += cacador.pontos;
+                          escalacao.cacador.pontos = cacador.pontos;
                         }
                       }
                       if(escalacao.cacador){
                         let suporte = _.find(atletasAcoes, a => escalacao.suporte.id == a.id);
                         if(suporte){
                             escalacao.pontos += suporte.pontos;
+                            escalacao.suporte.pontos = suporte.pontos;
                         }
                       }
                       if(escalacao.atirador){
                         let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
                         if(atirador){
                           escalacao.pontos += atirador.pontos;
+                          escalacao.atirador.pontos = atirador.pontos;
                         }
+                      }
+                      if(escalacao.invocador.id == this.user.id){
+                        this.atletasEscalacao.push(escalacao.cacador);
+                        this.atletasEscalacao.push(escalacao.topo);
+                        this.atletasEscalacao.push(escalacao.meio);
+                        this.atletasEscalacao.push(escalacao.suporte);
+                        this.atletasEscalacao.push(escalacao.atirador);
+                        this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
+                        this.atletasEscalacao.map(atleta => {
+                          this.meusPontos += atleta.pontos;
+                        });
+                        console.log("atletasEscalacao", this.atletasEscalacao);
                       }
                       delete escalacao.calculando;
                       this.$forceUpdate();
@@ -631,22 +649,9 @@
                       return null;
                   }
 
-                  this.escalacoes = response.data;
-                  this.escalacoes.map(e => {
-                    const temp = this.getPontuacaoEscalacao(e);
-                    e.pontos += temp;
-                    this.pontuacaoCampeonato += temp;
-                  });
+                  this.escalacoes = response.data[0];
+
                   this.loading_fullscreen = false;
-                  
-                  // setTimeout(() => {
-                  //   console.log(this.escalacoes);
-                  //   this.escalacoes.map(e => {
-                  //     console.log("PONTOS", e.pontos);
-                  //     this.pontuacaoCampeonato += e.pontos;
-                  //   });
-                  //   this.loading_fullscreen = false;
-                  // }, 1000)
                   
 
               }),
@@ -690,7 +695,7 @@
               escalacao.topo.pontos = 0;
             }
           }
-          // this.atletasEscalacao.push(this.escalacao.topo);
+          this.atletasEscalacao.push(this.escalacao.topo);
           if(escalacao.meio){
             let meio = _.find(atletasAcoes, a => escalacao.meio.id == a.id);
             if(meio){
@@ -700,7 +705,7 @@
               escalacao.meio.pontos = 0;
             }
           }
-          // this.atletasEscalacao.push(this.escalacao.meio);
+          this.atletasEscalacao.push(this.escalacao.meio);
           if(escalacao.cacador){
             let cacador = _.find(atletasAcoes, a => escalacao.cacador.id == a.id);
             if(cacador){
@@ -710,7 +715,7 @@
               escalacao.cacador.pontos = 0;
             }
           }
-          // this.atletasEscalacao.push(this.escalacao.cacador);
+          this.atletasEscalacao.push(this.escalacao.cacador);
           if(escalacao.suporte){
             let suporte = _.find(atletasAcoes, a =>escalacao.suporte.id == a.id);
             if(suporte){
@@ -720,7 +725,7 @@
               escalacao.suporte.pontos = 0;
             }
           }
-          // this.atletasEscalacao.push(this.escalacao.suporte);
+          this.atletasEscalacao.push(this.escalacao.suporte);
           if(escalacao.atirador){
             let atirador = _.find(atletasAcoes, a => escalacao.atirador.id == a.id);
             if(atirador){
@@ -730,8 +735,8 @@
               escalacao.atirador.pontos = 0;
             }
           }
-          // this.atletasEscalacao.push(this.escalacao.atirador);
-          // this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
+          this.atletasEscalacao.push(this.escalacao.atirador);
+          this.atletasEscalacao = _.orderBy(this.atletasEscalacao, ['pontos'],['desc']);
           console.log("Escalacao da rodada: ",escalacao.rodada_id+" - ", escalacaoPontos);
         }
 
@@ -756,11 +761,6 @@
         axios.get("usuarios/"+this.user.id)
           .then((response) => {
             this.user = response.data;
-            this.user.ligas_participo.map(liga => {
-              liga.participantes.map(invocador => {
-                this.calcularPontos(invocador);
-              });
-            });
           },
           error => console.error(error)
           )
@@ -772,87 +772,6 @@
           return false;
         }
       },
-      calcularPontos(invocador){
-        invocador.calculando = true;
-        invocador.escalacao = {
-          topo: null, meio: null, cacador: null,
-          atirador: null, suporte: null
-        };
-        axios.get("escalacoes/"+invocador.id)
-            .then(
-                (response) => {
-
-                    if(!response.data){
-                        this.loading_fullscreen = false;
-                        delete invocador.calculando;
-                        invocador.escalacao.pontos = 0;
-                        return null;
-                    };
-                        
-                    invocador.escalacao.topo = response.data.topo;
-                    invocador.escalacao.meio = response.data.meio;
-                    invocador.escalacao.cacador = response.data.cacador;
-                    invocador.escalacao.atirador = response.data.atirador;
-                    invocador.escalacao.suporte = response.data.suporte;
-                    axios.get('pontuacoes')
-                        .then(
-                        response => {
-                          const pontuacoes = response.data;
-                          let atletasAcoes = [];
-                          _.forEach(pontuacoes, p => {
-                              let atleta = p.atleta;
-                              atletasAcoes.push(atleta);
-                          });
-                          atletasAcoes = _.uniqBy(atletasAcoes, 'id');
-                          if(atletasAcoes[0]){
-                            atletasAcoes.map(a => a.pontos = 0);
-                            _.forEach(pontuacoes, p => {
-                            let atleta_id = p.atleta.id;
-                                _.forEach(atletasAcoes, a => {
-                                    if(atleta_id == a.id){
-                                    // Dá os pontos aqui!
-                                    let acao = _.find(this.acoes, ac => {
-                                        return (ac.acao_id == p.acao_id) && (a.funcao_id == ac.funcao_id)
-                                    });
-                                    if(acao)
-                                        a.pontos += (acao.pontuacao * p.quantidade);               
-                                    }
-                                });
-                            });
-                            invocador.escalacao.pontos = 0;
-                            let topo = _.find(atletasAcoes, a => invocador.escalacao.topo.id == a.id);
-                            if(topo){
-                                invocador.escalacao.pontos += topo.pontos;
-                            }
-                            let meio = _.find(atletasAcoes, a => invocador.escalacao.meio.id == a.id);
-                            if(meio){
-                                invocador.escalacao.pontos += meio.pontos;
-                            }
-                            let cacador = _.find(atletasAcoes, a => invocador.escalacao.cacador.id == a.id);
-                            if(cacador){
-                                invocador.escalacao.pontos += cacador.pontos;
-                            }
-                            let suporte = _.find(atletasAcoes, a => invocador.escalacao.suporte.id == a.id);
-                            if(suporte){
-                                invocador.escalacao.pontos += suporte.pontos;
-                            }
-                            let atirador = _.find(atletasAcoes, a => invocador.escalacao.atirador.id == a.id);
-                            if(atirador){
-                                invocador.escalacao.pontos += atirador.pontos;
-                            }
-                            delete invocador.calculando;
-                            this.$forceUpdate();
-                          }else{
-                            invocador.escalacao.pontos = 0;
-                            delete invocador.calculando;
-                            this.$forceUpdate();
-                          }
-                        }),
-                        (error) => {
-                            console.error(error);
-                        }
-                })
-        },
     },
   };
 </script>
