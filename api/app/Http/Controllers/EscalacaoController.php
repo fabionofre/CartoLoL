@@ -56,6 +56,7 @@ class EscalacaoController extends Controller
         // $requestData['rodada_id'] = $rodada_atual['id'];
 
         if($escalacao){
+            dd("Não pode mais kra");
             $esc = Escalacao::find($escalacao->id);
 
             $esc->fill($requestData);
@@ -111,6 +112,7 @@ class EscalacaoController extends Controller
      */
     public function update(Request $request, Escalacao $escalacao)
     {
+        dd("Não pode mais kra");
         $escalacao = Escalacao::find($id);
 
         $patrimonio = $request['patrimonio'];
