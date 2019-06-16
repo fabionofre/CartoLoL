@@ -122,7 +122,7 @@
               </div>
               <div class="col-4">
                 <h4 class="card-title">
-                  {{atletaDestaque.pontos > 0 ? '+' : ''}}{{atletaDestaque.pontos}}
+                  {{atletaDestaque.pontos > 0 ? '+' : ''}}{{parseFloat(atletaDestaque.pontos).toFixed(2)}}
                 </h4>
               </div>
             </div>
@@ -172,7 +172,7 @@
                         {{atleta.apelido}}
                       </td>
                       <td>
-                        {{atleta.pontos}}
+                        {{parseFloat(atleta.pontos).toFixed(2)}}
                       </td>
                     </tr>
                   </tbody>
@@ -226,7 +226,7 @@
                         {{escalacao.invocador.apelido}}
                       </td>
                       <td class="text-center">
-                        {{escalacao.pontos / 5}}
+                        {{parseFloat(escalacao.pontos / 5).toFixed(2)}}
                       </td>
                     </tr>
                   </tbody>
@@ -278,7 +278,7 @@
                         {{jogador.apelido}}
                       </td>
                       <td class="text-center">
-                        {{jogador.pontos}}
+                        {{parseFloat(jogador.pontos).toFixed(2)}}
                       </td>
                     </tr>
                   </tbody>
@@ -338,7 +338,7 @@
                     <td class="text-center">
                       <div v-if="invocador.calculando" 
                       class="loader-calculando"></div>
-                      <span v-else>{{invocador.escalacao.pontos / 5}}</span>
+                      <span v-else>{{parseFloat(invocador.escalacao.pontos / 5).toFixed(2)}}</span>
                     </td>
                   </tr>
                 </tbody>
