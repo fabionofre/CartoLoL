@@ -138,7 +138,7 @@ export default {
                 this.form = {email:null,password:null};
                 return 0;
               }
-              window.location = "http://www.zleague.com.br:80/#/?login=true&token="+response.data.access_token;
+              window.location = "http://localhost:8080/#/?login=true&token="+response.data.access_token;
             },
             (err) => {
               this.form = {};

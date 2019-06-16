@@ -97,8 +97,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3" v-if="atletaDestaque">
-        <div class="card card-stats">
+      <div class="col-lg-6 col-md-3" v-if="atletaDestaque">
+        <div class="card card-stats" style="width: 50%;">
           <div class="card-body">
             <div class="row">
               <div class="col-3">
